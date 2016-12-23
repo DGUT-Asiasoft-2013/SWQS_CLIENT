@@ -3,7 +3,6 @@ package com.swqs.schooltrade;
 import java.io.IOException;
 
 import com.swqs.schooltrade.api.Server;
-import com.swqs.schooltrade.fragments.inputcells.ImageInputCellFragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,6 +10,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import inputcell.ImageInputCellFragment;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -21,7 +21,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class NewGoodsActivity extends Activity {
-    EditText editTitle, editContent, editOriginalPrice, editCurPrice;
+    EditText editTitle, editContent, editOriginalPrice;
     ImageInputCellFragment fragInputImage;
     
     @Override
@@ -32,7 +32,7 @@ public class NewGoodsActivity extends Activity {
     	editTitle = (EditText) findViewById(R.id.edit_title);
     	editContent = (EditText) findViewById(R.id.edit_content);
     	editOriginalPrice = (EditText) findViewById(R.id.edit_originalprice);
-    	editCurPrice = (EditText) findViewById(R.id.edit_curprice);
+   
     	fragInputImage = (ImageInputCellFragment) getFragmentManager().findFragmentById(R.id.input_image);
     	
     	findViewById(R.id.button_publish).setOnClickListener(new View.OnClickListener() {
@@ -47,25 +47,22 @@ public class NewGoodsActivity extends Activity {
     void publishContent(){
     	String title = editTitle.getText().toString();
     	String content = editContent.getText().toString();
-    	String originalprice = editOriginalPrice.getText().toString();    	
-    	String curprice = editCurPrice.getText().toString();
+    	String originalPrice = editOriginalPrice.getText().toString();    	
     	
     	OkHttpClient client = Server.getSharedClient();
     	
     	MultipartBody.Builder body = new MultipartBody.Builder()
 				.addFormDataPart("title", title)
 				.addFormDataPart("content", content)
-				.addFormDataPart("originalprice", originalprice)
-				.addFormDataPart("curprice", curprice);				
+				.addFormDataPart("originalPrice", originalPrice);			
     	
     	if(fragInputImage.getPngData()!=null){
 			body.addFormDataPart(
-					"image",
-					"image",
+					"listImage",
+					"listImage",
 					RequestBody.create(MediaType.parse("image/png"),
 					fragInputImage.getPngData()));
-		}
-    	
+		} 	
     	
     	Request request = Server.requestBuilderWithApi("addgoods").post(body.build()).build();
 

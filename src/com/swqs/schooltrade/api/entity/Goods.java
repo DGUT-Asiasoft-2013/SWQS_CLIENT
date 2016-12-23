@@ -1,16 +1,23 @@
 package com.swqs.schooltrade.api.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
-public class Goods implements Serializable {
-	Integer id;	
+import com.swqs.schooltrade.api.entity.Image;
+import com.swqs.schooltrade.api.entity.User;
+
+public class Goods implements Serializable{
+	Integer id;
+	
 	String title;
 	String content;
+	Date createDate;
+	Date editDate;
 	User account;
 	float originalPrice;
 	float curPrice;
-	List<Image> listImage;
+	List<Image> listImage;	
 	
 	public Integer getId() {
 		return id;
@@ -29,6 +36,18 @@ public class Goods implements Serializable {
 	}
 	public void setContent(String content) {
 		this.content = content;
+	}
+	public Date getCreateDate() {
+		return createDate;
+	}
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+	public Date getEditDate() {
+		return editDate;
+	}
+	public void setEditDate(Date editDate) {
+		this.editDate = editDate;
 	}
 	public User getAccount() {
 		return account;
@@ -53,8 +72,5 @@ public class Goods implements Serializable {
 	}
 	public void setListImage(List<Image> listImage) {
 		this.listImage = listImage;
-	}
-
-	
-
+	}	
 }

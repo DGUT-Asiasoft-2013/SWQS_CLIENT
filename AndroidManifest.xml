@@ -7,7 +7,8 @@
     <uses-sdk
         android:minSdkVersion="17"
         android:targetSdkVersion="19" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -23,28 +24,44 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        	 <activity android:name="com.swqs.schooltrade.LoginActivity" >
+        <activity android:name="com.swqs.schooltrade.LoginActivity" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.RegisterActivity">
-            
+        <activity android:name="com.swqs.schooltrade.RegisterActivity" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.HomeActivity"></activity>
-        
-         <activity android:name="com.swqs.schooltrade.PasswordRecoverActivity"></activity>
-         <activity android:name="com.swqs.schooltrade.Money"></activity>
-         <activity android:name="com.swqs.schooltrade.Jump"></activity>
-         <activity android:name="com.swqs.schooltrade.MyCollection"></activity> 
-         <activity android:name="com.swqs.schooltrade.MyCredit"></activity>
-         <activity android:name="com.swqs.schooltrade.Recharge"></activity>
-         
-           <activity android:name="com.swqs.schooltrade.BuyOrderDetailsActivity"></activity>
-        <activity android:name="com.swqs.schooltrade.BuyEvaluationDetailsActivity"></activity>
-        <activity android:name="com.swqs.schooltrade.BuyAdditionalEvaluationActivity"></activity>
-        
-        <activity android:name="com.swqs.schooltrade.SellOrderDetailsActivity"></activity>
-        <activity android:name="com.swqs.schooltrade.SellEvaluationDetailsActivity"></activity>
-        <activity android:name="com.swqs.schooltrade.SellAdditionalEvaluationActivity"></activity>
-        <activity android:name="com.swqs.schooltrade.BuyAndSelledActivity"></activity>
+        <activity android:name="com.swqs.schooltrade.HomeActivity" >
+        </activity>
+        <activity android:name="com.swqs.schooltrade.PasswordRecoverActivity" >
+        </activity>
+        <activity android:name="com.swqs.schooltrade.Money" >
+        </activity>
+        <activity android:name="com.swqs.schooltrade.Jump" >
+        </activity>
+        <activity android:name="com.swqs.schooltrade.MyCollection" >
+        </activity>
+        <activity android:name="com.swqs.schooltrade.MyCredit" >
+        </activity>
+        <activity android:name="com.swqs.schooltrade.Recharge" >
+        </activity>
+        <activity android:name="com.swqs.schooltrade.GoodsContentActivity" >
+        </activity>
+        <activity android:name="com.swqs.schooltrade.NewGoodsActivity" >
+        </activity>
+        <activity android:name="com.swqs.schooltrade.NewCommentActivity" >
+        </activity>
+        <activity android:name="com.swqs.schooltrade.BuyOrderDetailsActivity" >
+        </activity>
+        <activity android:name="com.swqs.schooltrade.BuyEvaluationDetailsActivity" >
+        </activity>
+        <activity android:name="com.swqs.schooltrade.BuyAdditionalEvaluationActivity" >
+        </activity>
+        <activity android:name="com.swqs.schooltrade.SellOrderDetailsActivity" >
+        </activity>
+        <activity android:name="com.swqs.schooltrade.SellEvaluationDetailsActivity" >
+        </activity>
+        <activity android:name="com.swqs.schooltrade.SellAdditionalEvaluationActivity" >
+        </activity>
+        <activity android:name="com.swqs.schooltrade.BuyAndSelledActivity" >
+        </activity>
     </application>
 
 </manifest>

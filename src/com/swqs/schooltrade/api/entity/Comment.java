@@ -1,13 +1,16 @@
 package com.swqs.schooltrade.api.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
-public class Comment implements Serializable {
-	Goods goods;
+public class Comment implements Serializable{
 	Integer id;
 	
+	Goods goods;
 	User account;
 	Comment parentComment;
+	Date createDate;
+	Date editDate;
 	String text;
 	
 	public Integer getId() {
@@ -34,12 +37,22 @@ public class Comment implements Serializable {
 	public void setParentComment(Comment parentComment) {
 		this.parentComment = parentComment;
 	}
+	public Date getCreateDate() {
+		return createDate;
+	}
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+	public Date getEditDate() {
+		return editDate;
+	}
+	public void setEditDate(Date editDate) {
+		this.editDate = editDate;
+	}
 	public String getText() {
 		return text;
 	}
 	public void setText(String text) {
 		this.text = text;
 	}
-
-	
 }

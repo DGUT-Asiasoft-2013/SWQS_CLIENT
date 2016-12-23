@@ -1,4 +1,4 @@
-package com.swqs.schooltrade.fragments.inputcells;
+package inputcell;
 
 import java.io.ByteArrayOutputStream;
 
