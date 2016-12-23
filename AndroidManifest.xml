@@ -28,6 +28,7 @@
         </activity>
         <activity android:name="com.swqs.schooltrade.RegisterActivity" >
         </activity>
+
         <activity android:name="com.swqs.schooltrade.HomeActivity" >
         </activity>
         <activity android:name="com.swqs.schooltrade.PasswordRecoverActivity" >

@@ -2,9 +2,14 @@ package com.swqs.schooltrade;
 
 import java.io.IOException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swqs.schooltrade.api.Server;
+import com.swqs.schooltrade.api.entity.User;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import fragment.PasswordRecoverStep1Fragment;
 import fragment.PasswordRecoverStep1Fragment.OnGoNextListener;
@@ -66,13 +71,28 @@ public class PasswordRecoverActivity extends Activity {
 				.addFormDataPart("email", step1.getText())
 				.addFormDataPart("passwordHash", MD5.getMD5(step2.getText()))
 				.build();
+		
 		Request request = Server.requestBuilderWithApi("passwordrecover").post(body).build();
 				
 		client.newCall(request).enqueue(new Callback() {
 			
 			@Override
 			public void onResponse(Call arg0, Response arg1) throws IOException {
-				// TODO Auto-generated method stub
+				final String responseString = arg1.body().string();
+				ObjectMapper mapper = new ObjectMapper();
+				
+				User user = mapper.readValue(responseString, User.class);
+				
+				new AlertDialog.Builder(PasswordRecoverActivity.this).setMessage("seccuse,"+ user.getName())
+				.setPositiveButton("ok",new DialogInterface.OnClickListener(){
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Intent itnt = new Intent(PasswordRecoverActivity.this, PasswordRecoverStep1Fragment.class);
+						startActivity(itnt);// TODO Auto-generated method stub			
+					}
+					
+				}).show();// TODO Auto-generated method stub
 				
 			}
 			

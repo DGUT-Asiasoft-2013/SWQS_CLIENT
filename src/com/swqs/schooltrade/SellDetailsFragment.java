@@ -1,6 +1,12 @@
 package com.swqs.schooltrade;
 
-import java.util.Random;
+import java.io.IOException;
+import java.util.List;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.swqs.schooltrade.api.Server;
+import com.swqs.schooltrade.api.entity.Goods;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
@@ -16,13 +22,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class SellDetailsFragment extends Fragment {
 
 	View view;
 	ListView listView;
 	
-	String[] data;
+	List<Goods> data;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,13 +45,6 @@ public class SellDetailsFragment extends Fragment {
 			tvTitle.setText("ÎÒÂô³öµÄ");
 			listView.setAdapter(listAdapter);
 			
-			Random rand = new Random();
-			data = new String[10+rand.nextInt()%20];
-			
-			for(int i=0; i<data.length; i++){
-				data[i] = "THIS ROW IS "+rand.nextInt();
-			}
-			
 			listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 				@Override
@@ -49,10 +53,34 @@ public class SellDetailsFragment extends Fragment {
 				}
 			});
 		}
-
+		getData();
 		return view;
 	}
 	
+	private void getData() {
+		OkHttpClient client = Server.getSharedClient();
+
+		Request request = Server.requestBuilderWithApi("mysell/goodslist").build();
+
+		client.newCall(request).enqueue(new Callback() {
+			
+			@Override
+			public void onResponse(Call arg0, Response arg1) throws IOException {
+				String jsonString=arg1.body().string();
+				ObjectMapper mapper = new ObjectMapper();
+				List<Goods> goodsList=mapper.readValue(jsonString, new TypeReference<List<Goods>>() {
+				});
+				data=goodsList;
+				listAdapter.notifyDataSetChanged();
+			}
+			
+			@Override
+			public void onFailure(Call arg0, IOException arg1) {
+				
+			}
+		});
+	}
+
 	BaseAdapter listAdapter = new BaseAdapter() {
 		
 		@SuppressLint("InflateParams")
@@ -80,6 +108,10 @@ public class SellDetailsFragment extends Fragment {
 			}else{
 				holder=(ViewHolder) convertView.getTag();
 			}
+			Goods goods=data.get(position);
+			holder.tvGoodsName.setText(goods.getContent());
+			holder.tvTitle.setText(goods.getTitle());
+			holder.tvMoney.setText(goods.getCurPrice()+"");
 			return convertView;
 		}
 		
@@ -90,13 +122,12 @@ public class SellDetailsFragment extends Fragment {
 		
 		@Override
 		public Object getItem(int position) {
-			// TODO Auto-generated method stub
-			return data[position];
+			return data==null?null:data.get(position);
 		}
 		
 		@Override
 		public int getCount() {
-			return data==null ? 0 : data.length;
+			return data==null ? 0 : data.size();
 		}
 		
 		class ViewHolder{
@@ -109,10 +140,9 @@ public class SellDetailsFragment extends Fragment {
 	};
 	
 	void onItemClicked(int position){
-		String text = data[position];
 		
 		Intent itnt = new Intent(getActivity(), SellOrderDetailsActivity.class);
-		itnt.putExtra("text", text);
+		itnt.putExtra("goods", data.get(position));
 		
 		
 		startActivity(itnt);
