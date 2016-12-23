@@ -219,6 +219,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		 
 		MultipartBody.Builder requestBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM)
 				.addFormDataPart("account", account).addFormDataPart("password", password)
 				.addFormDataPart("email", email).addFormDataPart("name", name).addFormDataPart("birthday", "" + time)
