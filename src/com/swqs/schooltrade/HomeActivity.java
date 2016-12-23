@@ -95,9 +95,11 @@ public class HomeActivity extends Activity implements OnClickListener{
            break;
            
         case R.id.ll_publish:
-        	ll_publish.setSelected(true);
-        	image_publish.setSelected(true);
-        	publish();
+//        	ll_publish.setSelected(true);
+//        	image_publish.setSelected(true);
+//        	publish();
+        	Intent intent=new Intent(this,NewGoodsActivity.class);
+        	startActivity(intent);
         	break;
         	
         case R.id.ll_message:  
