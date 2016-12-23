@@ -11,30 +11,30 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import page.FeedListFragment;
 import page.MyprofileFragment;
-import page.NoteListFragment;
+import page.ConversationListFragment;
 import page.PublishFragment;
 import page.SearchFragment;
 
 
 public class HomeActivity extends Activity implements OnClickListener{  
     private LinearLayout ll_home;  
-    private LinearLayout ll_friends;
+    private LinearLayout ll_search;
     private LinearLayout ll_publish;
     private LinearLayout ll_message;  
-    private LinearLayout ll_more;  
+    private LinearLayout ll_me;  
     private ImageView image_home;  
-    private ImageView image_friends;
+    private ImageView image_search;
     private ImageView image_publish;
    private ImageView image_message;  
-    private ImageView image_more;  
+    private ImageView image_me;  
     //Fragment管理器  
     private FragmentManager fm = this.getFragmentManager();  
     private FragmentTransaction ft;  
-    private FeedListFragment fragmentPage1;  
-    private MyprofileFragment fragmentPage2;
-    private SearchFragment fragmentPage3;
-    private NoteListFragment fragmentPage4;
-    private PublishFragment  fragmentPage5;
+    private FeedListFragment fragmentPageFeed;  
+    private MyprofileFragment fragmentPageMe;
+    private SearchFragment fragmentPageSearch;
+    private ConversationListFragment fragmentconversation;
+    private PublishFragment  fragmentPagePublish;
     
     @Override  
     protected void onCreate(Bundle savedInstanceState) {  
@@ -52,21 +52,21 @@ public class HomeActivity extends Activity implements OnClickListener{
     private void initView(){
     	
         ll_home = (LinearLayout)findViewById(R.id.ll_home);  
-        ll_friends = (LinearLayout)findViewById(R.id.ll_search);  
+        ll_search = (LinearLayout)findViewById(R.id.ll_search);  
         ll_message = (LinearLayout)findViewById(R.id.ll_message);  
-        ll_more = (LinearLayout)findViewById(R.id.ll_me);
+        ll_me = (LinearLayout)findViewById(R.id.ll_me);
         ll_publish = (LinearLayout)findViewById(R.id.ll_publish);
           
        image_home = (ImageView)findViewById(R.id.image_home);  
-        image_friends = (ImageView)findViewById(R.id.image_search);  
+        image_search = (ImageView)findViewById(R.id.image_search);  
         image_message = (ImageView)findViewById(R.id.image_message);  
-        image_more = (ImageView)findViewById(R.id.image_me);
+        image_me = (ImageView)findViewById(R.id.image_me);
         image_publish = (ImageView)findViewById(R.id.image_publish);
           
         ll_home.setOnClickListener(this);  
-        ll_friends.setOnClickListener(this);  
+        ll_search.setOnClickListener(this);  
         ll_message.setOnClickListener(this);  
-        ll_more.setOnClickListener(this);
+        ll_me.setOnClickListener(this);
         ll_publish.setOnClickListener(this);
         ll_home.setSelected(true);  
         image_home.setSelected(true);  
@@ -86,20 +86,28 @@ public class HomeActivity extends Activity implements OnClickListener{
             home();  
             break;  
         case R.id.ll_search:  
-            ll_friends.setSelected(true);  
-            image_friends.setSelected(true);  
-            friend();  
+            ll_search.setSelected(true);  
+            image_search.setSelected(true);  
+            search();  
               
-           break;  
+           break;
+           
+        case R.id.ll_publish:
+        	ll_publish.setSelected(true);
+        	image_publish.setSelected(true);
+        	publish();
+        	break;
+        	
         case R.id.ll_message:  
             ll_message.setSelected(true);  
             image_message.setSelected(true);  
             message();  
-            break;  
+            break;
+            
         case R.id.ll_me:  
-            ll_more.setSelected(true);  
-            image_more.setSelected(true);  
-            more();  
+            ll_me.setSelected(true);  
+            image_me.setSelected(true);  
+            me();  
             break;  
         }  
         ft.commit();  
@@ -108,71 +116,80 @@ public class HomeActivity extends Activity implements OnClickListener{
       
     private void setSelected(){  
         ll_home.setSelected(false);  
-        ll_friends.setSelected(false);  
+        ll_search.setSelected(false);  
         ll_message.setSelected(false);  
-        ll_more.setSelected(false);  
+        ll_me.setSelected(false);  
         image_home.setSelected(false);  
-        image_friends.setSelected(false);  
+        image_search.setSelected(false);  
         image_message.setSelected(false);  
-        image_more.setSelected(false);  
-        if(fragmentPage1 != null){  
+        image_me.setSelected(false);  
+        if(fragmentPageFeed != null){  
             //隐藏Fragment  
-            ft.hide(fragmentPage1);  
+            ft.hide(fragmentPageFeed);  
         }  
-        if(fragmentPage2 != null){  
-            ft.hide(fragmentPage2);  
+        if(fragmentPageMe != null){  
+            ft.hide(fragmentPageMe);  
         }  
-        if(fragmentPage3 != null){  
-            ft.hide(fragmentPage3);  
+        if(fragmentPageSearch != null){  
+            ft.hide(fragmentPageSearch);  
         }  
-        if(fragmentPage4 != null){  
-            ft.hide(fragmentPage4);  
+        if(fragmentconversation != null){  
+            ft.hide(fragmentconversation);  
         }  
     }  
   
+
     private void home(){  
-        if(fragmentPage1 == null){  
-            fragmentPage1 = new FeedListFragment();  
-            /*添加到Fragment管理器中 
-            这里如果用replace， 
-            当每次调用时都会把前一个Fragment给干掉， 
-            这样就导致了每一次都要创建、销毁， 
-            数据就很难保存，用add就不存在这样的问题了， 
-            当Fragment存在时候就让它显示，不存在时就创建， 
-            这样的话数据就不需要自己保存了， 
-            因为第一次创建的时候就已经保存了， 
-            只要不销毁一直都将存在*/  
-            ft.add(R.id.fl_content, fragmentPage1);  
+        if(fragmentPageFeed == null){  
+            fragmentPageFeed = new FeedListFragment();            
+            ft.add(R.id.fl_content, fragmentPageFeed);  
         }else{  
             //显示Fragment  
-            ft.show(fragmentPage1);  
+            ft.show(fragmentPageFeed);  
         }  
     }  
-    private void friend(){  
-        if(fragmentPage2 == null){  
-            fragmentPage2 = new MyprofileFragment();  
-            ft.add(R.id.fl_content, fragmentPage2);  
+    private void me(){  
+        if(fragmentPageMe == null){  
+            fragmentPageMe = new MyprofileFragment();  
+            ft.add(R.id.fl_content, fragmentPageMe);  
         }else{  
-            ft.show(fragmentPage2);  
+            ft.show(fragmentPageMe);  
+        }  
+          
+    }  
+    private void publish(){
+    	if(fragmentPagePublish == null){
+    		fragmentPagePublish = new PublishFragment();
+    		ft.add(R.id.fl_content, fragmentPagePublish);
+    	}else{
+    		ft.show(fragmentPagePublish);
+    	}
+    }
+    
+    private void search(){  
+        if(fragmentPageSearch == null){  
+            fragmentPageSearch = new SearchFragment();  
+            ft.add(R.id.fl_content, fragmentPageSearch);  
+        }else{  
+            ft.show(fragmentPageSearch);  
         }  
           
     }  
     private void message(){  
-        if(fragmentPage3 == null){  
-            fragmentPage3 = new SearchFragment();  
-            ft.add(R.id.fl_content, fragmentPage3);  
+        if(fragmentconversation == null){  
+        	fragmentconversation = new ConversationListFragment();  
+            ft.add(R.id.fl_content, fragmentconversation);  
         }else{  
-            ft.show(fragmentPage3);  
+            ft.show(fragmentconversation);  
         }  
           
-    }  
-    private void more(){  
-        if(fragmentPage4 == null){  
-            fragmentPage4 = new NoteListFragment();  
-            ft.add(R.id.fl_content, fragmentPage4);  
-        }else{  
-            ft.show(fragmentPage4);  
-        }  
-          
-    }  
+    }  /*添加到Fragment管理器中 
+    这里如果用replace， 
+    当每次调用时都会把前一个Fragment给干掉， 
+    这样就导致了每一次都要创建、销毁， 
+    数据就很难保存，用add就不存在这样的问题了， 
+    当Fragment存在时候就让它显示，不存在时就创建， 
+    这样的话数据就不需要自己保存了， 
+    因为第一次创建的时候就已经保存了， 
+    只要不销毁一直都将存在*/    
 }
