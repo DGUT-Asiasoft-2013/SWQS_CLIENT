@@ -3,105 +3,133 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
-    <com.swqs.schooltrade.AvatarView
-        
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:id="@+id/avatar"
-        android:layout_gravity="center_horizontal"/>
-    
-   <TextView 
-       android:layout_height="wrap_content"
-       android:layout_width="wrap_content"
-       android:text="username"
-       android:id="@+id/tvUsername"
-       android:layout_gravity="center_horizontal"/>
-   
-    <View
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray" 
-            android:layout_marginTop="10dp"/>
-    
-    <TextView 
-       android:layout_height="wrap_content"
-       android:layout_width="wrap_content"
-       android:text="我发布的"
-       android:layout_marginTop="10dp"
-       android:layout_marginLeft="5dp"/>
-    
-    <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray" 
-            android:layout_marginTop="10dp"/>
-    
-    <TextView 
-       android:layout_height="wrap_content"
-       android:layout_width="wrap_content"
-       android:text="我卖出的 "
-       android:id="@+id/tvSelled"
-       android:layout_marginTop="10dp"
-       android:layout_marginLeft="5dp"/>
-   
-    <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray" 
-            android:layout_marginTop="10dp"/>
-    
-    <TextView 
-       android:layout_height="wrap_content"
-       android:layout_width="wrap_content"
-       android:text="我买到的 "
-       android:id="@+id/tvBuyed"
-       android:layout_marginTop="10dp"
-       android:layout_marginLeft="5dp"/>
-    
-    <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray" 
-            android:layout_marginTop="10dp"/>
-    
-    <TextView 
-       android:layout_height="wrap_content"
-       android:layout_width="wrap_content"
-       android:text="我的收藏 "
-       android:layout_marginTop="10dp"
-       android:layout_marginLeft="5dp"/>
-    
-    <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray" 
-            android:layout_marginTop="10dp"/>
-    
-    <TextView 
-       android:layout_height="wrap_content"
-       android:layout_width="wrap_content"
-       android:text="我的信誉"
-       android:layout_marginTop="10dp"
-       android:layout_marginLeft="5dp"/>
-    
-    <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray" 
-            android:layout_marginTop="10dp"/>
-    
-    <TextView 
-       android:layout_height="wrap_content"
-       android:layout_width="wrap_content"
-       android:text="我的信息"
-       android:layout_marginTop="10dp"
-       android:layout_marginLeft="5dp"/>
-    
-    <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray" 
-            android:layout_marginTop="10dp"/>
-    
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <com.swqs.schooltrade.AvatarView
+                android:id="@+id/avatar"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:id="@+id/tvUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="username" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/tvPublish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="我发布的" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/tvSelled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="我卖出的 " />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/tvBuyed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="我买到的 " />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/tvCollection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="我的收藏 " />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/tvReputation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="我的信誉" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/tvData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="我的信息" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/tvUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="我的账号" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/darker_gray" />
+        </LinearLayout>
+    </ScrollView>
+
 </LinearLayout>

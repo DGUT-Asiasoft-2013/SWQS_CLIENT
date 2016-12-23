@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -18,6 +19,15 @@ public class MyCredit extends Activity {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my_credit);
+		findViewById(R.id.btnback).setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				goMyBuy();
+				
+			}
+		});
+		
 		PB1=(ProgressBar) findViewById(R.id.progressBar1);
 		mHandler= new Handler(){
 			public void handleMessage(android.os.Message msg) {
@@ -58,6 +68,9 @@ public class MyCredit extends Activity {
 			}
 		}).start();
 		
+	}
+	void goMyBuy(){
+		finish();
 	}
 
 	

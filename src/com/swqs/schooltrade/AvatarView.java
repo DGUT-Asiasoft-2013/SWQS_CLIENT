@@ -64,7 +64,7 @@ public class AvatarView extends View {
 
 	public void load(User user) {
 
-		load(Server.serverAddress + user.getFace_url());
+		load(user.getFace_url());
 	}
 
 	public void load(String url) {

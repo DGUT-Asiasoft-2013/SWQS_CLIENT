@@ -24,6 +24,15 @@ public class Money extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_money);
+		findViewById(R.id.btnback).setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				goMyBuy();
+				
+			}
+		});
+		
 		btnRecharge = (Button) findViewById(R.id.btnRecharge);
 		btnRecharge.setOnClickListener(new View.OnClickListener() {
 
@@ -69,5 +78,8 @@ public class Money extends Activity {
 	void goRecharge() {
 		Intent intent = new Intent(this, Recharge.class);
 		startActivity(intent);
+	}
+	void goMyBuy(){
+		finish();
 	}
 }
