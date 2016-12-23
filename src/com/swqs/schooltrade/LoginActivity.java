@@ -1,11 +1,18 @@
 package com.swqs.schooltrade;
 
+import java.io.IOException;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.swqs.schooltrade.api.Server;
+import com.swqs.schooltrade.api.entity.User;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 import inputcell.InputcellSimpletextFragment;
@@ -15,14 +22,6 @@ import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
-import com.swqs.schooltrade.api.Server;
-import com.swqs.schooltrade.api.entity.User;
-
-import java.io.IOException;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.swqs.schooltrade.R;
 
 public class LoginActivity extends Activity {
 
@@ -78,56 +77,89 @@ public class LoginActivity extends Activity {
 	}
 
 	void goLogin() {
-		OkHttpClient client = Server.getSharedClient();
+		String account = fragAccount.getText();
+		String password = fragPassword.getText();
 
-		MultipartBody requestBody = new MultipartBody.Builder().addFormDataPart("account", fragAccount.getText())
-				.addFormDataPart("password", MD5.getMD5(fragPassword.getText())).build();
+		if (account.length() == 0) {
+			Toast.makeText(LoginActivity.this, "账号不能为空", Toast.LENGTH_SHORT).show();
+			// new AlertDialog.Builder(LoginActivity.this).setMessage("账号不能为空")
+			// .setIcon(android.R.drawable.ic_dialog_alert).setNegativeButton("好",
+			// null).show();
+			//
+			// return;
+		}
 
-		Request request = Server.requestBuilderWithApi("login").method("get", null).post(requestBody).build();
+		else if (password.length() == 0) {
+			Toast.makeText(LoginActivity.this, "密码不能为空", Toast.LENGTH_SHORT).show();
+			// new AlertDialog.Builder(LoginActivity.this).setMessage("密码不能为空")
+			// .setIcon(android.R.drawable.ic_dialog_alert).setNegativeButton("好",
+			// null).show();
+			//
+			// return;
+		} else {
 
-		final ProgressDialog dlg = new ProgressDialog(this);
-		dlg.setCancelable(false);
-		dlg.setCanceledOnTouchOutside(false);
-		dlg.setMessage("loading");
-		dlg.show();
+			OkHttpClient client = Server.getSharedClient();
 
-		client.newCall(request).enqueue(new Callback() {
+			MultipartBody requestBody = new MultipartBody.Builder().addFormDataPart("account", fragAccount.getText())
+					.addFormDataPart("password", MD5.getMD5(fragPassword.getText())).build();
 
-			@Override
-			public void onResponse(Call arg0, Response arg1) throws IOException {
-				final String responseSrting = arg1.body().string();
-				ObjectMapper mapper = new ObjectMapper();
-				final User user = mapper.readValue(responseSrting, User.class);
-				runOnUiThread(new Runnable() {
+			Request request = Server.requestBuilderWithApi("login").method("post", null).post(requestBody).build();
 
-					@Override
-					public void run() {
-						dlg.dismiss();
-						new AlertDialog.Builder(LoginActivity.this).setMessage("seccusse," + user.getName())
-								.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			final ProgressDialog dlg = new ProgressDialog(this);
+			dlg.setCancelable(false);
+			dlg.setCanceledOnTouchOutside(false);
+			dlg.setMessage("loading");
+			dlg.show();
 
-									@Override
-									public void onClick(DialogInterface dialog, int which) {
-										Intent itnt = new Intent(LoginActivity.this, HomeActivity.class);
-										startActivity(itnt);
-									}
-								}).show();
-					}
-				});
-			}
+			client.newCall(request).enqueue(new Callback() {
 
-			@Override
-			public void onFailure(Call arg0, final IOException arg1) {
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						dlg.dismiss();
-						Toast.makeText(LoginActivity.this, arg1.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-					}
-				});
-			}
-		});
+				@Override
+				public void onResponse(Call arg0, Response arg1) throws IOException {
+					final String responseSrting = arg1.body().string();
+					final ObjectMapper mapper = new ObjectMapper();
 
+					runOnUiThread(new Runnable() {
+
+						@Override
+						public void run() {
+							try {
+								final User user = mapper.readValue(responseSrting, User.class);
+								dlg.dismiss();
+								if (user.getAccount().equals("accountIsNotExist")) {
+									Toast.makeText(LoginActivity.this, "账号不存在", Toast.LENGTH_SHORT).show();
+									return;
+								}
+								else if (user.getAccount().equals("passwordIsNotRight")) {
+									Toast.makeText(LoginActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
+									return;
+								}
+								
+								
+							} catch (Exception e) {
+
+							}
+							Toast.makeText(LoginActivity.this, "登陆成功", Toast.LENGTH_SHORT).show();
+							Intent itnt = new Intent(LoginActivity.this, HomeActivity.class);
+							startActivity(itnt);
+							
+						}
+						
+					});
+
+				}
+
+				@Override
+				public void onFailure(Call arg0, final IOException arg1) {
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							dlg.dismiss();
+							Toast.makeText(LoginActivity.this, arg1.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+						}
+					});
+				}
+			});
+		}
 	}
 
 	void goRecoverPassword() {

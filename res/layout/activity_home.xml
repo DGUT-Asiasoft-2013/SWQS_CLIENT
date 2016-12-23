@@ -58,7 +58,7 @@
                 android:background="#000000" />
 
             <TextView
-                android:id="@+id/text_friends"
+                android:id="@+id/text_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="搜索"
@@ -127,7 +127,7 @@
                 android:background="#000000" />
 
             <TextView
-                android:id="@+id/text_more"
+                android:id="@+id/text_me"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="我的"
