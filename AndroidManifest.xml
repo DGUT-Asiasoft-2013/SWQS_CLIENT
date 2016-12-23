@@ -31,6 +31,11 @@
         <activity android:name="com.swqs.schooltrade.HomeActivity"></activity>
         
          <activity android:name="com.swqs.schooltrade.PasswordRecoverActivity"></activity>
+         <activity android:name="com.swqs.schooltrade.Money"></activity>
+         <activity android:name="com.swqs.schooltrade.Jump"></activity>
+         <activity android:name="com.swqs.schooltrade.MyCollection"></activity> 
+         <activity android:name="com.swqs.schooltrade.MyCredit"></activity>
+         <activity android:name="com.swqs.schooltrade.Recharge"></activity>
     </application>
 
 </manifest>

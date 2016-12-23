@@ -4,5 +4,11 @@
     <string name="app_name">SchoolTradeClient</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="textview">你的智商餘額已不足，請及時充值。。。。。你的智商餘額已不足，請及時充值。。。。。你的智商餘額已不足，請及時充值。。。。。          </string>
+    <string name="mycredit">我的信誉</string>
+    <string name="myCollection">我的收藏</string>
+    <string name="credit1">0毫无信用</string>
+    <string name="credit2">50信用一般</string>
+    <string name="credit3">信用良好100</string>
 
 </resources>
