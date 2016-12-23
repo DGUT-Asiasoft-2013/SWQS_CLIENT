@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -29,6 +30,8 @@ public class SellDetailsFragment extends Fragment {
 			view = inflater.inflate(R.layout.fragment_buy_details, null);
 			
 			listView = (ListView) view.findViewById(R.id.list);
+			TextView tvTitle=(TextView) view.findViewById(R.id.tvTitle);
+			tvTitle.setText("ÎÒÂô³öµÄ");
 			listView.setAdapter(listAdapter);
 			
 			Random rand = new Random();
@@ -60,22 +63,28 @@ public class SellDetailsFragment extends Fragment {
 				LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 				convertView = inflater.inflate(R.layout.widget_sell_item, null);	
 				holder=new ViewHolder();
-				holder.ivImg=(ImageView) view.findViewById(R.id.ivImg);
-				holder.tvGoodsName=(TextView) view.findViewById(R.id.tvGoodsName);
-				holder.tvTitle=(TextView) view.findViewById(R.id.tvTitle);
-				holder.tvMoney=(TextView) view.findViewById(R.id.tvMoney);
-				holder.btnLook=(Button) view.findViewById(R.id.btnLook);
+				holder.ivImg=(ImageView) convertView.findViewById(R.id.ivImg);
+				holder.tvGoodsName=(TextView) convertView.findViewById(R.id.tvGoodsName);
+				holder.tvTitle=(TextView) convertView.findViewById(R.id.tvTitle);
+				holder.tvMoney=(TextView) convertView.findViewById(R.id.tvMoney);
+				holder.btnLook=(Button) convertView.findViewById(R.id.btnLook);
+				holder.btnLook.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						Intent intent=new Intent(getActivity(),SellEvaluationDetailsActivity.class);
+						startActivity(intent);
+					}
+				});
 				convertView.setTag(holder);
 			}else{
 				holder=(ViewHolder) convertView.getTag();
 			}
-			
 			return convertView;
 		}
 		
 		@Override
 		public long getItemId(int position) {
-			// TODO Auto-generated method stub
 			return position;
 		}
 		
@@ -102,7 +111,7 @@ public class SellDetailsFragment extends Fragment {
 	void onItemClicked(int position){
 		String text = data[position];
 		
-		Intent itnt = new Intent(getActivity(), BuyOrderDetailsActivity.class);
+		Intent itnt = new Intent(getActivity(), SellOrderDetailsActivity.class);
 		itnt.putExtra("text", text);
 		
 		

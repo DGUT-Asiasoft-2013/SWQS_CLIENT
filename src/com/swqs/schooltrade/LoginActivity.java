@@ -83,7 +83,7 @@ public class LoginActivity extends Activity {
 		MultipartBody requestBody = new MultipartBody.Builder().addFormDataPart("account", fragAccount.getText())
 				.addFormDataPart("password", MD5.getMD5(fragPassword.getText())).build();
 
-		Request request = Server.requestBuilderWithApi("login").method("post", null).post(requestBody).build();
+		Request request = Server.requestBuilderWithApi("login").method("get", null).post(requestBody).build();
 
 		final ProgressDialog dlg = new ProgressDialog(this);
 		dlg.setCancelable(false);

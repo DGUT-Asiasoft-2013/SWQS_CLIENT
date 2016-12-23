@@ -33,8 +33,7 @@ public class BuyEvaluationDetailsActivity extends Activity {
 }
 	
 	void goOrderDetails(){
-		Intent itnt = new Intent(this,BuyOrderDetailsActivity.class);
-		startActivity(itnt);
+		finish();
 	}
 	
 	void goAdditionalEvaluation(){

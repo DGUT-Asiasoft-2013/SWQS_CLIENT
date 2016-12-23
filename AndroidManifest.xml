@@ -36,6 +36,15 @@
          <activity android:name="com.swqs.schooltrade.MyCollection"></activity> 
          <activity android:name="com.swqs.schooltrade.MyCredit"></activity>
          <activity android:name="com.swqs.schooltrade.Recharge"></activity>
+         
+           <activity android:name="com.swqs.schooltrade.BuyOrderDetailsActivity"></activity>
+        <activity android:name="com.swqs.schooltrade.BuyEvaluationDetailsActivity"></activity>
+        <activity android:name="com.swqs.schooltrade.BuyAdditionalEvaluationActivity"></activity>
+        
+        <activity android:name="com.swqs.schooltrade.SellOrderDetailsActivity"></activity>
+        <activity android:name="com.swqs.schooltrade.SellEvaluationDetailsActivity"></activity>
+        <activity android:name="com.swqs.schooltrade.SellAdditionalEvaluationActivity"></activity>
+        <activity android:name="com.swqs.schooltrade.BuyAndSelledActivity"></activity>
     </application>
 
 </manifest>

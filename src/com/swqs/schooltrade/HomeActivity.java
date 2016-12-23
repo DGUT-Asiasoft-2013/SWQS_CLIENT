@@ -30,11 +30,11 @@ public class HomeActivity extends Activity implements OnClickListener{
     //Fragment管理器  
     private FragmentManager fm = this.getFragmentManager();  
     private FragmentTransaction ft;  
-    private FeedListFragment fragmentPage1;  
-    private MyprofileFragment fragmentPage2;
-    private SearchFragment fragmentPage3;
-    private NoteListFragment fragmentPage4;
-    private PublishFragment  fragmentPage5;
+    private FeedListFragment fragmentPageFeed;  
+    private MyprofileFragment fragmentPageMe;
+    private SearchFragment fragmentPageSearch;
+    private NoteListFragment fragmentPageNote;
+    private PublishFragment  fragmentPagePublish;
     
     @Override  
     protected void onCreate(Bundle savedInstanceState) {  
@@ -115,24 +115,24 @@ public class HomeActivity extends Activity implements OnClickListener{
         image_friends.setSelected(false);  
         image_message.setSelected(false);  
         image_more.setSelected(false);  
-        if(fragmentPage1 != null){  
+        if(fragmentPageFeed != null){  
             //隐藏Fragment  
-            ft.hide(fragmentPage1);  
+            ft.hide(fragmentPageFeed);  
         }  
-        if(fragmentPage2 != null){  
-            ft.hide(fragmentPage2);  
+        if(fragmentPageMe != null){  
+            ft.hide(fragmentPageMe);  
         }  
-        if(fragmentPage3 != null){  
-            ft.hide(fragmentPage3);  
+        if(fragmentPageSearch != null){  
+            ft.hide(fragmentPageSearch);  
         }  
-        if(fragmentPage4 != null){  
-            ft.hide(fragmentPage4);  
+        if(fragmentPageNote != null){  
+            ft.hide(fragmentPageNote);  
         }  
     }  
   
     private void home(){  
-        if(fragmentPage1 == null){  
-            fragmentPage1 = new FeedListFragment();  
+        if(fragmentPageFeed == null){  
+            fragmentPageFeed = new FeedListFragment();  
             /*添加到Fragment管理器中 
             这里如果用replace， 
             当每次调用时都会把前一个Fragment给干掉， 
@@ -142,36 +142,36 @@ public class HomeActivity extends Activity implements OnClickListener{
             这样的话数据就不需要自己保存了， 
             因为第一次创建的时候就已经保存了， 
             只要不销毁一直都将存在*/  
-            ft.add(R.id.fl_content, fragmentPage1);  
+            ft.add(R.id.fl_content, fragmentPageFeed);  
         }else{  
             //显示Fragment  
-            ft.show(fragmentPage1);  
+            ft.show(fragmentPageFeed);  
         }  
     }  
     private void friend(){  
-        if(fragmentPage2 == null){  
-            fragmentPage2 = new MyprofileFragment();  
-            ft.add(R.id.fl_content, fragmentPage2);  
+        if(fragmentPageMe == null){  
+            fragmentPageMe = new MyprofileFragment();  
+            ft.add(R.id.fl_content, fragmentPageMe);  
         }else{  
-            ft.show(fragmentPage2);  
+            ft.show(fragmentPageMe);  
         }  
           
     }  
     private void message(){  
-        if(fragmentPage3 == null){  
-            fragmentPage3 = new SearchFragment();  
-            ft.add(R.id.fl_content, fragmentPage3);  
+        if(fragmentPageSearch == null){  
+            fragmentPageSearch = new SearchFragment();  
+            ft.add(R.id.fl_content, fragmentPageSearch);  
         }else{  
-            ft.show(fragmentPage3);  
+            ft.show(fragmentPageSearch);  
         }  
           
     }  
     private void more(){  
-        if(fragmentPage4 == null){  
-            fragmentPage4 = new NoteListFragment();  
-            ft.add(R.id.fl_content, fragmentPage4);  
+        if(fragmentPageNote == null){  
+            fragmentPageNote = new NoteListFragment();  
+            ft.add(R.id.fl_content, fragmentPageNote);  
         }else{  
-            ft.show(fragmentPage4);  
+            ft.show(fragmentPageNote);  
         }  
           
     }  

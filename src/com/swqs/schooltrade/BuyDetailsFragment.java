@@ -6,10 +6,13 @@ import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,6 +21,7 @@ import android.widget.TextView;
 
 public class BuyDetailsFragment extends Fragment {
 
+	protected static final String TAG = "BuyDetailsFragment";
 	View view;
 	ListView listView;
 	
@@ -38,10 +42,11 @@ public class BuyDetailsFragment extends Fragment {
 				data[i] = "THIS ROW IS "+rand.nextInt();
 			}
 			
-			listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			listView.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+					Log.e(TAG, "a");
 					onItemClicked(position);
 				}
 			});
@@ -60,16 +65,24 @@ public class BuyDetailsFragment extends Fragment {
 				LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 				convertView = inflater.inflate(R.layout.widget_buy_item, null);	
 				holder=new ViewHolder();
-				holder.ivImg=(ImageView) view.findViewById(R.id.ivImg);
-				holder.tvGoodsName=(TextView) view.findViewById(R.id.tvGoodsName);
-				holder.tvTitle=(TextView) view.findViewById(R.id.tvTitle);
-				holder.tvMoney=(TextView) view.findViewById(R.id.tvMoney);
-				holder.btnLook=(Button) view.findViewById(R.id.btnLook);
+				holder.ivImg=(ImageView) convertView.findViewById(R.id.ivImg);
+				holder.tvGoodsName=(TextView) convertView.findViewById(R.id.tvGoodsName);
+				holder.tvTitle=(TextView) convertView.findViewById(R.id.tvTitle);
+				holder.tvMoney=(TextView) convertView.findViewById(R.id.tvMoney);
+				holder.btnLook=(Button) convertView.findViewById(R.id.btnLook);
+				holder.btnLook.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						Intent intent=new Intent(getActivity(),BuyEvaluationDetailsActivity.class);
+						startActivity(intent);
+					}
+				});
 				convertView.setTag(holder);
 			}else{
 				holder=(ViewHolder) convertView.getTag();
 			}
-			
+			holder.tvTitle.setText(data[position]);
 			return convertView;
 		}
 		

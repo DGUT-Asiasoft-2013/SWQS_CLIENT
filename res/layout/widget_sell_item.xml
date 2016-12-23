@@ -10,17 +10,17 @@
         android:layout_height="match_parent" >
 
         <ImageView
-            android:id="@+id/avatar"
+            android:id="@+id/ivImg"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/ic_launcher"
             android:layout_centerInParent="true" />
 
         <TextView
-            android:id="@+id/commodityname"
+            android:id="@+id/tvGoodsName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/avatar"
+            android:layout_below="@id/ivImg"
             android:layout_centerHorizontal="true"
             android:text="name"
             android:textColor="@android:color/darker_gray" />
@@ -32,7 +32,7 @@
         android:layout_marginLeft="68dp" >
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="18dp"
             android:text="Title"
@@ -40,18 +40,20 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/curPrice"
+            android:id="@+id/tvMoney"
             android:layout_marginTop="18dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
+            android:gravity="right"
             android:text="Amount of money" />
         
         <Button 
-            android:id="@+id/look"
+            android:id="@+id/btnLook"
             android:layout_marginTop="40dp"
             android:layout_width="100sp"
             android:layout_height="40sp"
+            android:focusable="false"
             android:textColor="@android:color/black"
             android:text="查看评价" />
         
