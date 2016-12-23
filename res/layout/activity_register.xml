@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="vertical" >
+
+            <fragment
+                android:id="@+id/input_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                class="inputcell.InputcellSimpletextFragment"
+                tools:layout="@layout/fragment_inputcell_simpletext" />
+
+            <fragment
+                android:id="@+id/input_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                class="inputcell.InputcellSimpletextFragment"
+                tools:layout="@layout/fragment_inputcell_simpletext" />
+
+            <fragment
+                android:id="@+id/input_repassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                class="inputcell.InputcellSimpletextFragment"
+                tools:layout="@layout/fragment_inputcell_simpletext" />
+
+            <fragment
+                android:id="@+id/input_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                class="inputcell.InputcellSimpletextFragment"
+                tools:layout="@layout/fragment_inputcell_simpletext" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/sex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:height="50px"
+                    android:text="性别"
+                    android:textSize="24px"
+                    android:textStyle="bold" />
+
+				<RadioGroup
+				    android:id="@+id/rg"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_gravity="center_horizontal"
+				    android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="男" />
+
+                <RadioButton
+                    android:id="@+id/female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="女" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/TimeTable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical"
+                android:padding="8dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="生日"
+                    android:textSize="24px"
+                    android:textStyle="bold"
+                    android:id="@+id/textView"
+                    android:layout_marginLeft="33dp" />
+                
+                <Button 
+                    android:id="@+id/btn_birthday"
+                    android:background="@null"
+                    android:layout_marginRight="83dp"
+                    android:hint="点击选择生日"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <fragment
+                android:id="@+id/input_tel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                
+                class="inputcell.InputcellSimpletextFragment"
+                tools:layout="@layout/fragment_inputcell_simpletext" />
+
+            <fragment
+                android:id="@+id/input_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                class="inputcell.InputcellSimpletextFragment"
+                tools:layout="@layout/fragment_inputcell_simpletext" />
+
+            <TableRow
+                android:id="@+id/TableRow2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical"
+                android:padding="8dp" >
+
+                <TextView
+                    android:id="@+id/label2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="选择学校"
+                    android:textColor="@android:color/black"
+                    android:textSize="24px"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/input_school"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:entries="@array/ctype" />
+            </TableRow>
+
+            <Button
+                android:id="@+id/btn_submit"
+                android:layout_width="140dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/selector_btn"
+                android:text="提交"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>
