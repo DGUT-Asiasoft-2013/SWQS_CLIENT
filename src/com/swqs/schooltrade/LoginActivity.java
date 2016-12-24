@@ -7,12 +7,9 @@ import com.swqs.schooltrade.api.Server;
 import com.swqs.schooltrade.api.entity.User;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 import inputcell.InputcellSimpletextFragment;
@@ -133,15 +130,14 @@ public class LoginActivity extends Activity {
 									Toast.makeText(LoginActivity.this, "ÃÜÂë´íÎó", Toast.LENGTH_SHORT).show();
 									return;
 								}
-								
+								Toast.makeText(LoginActivity.this, "µÇÂ½³É¹¦", Toast.LENGTH_SHORT).show();
+								Intent itnt = new Intent(LoginActivity.this, HomeActivity.class);
+								startActivity(itnt);
+								finish();
 								
 							} catch (Exception e) {
 
 							}
-							Toast.makeText(LoginActivity.this, "µÇÂ½³É¹¦", Toast.LENGTH_SHORT).show();
-							Intent itnt = new Intent(LoginActivity.this, HomeActivity.class);
-							startActivity(itnt);
-							
 						}
 						
 					});

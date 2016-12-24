@@ -165,12 +165,30 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	}// 生日时间选择器的功能实现
 
 	void submit() {
+		String account = fragInputCellAccount.getText();
+		String name = fragInputCellName.getText();
+		String email = fragInputCellEmail.getText();
+		String birthday = btnBirthday.getText().toString();
+		String phone = fragInputCelltel.getText().toString();
 		String password = fragInputCellPassword.getText();
 		String passwordRepeat = fragInputCellRepassword.getText();
 
+		if (TextUtils.isEmpty(account)) {
+			new AlertDialog.Builder(RegisterActivity.this).setMessage("请输入账号")
+					.setIcon(android.R.drawable.ic_dialog_alert).setNegativeButton("好", null).show();
+
+			return;
+		}
+		if (TextUtils.isEmpty(password)) {
+			new AlertDialog.Builder(RegisterActivity.this).setMessage("请输入密码")
+					.setIcon(android.R.drawable.ic_dialog_alert).setNegativeButton("好", null).show();
+
+			return;
+		}
+
 		if (!password.equals(passwordRepeat)) {
 
-			new AlertDialog.Builder(RegisterActivity.this).setMessage("重复密码与密码不一致")
+			new AlertDialog.Builder(RegisterActivity.this).setMessage("两次输入的密码不一致")
 					.setIcon(android.R.drawable.ic_dialog_alert).setNegativeButton("好", null).show();
 
 			return;
@@ -178,32 +196,33 @@ public class RegisterActivity extends Activity implements OnClickListener {
 
 		if (password.length() < 6 || password.length() > 15) {
 
-			new AlertDialog.Builder(RegisterActivity.this).setMessage("请输入长度为6-15之间的数字或字母")
+			new AlertDialog.Builder(RegisterActivity.this).setMessage("密码长度为6-15位")
 					.setIcon(android.R.drawable.ic_dialog_alert).setNegativeButton("好", null).show();
 
 			return;
 		} // 限制密码长度
+		
+		if (TextUtils.isEmpty(birthday)) {
+			new AlertDialog.Builder(RegisterActivity.this).setMessage("请选择生日")
+					.setIcon(android.R.drawable.ic_dialog_alert).setNegativeButton("好", null).show();
+
+			return;
+		}
 
 		password = MD5.getMD5(password);
 
-		String account = fragInputCellAccount.getText();
-		String name = fragInputCellName.getText();
-		String email = fragInputCellEmail.getText();
-		String birthday = btnBirthday.getText().toString();
-		String phone = fragInputCelltel.getText().toString();
-
 		int sexId = rg.getCheckedRadioButtonId();
-		String sex = (sexId == R.id.male ? "1" : "2");//将性别男女转化成1,2
+		String sex = (sexId == R.id.male ? "1" : "2");// 将性别男女转化成1,2
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		String time = null;//日期输入格式控制
+		String time = null;// 日期输入格式控制
 
 		try {
 			time = dateFormat.parse(birthday).getTime() + "";
 		} catch (ParseException e) {
 			e.printStackTrace();
-		}//得到时间数据
-		
+		} // 得到时间数据
+
 		final ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this);
 		progressDialog.setMessage("请稍候");
 		progressDialog.setCancelable(false);
@@ -211,7 +230,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		progressDialog.show();
 
 		OkHttpClient client = Server.getSharedClient();
-		 //创建okHttpClint对象		
+		// 创建okHttpClint对象
 		MultipartBody.Builder requestBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM)
 				.addFormDataPart("account", account).addFormDataPart("password", password)
 				.addFormDataPart("email", email).addFormDataPart("name", name).addFormDataPart("birthday", "" + time)
@@ -221,11 +240,12 @@ public class RegisterActivity extends Activity implements OnClickListener {
 
 		Request request = Server.requestBuilderWithApi("register").method("get", null).post(requestBodyBuilder.build())
 				.build();
-		//创建一个Request，参数最起码有url（在server中已经添加），也可以通过requestBuilder添加其他参数例如method.
-		
+		// 创建一个Request，参数最起码有url（在server中已经添加），也可以通过requestBuilder添加其他参数例如method.
+
 		client.newCall(request).enqueue(new Callback() {
-        //new call 通过request的对象去构建等到一个Call对象,类似将请求封装成任务，既然是任务就会有execute()和cancel()等方法
-	    //请求加入调度，因为是以异步的方式去执行请求，所以调用的是call.enqueue，将call加入调度行列，然后等待任务执行
+			// new call
+			// 通过request的对象去构建等到一个Call对象,类似将请求封装成任务，既然是任务就会有execute()和cancel()等方法
+			// 请求加入调度，因为是以异步的方式去执行请求，所以调用的是call.enqueue，将call加入调度行列，然后等待任务执行
 			@Override
 			public void onResponse(Call arg0, Response arg1) throws IOException {
 				progressDialog.dismiss();
@@ -269,12 +289,13 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	private void getSchoolData() {
 		Log.e(TAG, "h");
 		OkHttpClient client = Server.getSharedClient();
-		 //创建okHttpClint对象
+		// 创建okHttpClint对象
 		Request request = Server.requestBuilderWithApi("school").method("get", null).build();
-	//创建一个Request，参数最起码有url（在server中已经添加），也可以通过requestBuilder添加其他参数例如method.
-	//new call 通过request的对象去构建等到一个Call对象,类似将请求封装成任务，既然是任务就会有execute()和cancel()等方法
+		// 创建一个Request，参数最起码有url（在server中已经添加），也可以通过requestBuilder添加其他参数例如method.
+		// new call
+		// 通过request的对象去构建等到一个Call对象,类似将请求封装成任务，既然是任务就会有execute()和cancel()等方法
 		client.newCall(request).enqueue(new Callback() {
-    //请求加入调度，因为是以异步的方式去执行请求，所以调用的是call.enqueue，将call加入调度行列，然后等待任务执行
+			// 请求加入调度，因为是以异步的方式去执行请求，所以调用的是call.enqueue，将call加入调度行列，然后等待任务执行
 			@Override
 			public void onResponse(Call arg0, Response arg1) throws IOException {
 				Log.e(TAG, "g");

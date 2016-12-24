@@ -60,6 +60,7 @@
                     android:layout_marginLeft="40dp"
                     android:height="50px"
                     android:text="性别"
+                    android:gravity="center_vertical"
                     android:textSize="24px"
                     android:textStyle="bold" />
 
@@ -75,6 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
+                    android:checked="true"
                     android:text="男" />
 
                 <RadioButton
@@ -163,6 +165,7 @@
                 android:layout_marginTop="15dp"
                 android:background="@drawable/selector_btn"
                 android:text="提交"
+                android:layout_marginBottom="15dp"
                 android:textColor="@android:color/white" />
         </LinearLayout>
     </ScrollView>
