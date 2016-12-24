@@ -6,9 +6,10 @@ import java.io.IOException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swqs.schooltrade.R;
 import com.swqs.schooltrade.activity.BuyAndSelledActivity;
-import com.swqs.schooltrade.activity.MyMoneyActivity;
 import com.swqs.schooltrade.activity.MyCollection;
 import com.swqs.schooltrade.activity.MyCredit;
+import com.swqs.schooltrade.activity.MyInforActivity;
+import com.swqs.schooltrade.activity.MyMoneyActivity;
 import com.swqs.schooltrade.activity.MyPublishGoodsActivity;
 import com.swqs.schooltrade.entity.User;
 import com.swqs.schooltrade.util.AvatarView;
@@ -80,6 +81,13 @@ public class MyprofileFragment extends Fragment {
 					hasSelled();
 				}
 			});
+			view.findViewById(R.id.tvData).setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					myInformation();
+				}
+			});
 			view.findViewById(R.id.tvCollection).setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -105,6 +113,11 @@ public class MyprofileFragment extends Fragment {
 			getUser();
 		}
 		return view;
+	}
+
+	private void myInformation() {
+		Intent intent = new Intent(getActivity(), MyInforActivity.class);
+		startActivity(intent);
 	}
 
 	private void updateImage() {

@@ -62,6 +62,7 @@
         <activity android:name="com.swqs.schooltrade.activity.BuyAndSelledActivity" >
         </activity>
         <activity android:name="com.swqs.schooltrade.activity.MyPublishGoodsActivity"></activity>
+        <activity android:name="com.swqs.schooltrade.activity.MyInforActivity"></activity>
     </application>
 
 </manifest>
