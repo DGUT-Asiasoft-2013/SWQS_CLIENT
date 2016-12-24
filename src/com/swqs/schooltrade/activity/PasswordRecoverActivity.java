@@ -33,7 +33,7 @@ public class PasswordRecoverActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.fragment_password_recover_step1);
+		setContentView(R.layout.activity_password_recover);
 		
  		step1.setOnGoNextListener(new OnGoNextListener() {
 			

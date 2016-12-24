@@ -1,5 +1,6 @@
 package com.swqs.schooltrade.page;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,9 +14,15 @@ import com.swqs.schooltrade.entity.User;
 import com.swqs.schooltrade.util.AvatarView;
 import com.swqs.schooltrade.util.Server;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,8 +30,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class MyprofileFragment extends Fragment {
@@ -32,17 +42,28 @@ public class MyprofileFragment extends Fragment {
 	View view = null;
 	AvatarView avatar;
 	TextView tvUsername;
+	public static final int REQUESTCODE_CAMERA = 0x123;
+	public static final int REQUESTCODE_ALBUM = 0x124;
+	private byte[] pngData;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		if (view == null) {
 			view = inflater.inflate(R.layout.fragment_page_myprofile, null);
+			avatar = (AvatarView) view.findViewById(R.id.avatar);
+			avatar.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					updateImage();
+				}
+			});
 			view.findViewById(R.id.tvPublish).setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					myPublish();
-					
+
 				}
 			});
 			view.findViewById(R.id.tvBuyed).setOnClickListener(new OnClickListener() {
@@ -80,11 +101,97 @@ public class MyprofileFragment extends Fragment {
 					goUser();
 				}
 			});
-			avatar = (AvatarView) view.findViewById(R.id.avatar);
 			tvUsername = (TextView) view.findViewById(R.id.tvUsername);
 			getUser();
 		}
 		return view;
+	}
+
+	private void updateImage() {
+		String[] items = { "拍照", "相册" };
+
+		new AlertDialog.Builder(getActivity()).setTitle("选择方式").setItems(items, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch (which) {
+				case 0:
+					takePhoto();
+					break;
+
+				case 1:
+					pickFromAlbum();
+					break;
+
+				default:
+					break;
+				}
+			}
+		}).show();
+	}
+
+	void takePhoto() {
+		Intent itnt = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		startActivityForResult(itnt, REQUESTCODE_CAMERA);
+	}
+
+	void pickFromAlbum() {
+		Intent itnt = new Intent(Intent.ACTION_GET_CONTENT);
+		itnt.setType("image/*");
+		startActivityForResult(itnt, REQUESTCODE_ALBUM);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == Activity.RESULT_CANCELED)
+			return;
+		if (requestCode == REQUESTCODE_CAMERA) {
+			Bitmap bmp = (Bitmap) data.getExtras().get("data");
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			bmp.compress(CompressFormat.PNG, 100, baos);
+			pngData = baos.toByteArray();
+			uploadImage();
+		} else if (requestCode == REQUESTCODE_ALBUM) {
+			try {
+				Bitmap bmp = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), data.getData());
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				bmp.compress(CompressFormat.PNG, 100, baos);
+				pngData = baos.toByteArray();
+				uploadImage();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void uploadImage() {
+		if (pngData != null) {
+			MultipartBody.Builder body = new MultipartBody.Builder();
+			body.addFormDataPart("avatar", "avatar", RequestBody.create(MediaType.parse("image/png"), pngData));
+			Request request = Server.requestBuilderWithApi("updateFace").post(body.build()).build();
+
+			Server.getSharedClient().newCall(request).enqueue(new Callback() {
+				
+				@Override
+				public void onResponse(Call arg0, Response arg1) throws IOException {
+					final String responseSrting = arg1.body().string();
+					final ObjectMapper mapper = new ObjectMapper();
+					final User user = mapper.readValue(responseSrting, User.class);
+					getActivity().runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							avatar.load(user.getFace_url());
+						}
+					});
+				}
+				
+				@Override
+				public void onFailure(Call arg0, IOException arg1) {
+					
+				}
+			});
+		}
+		
 	}
 
 	private void myPublish() {

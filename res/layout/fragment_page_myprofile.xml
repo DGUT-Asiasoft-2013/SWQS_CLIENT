@@ -15,8 +15,10 @@
 
             <com.swqs.schooltrade.util.AvatarView
                 android:id="@+id/avatar"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/ic_launcher"
+                android:layout_margin="20dp"
                 android:layout_gravity="center_horizontal" />
 
             <TextView
