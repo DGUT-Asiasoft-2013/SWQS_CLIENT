@@ -81,7 +81,7 @@
         android:layout_below="@+id/line4"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        class="inputcell.ImageInputCellFragment"
+        class="com.swqs.schooltrade.fragment.ImageInputCellFragment"
         tools:layout="@layout/fragment_inputcell_image" />
 
     <View

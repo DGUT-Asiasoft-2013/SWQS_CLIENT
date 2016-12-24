@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,45 +24,44 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.swqs.schooltrade.LoginActivity" >
+        <activity android:name="com.swqs.schooltrade.activity.LoginActivity" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.RegisterActivity" >
+        <activity android:name="com.swqs.schooltrade.activity.RegisterActivity" >
         </activity>
 
-        <activity android:name="com.swqs.schooltrade.HomeActivity" >
+        <activity android:name="com.swqs.schooltrade.activity.HomeActivity" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.PasswordRecoverActivity" >
+        <activity android:name="com.swqs.schooltrade.activity.PasswordRecoverActivity" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.Money" >
+        <activity android:name="com.swqs.schooltrade.activity.MyMoneyActivity" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.Jump" >
+        <activity android:name="com.swqs.schooltrade.activity.MyCollection" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.MyCollection" >
+        <activity android:name="com.swqs.schooltrade.activity.MyCredit" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.MyCredit" >
+        <activity android:name="com.swqs.schooltrade.activity.RechargeActivity" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.Recharge" >
+        <activity android:name="com.swqs.schooltrade.activity.GoodsContentActivity" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.GoodsContentActivity" >
+        <activity android:name="com.swqs.schooltrade.activity.NewGoodsActivity" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.NewGoodsActivity" >
+        <activity android:name="com.swqs.schooltrade.activity.NewCommentActivity" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.NewCommentActivity" >
+        <activity android:name="com.swqs.schooltrade.activity.BuyOrderDetailsActivity" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.BuyOrderDetailsActivity" >
+        <activity android:name="com.swqs.schooltrade.activity.BuyEvaluationDetailsActivity" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.BuyEvaluationDetailsActivity" >
+        <activity android:name="com.swqs.schooltrade.activity.BuyAdditionalEvaluationActivity" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.BuyAdditionalEvaluationActivity" >
+        <activity android:name="com.swqs.schooltrade.activity.SellOrderDetailsActivity" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.SellOrderDetailsActivity" >
+        <activity android:name="com.swqs.schooltrade.activity.SellEvaluationDetailsActivity" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.SellEvaluationDetailsActivity" >
+        <activity android:name="com.swqs.schooltrade.activity.SellAdditionalEvaluationActivity" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.SellAdditionalEvaluationActivity" >
+        <activity android:name="com.swqs.schooltrade.activity.BuyAndSelledActivity" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.BuyAndSelledActivity" >
-        </activity>
+        <activity android:name="com.swqs.schooltrade.activity.MyPublishGoodsActivity"></activity>
     </application>
 
 </manifest>

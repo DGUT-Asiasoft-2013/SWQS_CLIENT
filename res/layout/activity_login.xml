@@ -19,14 +19,14 @@
         android:id="@+id/input_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        class="inputcell.InputcellSimpletextFragment"
+        class="com.swqs.schooltrade.fragment.InputcellSimpletextFragment"
         tools:layout="@layout/fragment_inputcell_simpletext" />
 
     <fragment
         android:id="@+id/input_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        class="inputcell.InputcellSimpletextFragment"
+        class="com.swqs.schooltrade.fragment.InputcellSimpletextFragment"
         tools:layout="@layout/fragment_inputcell_simpletext" />
 
     <TextView

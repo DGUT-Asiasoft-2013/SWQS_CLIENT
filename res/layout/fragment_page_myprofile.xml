@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <com.swqs.schooltrade.AvatarView
+            <com.swqs.schooltrade.util.AvatarView
                 android:id="@+id/avatar"
                 android:layout_width="120dp"
                 android:layout_height="120dp"

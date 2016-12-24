@@ -15,7 +15,7 @@
         android:textColor="@android:color/white"
         android:textSize="20sp" />
 
-    <com.swqs.schooltrade.AvatarView
+    <com.swqs.schooltrade.util.AvatarView
         android:id="@+id/avatar"
         android:layout_width="50dp"
         android:layout_height="50dp"
