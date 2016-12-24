@@ -6,16 +6,15 @@ import com.swqs.schooltrade.api.Server;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 import inputcell.ImageInputCellFragment;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -48,8 +47,6 @@ public class NewGoodsActivity extends Activity {
     	String title = editTitle.getText().toString();
     	String content = editContent.getText().toString();
     	String originalPrice = editOriginalPrice.getText().toString();    	
-    	
-    	OkHttpClient client = Server.getSharedClient();
     	
     	MultipartBody.Builder body = new MultipartBody.Builder()
 				.addFormDataPart("title", title)
@@ -90,15 +87,18 @@ public class NewGoodsActivity extends Activity {
 	}
 
 	void onSucceed(String text){
-		new AlertDialog.Builder(this).setMessage(text)
-		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				finish();
-				overridePendingTransition(R.anim.none, R.anim.slide_out_bottom);
-			}
-		}).show();
+		Toast.makeText(this, "发布成功", Toast.LENGTH_SHORT).show();
+		finish();
+		overridePendingTransition(R.anim.none, R.anim.slide_out_bottom);
+//		new AlertDialog.Builder(this).setMessage(text)
+//		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//
+//			@Override
+//			public void onClick(DialogInterface dialog, int which) {
+//				finish();
+//				overridePendingTransition(R.anim.none, R.anim.slide_out_bottom);
+//			}
+//		}).show();
 	}
 
 	void onFailure(Exception e){

@@ -15,14 +15,14 @@
     <LinearLayout
         android:id="@+id/ll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:background="#000000"
         android:orientation="horizontal" >
 
         <LinearLayout
             android:id="@+id/ll_home"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#000000"
             android:gravity="center"
@@ -38,14 +38,15 @@
                 android:id="@+id/text_home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="首页"               
+                android:text="首页"
+                android:layout_gravity="center"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_search"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#000000"
             android:gravity="center"
@@ -65,33 +66,19 @@
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_publish"
-            android:layout_width="0dp"
+        <Button 
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#000000"
-            android:gravity="center"
-            android:orientation="vertical" >
+            android:id="@+id/btnAdd"
+            android:text="+"
+            android:background="@null"
+            android:textColor="@android:color/white"
+            />
 
-            <ImageView
-                android:id="@+id/image_publish"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#000000" />
-
-            <TextView
-                android:id="@+id/text_publish"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="+"
-                android:textColor="@android:color/white" />
-        </LinearLayout>
-        
         <LinearLayout
             android:id="@+id/ll_message"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#000000"
             android:gravity="center"
@@ -114,7 +101,7 @@
         <LinearLayout
             android:id="@+id/ll_me"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#000000"
             android:gravity="center"
