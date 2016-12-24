@@ -99,8 +99,7 @@ public class SellAdditionalEvaluationActivity extends Activity {
 	}
 	
 	void goSellEvaluationDetails(){
-		Intent itnt = new Intent(this,SellEvaluationDetailsActivity.class);
-		startActivity(itnt);
+		finish();
 	}
 	
 	void goSellOrderDetails(){

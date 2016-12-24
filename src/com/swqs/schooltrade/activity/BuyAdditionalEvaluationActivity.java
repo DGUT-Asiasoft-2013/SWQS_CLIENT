@@ -99,8 +99,7 @@ public class BuyAdditionalEvaluationActivity extends Activity {
 	}
 	
 	void goEvaluationDetails(){
-		Intent itnt = new Intent(this,BuyEvaluationDetailsActivity.class);
-		startActivity(itnt);
+		finish();
 	}
 	
 	void goOrderDetails(){
