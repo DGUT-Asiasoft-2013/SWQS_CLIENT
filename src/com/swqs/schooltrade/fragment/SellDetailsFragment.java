@@ -75,7 +75,13 @@ public class SellDetailsFragment extends Fragment {
 				List<Goods> goodsList = mapper.readValue(jsonString, new TypeReference<List<Goods>>() {
 				});
 				data = goodsList;
-				listAdapter.notifyDataSetChanged();
+				getActivity().runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						listAdapter.notifyDataSetChanged();
+					}
+				});
 			}
 
 			@Override

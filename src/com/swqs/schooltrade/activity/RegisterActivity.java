@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swqs.schooltrade.R;
 import com.swqs.schooltrade.entity.School;
@@ -35,6 +33,8 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Spinner;
 import android.widget.Toast;
+import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.api.BasicCallback;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MultipartBody;
@@ -269,8 +269,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 							} else if (user.getAccount().equals("nameExist")) {
 								Toast.makeText(RegisterActivity.this, "昵称已存在", Toast.LENGTH_SHORT).show();
 							} else {
-								Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
-								finish();
+								registToJpush();
 							} // 提醒不能重复输入已存在的信息
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -330,4 +329,24 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		});
 	}// 学校下拉框连接服务器
 
+	public void registToJpush() {
+		final String account=fragInputCellAccount.getText();
+		final String password=fragInputCellPassword.getText();
+		/**=================     调用SDK注册接口    =================*/
+        JMessageClient.register(account, password, new BasicCallback() {
+            @Override
+            public void gotResult(int responseCode, String registerDesc) {
+                if (responseCode == 0) {
+//                    mProgressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(), "注册成功", Toast.LENGTH_SHORT).show();
+                    finish();
+                    Log.i("RegisterActivity", "JMessageClient.register " + ", responseCode = " + responseCode + " ; registerDesc = " + registerDesc);
+                } else {
+//                    mProgressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(), "注册失败", Toast.LENGTH_SHORT).show();
+                    Log.i("RegisterActivity", "JMessageClient.register " + ", responseCode = " + responseCode + " ; registerDesc = " + registerDesc);
+                }
+            }
+        });
+	}
 }

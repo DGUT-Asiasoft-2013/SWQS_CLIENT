@@ -1,7 +1,6 @@
 package com.swqs.schooltrade.activity;
 
 import com.swqs.schooltrade.R;
-import com.swqs.schooltrade.page.ConversationListFragment;
 import com.swqs.schooltrade.page.GoodsListFragment;
 import com.swqs.schooltrade.page.MyprofileFragment;
 import com.swqs.schooltrade.page.SearchFragment;
@@ -16,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import cn.jmessage.android.uikit.chatting.ConversationListFragment;
 
 public class HomeActivity extends Activity implements OnClickListener {
 

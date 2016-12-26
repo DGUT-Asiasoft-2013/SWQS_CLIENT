@@ -13,8 +13,11 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.api.BasicCallback;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MultipartBody;
@@ -127,21 +130,17 @@ public class LoginActivity extends Activity {
 								if (user.getAccount().equals("accountIsNotExist")) {
 									Toast.makeText(LoginActivity.this, "ÕËºÅ²»´æÔÚ", Toast.LENGTH_SHORT).show();
 									return;
-								}
-								else if (user.getAccount().equals("passwordIsNotRight")) {
+								} else if (user.getAccount().equals("passwordIsNotRight")) {
 									Toast.makeText(LoginActivity.this, "ÃÜÂë´íÎó", Toast.LENGTH_SHORT).show();
 									return;
 								}
-								Toast.makeText(LoginActivity.this, "µÇÂ½³É¹¦", Toast.LENGTH_SHORT).show();
-								Intent itnt = new Intent(LoginActivity.this, HomeActivity.class);
-								startActivity(itnt);
-								finish();
-								
+								loginToJpush();
+
 							} catch (Exception e) {
 
 							}
 						}
-						
+
 					});
 
 				}
@@ -163,5 +162,31 @@ public class LoginActivity extends Activity {
 	void goRecoverPassword() {
 		Intent itnt = new Intent(this, PasswordRecoverActivity.class);
 		startActivity(itnt);
+	}
+
+	public void loginToJpush() {
+		final String account = fragAccount.getText();
+		final String password = fragPassword.getText();
+		/** ================= µ÷ÓÃSDkµÇÂ½½Ó¿Ú ================= */
+		JMessageClient.login(account, password, new BasicCallback() {
+			@Override
+			public void gotResult(int responseCode, String LoginDesc) {
+				if (responseCode == 0) {
+					// mProgressDialog.dismiss();
+					Toast.makeText(getApplicationContext(), "µÇÂ¼³É¹¦", Toast.LENGTH_SHORT).show();
+					Log.i("MainActivity", "JMessageClient.login" + ", responseCode = " + responseCode
+							+ " ; LoginDesc = " + LoginDesc);
+					Intent intent = new Intent();
+					intent.setClass(getApplicationContext(), HomeActivity.class);
+					startActivity(intent);
+					finish();
+				} else {
+					// mProgressDialog.dismiss();
+					Toast.makeText(getApplicationContext(), "µÇÂ¼Ê§°Ü", Toast.LENGTH_SHORT).show();
+					Log.i("MainActivity", "JMessageClient.login" + ", responseCode = " + responseCode
+							+ " ; LoginDesc = " + LoginDesc);
+				}
+			}
+		});
 	}
 }
