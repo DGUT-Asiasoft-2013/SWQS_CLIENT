@@ -1,0 +1,190 @@
+package com.swqs.schooltrade.util;
+
+import java.io.IOException;
+
+import com.swqs.schooltrade.R;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.NinePatchDrawable;
+import android.os.Handler;
+import android.util.AttributeSet;
+import android.widget.ImageView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Request;
+import okhttp3.Response;
+
+/**
+ * 圆形ImageView
+ */
+public class RoundImageView extends ImageView {
+	// 控件默认长、宽
+	private int defaultWidth = 0;
+	private int defaultHeight = 0;
+
+	public RoundImageView(Context context) {
+		super(context);
+	}
+
+	public RoundImageView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+	}
+
+	public RoundImageView(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+	}
+
+	@Override
+	protected void onDraw(Canvas canvas) {
+		Drawable drawable = getDrawable();
+		if (drawable == null) {
+			return;
+		}
+
+		if (getWidth() == 0 || getHeight() == 0) {
+			return;
+		}
+		this.measure(0, 0);
+		if (drawable.getClass() == NinePatchDrawable.class)
+			return;
+		Bitmap b = ((BitmapDrawable) drawable).getBitmap();
+		Bitmap bitmap = b.copy(Bitmap.Config.ARGB_8888, true);
+		if (defaultWidth == 0) {
+			defaultWidth = getWidth();
+
+		}
+		if (defaultHeight == 0) {
+			defaultHeight = getHeight();
+		}
+		// 保证重新读取图片后不会因为图片大小而改变控件宽、高的大小（针对宽、高为wrap_content布局的imageview，但会导致margin无效）
+		// if (defaultWidth != 0 && defaultHeight != 0) {
+		// LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+		// defaultWidth, defaultHeight);
+		// setLayoutParams(params);
+		// }
+		int radius = 0;
+		radius = (defaultWidth < defaultHeight ? defaultWidth : defaultHeight) / 2;
+		Bitmap roundBitmap = getCroppedRoundBitmap(bitmap, radius);
+		canvas.drawBitmap(roundBitmap, defaultWidth / 2 - radius, defaultHeight
+				/ 2 - radius, null);
+	}
+
+	/**
+	 * 获取裁剪后的圆形图片
+	 * 
+	 * @param radius
+	 *            半径
+	 */
+	public Bitmap getCroppedRoundBitmap(Bitmap bmp, int radius) {
+		Bitmap scaledSrcBmp;
+		int diameter = radius * 2;
+
+		// 为了防止宽高不相等，造成圆形图片变形，因此截取长方形中处于中间位置最大的正方形图片
+		int bmpWidth = bmp.getWidth();
+		int bmpHeight = bmp.getHeight();
+		int squareWidth = 0, squareHeight = 0;
+		int x = 0, y = 0;
+		Bitmap squareBitmap;
+		if (bmpHeight > bmpWidth) {// 高大于宽
+			squareWidth = squareHeight = bmpWidth;
+			x = 0;
+			y = (bmpHeight - bmpWidth) / 2;
+			// 截取正方形图片
+			squareBitmap = Bitmap.createBitmap(bmp, x, y, squareWidth,
+					squareHeight);
+		} else if (bmpHeight < bmpWidth) {// 宽大于高
+			squareWidth = squareHeight = bmpHeight;
+			x = (bmpWidth - bmpHeight) / 2;
+			y = 0;
+			squareBitmap = Bitmap.createBitmap(bmp, x, y, squareWidth,
+					squareHeight);
+		} else {
+			squareBitmap = bmp;
+		}
+
+		if (squareBitmap.getWidth() != diameter
+				|| squareBitmap.getHeight() != diameter) {
+			scaledSrcBmp = Bitmap.createScaledBitmap(squareBitmap, diameter,
+					diameter, true);
+
+		} else {
+			scaledSrcBmp = squareBitmap;
+		}
+		Bitmap output = Bitmap.createBitmap(scaledSrcBmp.getWidth(),
+				scaledSrcBmp.getHeight(), Config.ARGB_8888);
+		Canvas canvas = new Canvas(output);
+
+		Paint paint = new Paint();
+		Rect rect = new Rect(0, 0, scaledSrcBmp.getWidth(),
+				scaledSrcBmp.getHeight());
+
+		paint.setAntiAlias(true);
+		paint.setFilterBitmap(true);
+		paint.setDither(true);
+		canvas.drawARGB(0, 0, 0, 0);
+		canvas.drawCircle(scaledSrcBmp.getWidth() / 2,
+				scaledSrcBmp.getHeight() / 2, scaledSrcBmp.getWidth() / 2,
+				paint);
+		paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+		canvas.drawBitmap(scaledSrcBmp, rect, rect, paint);
+		// bitmap回收(recycle导致在布局文件XML看不到效果)
+		// bmp.recycle();
+		// squareBitmap.recycle();
+		// scaledSrcBmp.recycle();
+		bmp = null;
+		squareBitmap = null;
+		scaledSrcBmp = null;
+		return output;
+	}
+	Handler mainThreadHandler = new Handler();
+	public void load(String url) {
+
+		Request request = new Request.Builder().url(url).method("get", null).build();
+
+		Server.getSharedClient().newCall(request).enqueue(new Callback() {
+
+			@Override
+			public void onResponse(Call arg0, Response arg1) throws IOException {
+				try {
+					byte[] bytes = arg1.body().bytes();
+					final Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+					mainThreadHandler.post(new Runnable() {
+						public void run() {
+							setImageBitmap(bmp);
+						}
+					});
+				} catch (Exception ex) {
+
+					mainThreadHandler.post(new Runnable() {
+						public void run() {
+							setImageResource(R.drawable.ic_launcher);
+						}
+					});
+
+				}
+			}
+
+			@Override
+			public void onFailure(Call arg0, IOException arg1) {
+
+				mainThreadHandler.post(new Runnable() {
+					public void run() {
+						setImageResource(R.drawable.ic_launcher);
+					}
+				});
+
+			}
+		});
+	}
+
+}

@@ -12,7 +12,7 @@ import com.swqs.schooltrade.activity.MyInforActivity;
 import com.swqs.schooltrade.activity.MyMoneyActivity;
 import com.swqs.schooltrade.activity.MyPublishGoodsActivity;
 import com.swqs.schooltrade.entity.User;
-import com.swqs.schooltrade.util.AvatarView;
+import com.swqs.schooltrade.util.RoundImageView;
 import com.swqs.schooltrade.util.Server;
 
 import android.app.Activity;
@@ -41,7 +41,7 @@ import okhttp3.Response;
 public class MyprofileFragment extends Fragment {
 
 	View view = null;
-	AvatarView avatar;
+	RoundImageView avatar;
 	TextView tvUsername;
 	public static final int REQUESTCODE_CAMERA = 0x123;
 	public static final int REQUESTCODE_ALBUM = 0x124;
@@ -51,7 +51,7 @@ public class MyprofileFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		if (view == null) {
 			view = inflater.inflate(R.layout.fragment_page_myprofile, null);
-			avatar = (AvatarView) view.findViewById(R.id.avatar);
+			avatar = (RoundImageView) view.findViewById(R.id.avatar);
 			avatar.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -193,7 +193,7 @@ public class MyprofileFragment extends Fragment {
 						
 						@Override
 						public void run() {
-							avatar.load(user.getFace_url());
+							avatar.load(Server.serverAddress+user.getFace_url());
 						}
 					});
 				}
@@ -231,7 +231,7 @@ public class MyprofileFragment extends Fragment {
 							@Override
 							public void run() {
 								tvUsername.setText(user.getName());
-								avatar.load(user);
+								avatar.load(Server.serverAddress+user.getFace_url());
 							}
 						});
 					}
