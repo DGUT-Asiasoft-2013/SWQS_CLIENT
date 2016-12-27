@@ -18,7 +18,14 @@ public class Goods implements Serializable{
 	float originalPrice;
 	float curPrice;
 	List<Image> listImage;	
+	boolean sell;
 	
+	public boolean isSell() {
+		return sell;
+	}
+	public void setSell(boolean sell) {
+		this.sell = sell;
+	}
 	public Integer getId() {
 		return id;
 	}
