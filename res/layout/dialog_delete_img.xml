@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/btnDelImg"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@drawable/bt_nobgd"
+        android:text="移除图片"
+        android:textColor="#585858"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#f3f3f3" />
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@drawable/bt_nobgd"
+        android:text="取消"
+        android:textColor="#585858"
+        android:textSize="18sp" />
+
+</LinearLayout>

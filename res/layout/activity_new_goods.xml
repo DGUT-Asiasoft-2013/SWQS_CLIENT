@@ -47,7 +47,7 @@
     <EditText
         android:id="@+id/edit_content"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="100dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/line2"
         android:layout_marginLeft="10dp"
@@ -74,15 +74,18 @@
         android:layout_below="@+id/line3"
         android:background="@android:color/white" />
 
-    <fragment
+     <GridView 
         android:id="@+id/input_image"
-        android:layout_width="match_parent"
+        android:layout_width="290dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/line4"
+       android:layout_below="@+id/line4"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        class="com.swqs.schooltrade.fragment.ImageInputCellFragment"
-        tools:layout="@layout/fragment_inputcell_image" />
+        android:horizontalSpacing="3dp"        
+        android:numColumns="4"
+        android:scrollbars="none"
+        android:verticalSpacing="5dp" >
+    </GridView>
 
     <View
         android:id="@+id/line5"
