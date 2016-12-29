@@ -3,6 +3,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <com.swqs.schooltrade.util.RoundImageView 
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/roundAvatar"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/ic_launcher"
+        android:layout_margin="10dp"
+        />
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvName"
+        android:layout_toRightOf="@id/roundAvatar"
+        android:text="张三"
+        android:textSize="10sp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_alignTop="@id/roundAvatar"
+        />
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTime"
+        android:layout_alignLeft="@id/tvName"
+        android:layout_below="@id/tvName"
+        android:layout_marginTop="5dp"
+        android:text="2016-12-29 12:00"
+        android:textSize="10sp"
+        android:textColor="@android:color/darker_gray"
+        />
+    
     <TextView
         android:id="@+id/title_content"
         android:layout_width="match_parent"
@@ -20,6 +51,7 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_alignParentLeft="true"
+        android:layout_below="@id/roundAvatar"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
         android:src="@android:drawable/alert_light_frame" />

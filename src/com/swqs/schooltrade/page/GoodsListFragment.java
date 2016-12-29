@@ -1,6 +1,7 @@
 package com.swqs.schooltrade.page;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -9,6 +10,7 @@ import com.swqs.schooltrade.R;
 import com.swqs.schooltrade.activity.GoodsContentActivity;
 import com.swqs.schooltrade.entity.Goods;
 import com.swqs.schooltrade.util.AvatarView;
+import com.swqs.schooltrade.util.RoundImageView;
 import com.swqs.schooltrade.util.Server;
 import com.swqs.schooltrade.util.Util;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -78,6 +80,9 @@ public class GoodsListFragment extends Fragment {
 				viewHolder.textTitle = (TextView) view.findViewById(R.id.title_content);
 				viewHolder.textPrice = (TextView)view.findViewById(R.id.originalprice_content);
 				viewHolder.imageGoods = (ImageView) view.findViewById(R.id.goods_image);
+				viewHolder.tvName=(TextView) view.findViewById(R.id.tvName);
+				viewHolder.roundAvatar=(RoundImageView) view.findViewById(R.id.roundAvatar);
+				viewHolder.tvTime=(TextView) view.findViewById(R.id.tvTime);
 				view.setTag(viewHolder);
 			}else{
 				view = convertView;
@@ -85,15 +90,21 @@ public class GoodsListFragment extends Fragment {
 			}		
 
 			Goods goods = data.get(position);
-
+			viewHolder.tvName.setText(goods.getAccount().getAccount());
 			viewHolder.textTitle.setText(goods.getTitle());
 			viewHolder.textPrice.setText(goods.getOriginalPrice()+"");
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm");
+			viewHolder.tvTime.setText(sdf.format(goods.getCreateDate()));
+			Util.loadImage(getActivity(), goods.getAccount().getFace_url(), viewHolder.roundAvatar);
 			Util.loadImage(getActivity(), goods.getListImage().get(0).getPictureUrl(), viewHolder.imageGoods);
 
 			return view;
 		}
 		
 		class ViewHolder{
+			public TextView tvName;
+			public RoundImageView roundAvatar;
+			public TextView tvTime;
 			public TextView textTitle;
 			public TextView textPrice;
 			public ImageView imageGoods;

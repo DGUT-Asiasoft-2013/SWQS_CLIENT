@@ -443,47 +443,42 @@ public class GoodsContentActivity extends Activity {
 		});
 	}
 
-	// void loadmore(){
-	//
-	// Request request =
-	// Server.requestBuilderWithApi("/goods/"+goods.getId()+"/comments/").get().build();
-	// //接口未正确设置
-	//
-	// Server.getSharedClient().newCall(request).enqueue(new Callback() {
-	// @Override
-	// public void onResponse(Call arg0, Response arg1) throws IOException {
-	// try{
-	// final List<Comment> data = new
-	// ObjectMapper().readValue(arg1.body().string(), new
-	// TypeReference<List<Comment>>() {
-	// });
-	//
-	// runOnUiThread(new Runnable() {
-	//
-	// @Override
-	// public void run() {
-	// GoodsContentActivity.this.appendData(data);
-	// }
-	// });
-	// }catch(final Exception e){
-	// runOnUiThread(new Runnable() {
-	// public void run() {
-	// GoodsContentActivity.this.onFailure(e);
-	// }
-	// });
-	// }
-	// }
-	//
-	// @Override
-	// public void onFailure(Call arg0, final IOException e) {
-	// runOnUiThread(new Runnable() {
-	// public void run() {
-	// GoodsContentActivity.this.onFailure(e);
-	// }
-	// });
-	// }
-	// });
-	// }
+//	void loadmore(){
+//
+//		Request request =Server.requestBuilderWithApi("/goods/"+goods.getId()+"/comments/").get().build();  //接口未正确设置
+//
+//		Server.getSharedClient().newCall(request).enqueue(new Callback() {
+//			@Override
+//			public void onResponse(Call arg0, Response arg1) throws IOException {
+//				try{
+//					final List<Comment> data = new ObjectMapper().readValue(arg1.body().string(), new TypeReference<List<Comment>>() {});
+//
+//					runOnUiThread(new Runnable() {
+//
+//						@Override
+//						public void run() {
+//							GoodsContentActivity.this.appendData(data);
+//						}
+//					});
+//				}catch(final Exception e){
+//					runOnUiThread(new Runnable() {
+//						public void run() {
+//							GoodsContentActivity.this.onFailure(e);
+//						}
+//					});
+//				}
+//			}
+//
+//			@Override
+//			public void onFailure(Call arg0, final IOException e) {
+//				runOnUiThread(new Runnable() {
+//					public void run() {
+//						GoodsContentActivity.this.onFailure(e);
+//					}
+//				});
+//			}
+//		});
+//	}
 
 	protected void reloadData(List<Comment> data) {
 		comments = data;
