@@ -56,7 +56,7 @@ public class MyPublishGoodsActivity extends Activity {
 		Intent intent=null;
 		boolean isSell=data.get(position).isSell();
 		if(isSell){
-			intent = new Intent(this, BuyOrderDetailsActivity.class);
+			intent = new Intent(this, SellOrderDetailsActivity.class);
 		}else{
 			intent=new Intent(this,GoodsContentActivity.class);
 		}
