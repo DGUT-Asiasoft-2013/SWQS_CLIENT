@@ -34,6 +34,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.jmessage.android.uikit.chatting.ChatActivity;
@@ -56,6 +57,9 @@ public class GoodsContentActivity extends Activity {
 	ListView lvImage;
 	ListView lvComment;
 	User user;
+	RelativeLayout layoutOther;
+	RelativeLayout layoutMe;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +95,13 @@ public class GoodsContentActivity extends Activity {
 				makeComment();
 			}
 		});
+		findViewById(R.id.btnComment).setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				makeComment();
+			}
+		});
 
 		findViewById(R.id.btnChat).setOnClickListener(new View.OnClickListener() {
 
@@ -111,6 +122,8 @@ public class GoodsContentActivity extends Activity {
 		lvComment = (ListView) findViewById(R.id.commentlist);
 		lvComment.setAdapter(adapter);
 		lvImage.setAdapter(goodsImgaeAdapter);
+		layoutOther=(RelativeLayout) findViewById(R.id.layoutOther);
+		layoutMe=(RelativeLayout) findViewById(R.id.layoutMe);
 		getUser();
 	}
 	
@@ -459,6 +472,19 @@ public class GoodsContentActivity extends Activity {
 				ObjectMapper mapper = new ObjectMapper();
 				try {
 					user = mapper.readValue(jsonString, User.class);
+					runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							if(user.getId().equals(goods.getAccount().getId())){
+								layoutOther.setVisibility(View.GONE);
+								layoutMe.setVisibility(View.VISIBLE);
+							}else{
+								layoutMe.setVisibility(View.GONE);
+								layoutOther.setVisibility(View.VISIBLE);
+							}
+						}
+					});
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

@@ -2,176 +2,176 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
     <TextView
-                android:id="@+id/text_item"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="#1F5B8D"
-                android:gravity="center"
-                android:text="商品详情"
-                android:textColor="@android:color/white"
-                android:textSize="20sp" />
-    <LinearLayout 
+        android:id="@+id/text_item"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#1F5B8D"
+        android:gravity="center"
+        android:text="商品详情"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        >
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-         >
+        android:layout_weight="1" >
 
-        <RelativeLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-            
-
-            <com.swqs.schooltrade.util.RoundImageView
-                android:id="@+id/avatar"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp" />
-
-            <TextView
-                android:id="@+id/account_id"
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:layout_alignTop="@+id/avatar"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/avatar"
-                android:gravity="center"
-                android:text="发布人"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/fabuyu"
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:layout_alignBottom="@+id/avatar"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/avatar"
-                android:gravity="center"
-                android:text="发布于"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/content_createDate"
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:layout_alignBottom="@+id/avatar"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/fabuyu"
-                android:gravity="center"
-                android:text="yyyy-mm-dd"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/content_originalprice"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_alignParentRight="true"
-                android:layout_alignTop="@+id/avatar"
-                android:layout_marginRight="10dp"
-                android:gravity="center"
-                android:text="money"
-                android:textColor="#FF0000"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/renminbi"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_alignTop="@+id/avatar"
-                android:layout_marginRight="3dp"
-                android:layout_toLeftOf="@+id/content_originalprice"
-                android:gravity="center"
-                android:text="￥"
-                android:textColor="#FF0000"
-                android:textSize="10sp" />
-
-            <TextView
-                android:id="@+id/content_title"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/avatar"
-                android:layout_alignRight="@+id/content_originalprice"
-                android:layout_below="@+id/avatar"
-                android:layout_marginTop="5dp"
-                android:gravity="center_vertical"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="标题"
-                android:textSize="15sp" />
+                android:layout_height="wrap_content" >
 
-            <TextView
-                android:id="@+id/content_item"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/content_title"
-                android:layout_alignRight="@+id/content_title"
-                android:layout_below="@+id/content_title"
-                android:layout_marginTop="5dp"
-                android:gravity="center_vertical"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="详情"
-                android:textSize="15sp" />
+                <com.swqs.schooltrade.util.RoundImageView
+                    android:id="@+id/avatar"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp" />
 
-            <ListView
-                android:id="@+id/image_goods"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/content_item"
-                android:layout_below="@+id/content_item"
-                android:layout_marginTop="5dp" >
-            </ListView>
+                <TextView
+                    android:id="@+id/account_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_alignTop="@+id/avatar"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/avatar"
+                    android:gravity="center"
+                    android:text="发布人"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
-            <View
-                android:id="@+id/line"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/image_goods"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/darker_gray" />
+                <TextView
+                    android:id="@+id/fabuyu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_alignBottom="@+id/avatar"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/avatar"
+                    android:gravity="center"
+                    android:text="发布于"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="12sp" />
 
-            <TextView
-                android:id="@+id/content_comment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/content_item"
-                android:layout_alignRight="@+id/content_item"
-                android:layout_below="@+id/line"
-                android:layout_marginTop="5dp"
-                android:text="留言区"
-                android:textSize="15dp" />
+                <TextView
+                    android:id="@+id/content_createDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_alignBottom="@+id/avatar"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/fabuyu"
+                    android:gravity="center"
+                    android:text="yyyy-mm-dd"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="12sp" />
 
-            <ListView
-                android:id="@+id/commentlist"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignLeft="@+id/content_comment"
-                android:layout_alignRight="@+id/content_comment"
-                android:layout_below="@+id/content_comment"
-                android:layout_marginBottom="55dp"
-                android:layout_marginTop="5dp"
-                tools:listitem="@layout/widget_comment_item" >
-            </ListView>
-        </RelativeLayout>
-    </ScrollView>
+                <TextView
+                    android:id="@+id/content_originalprice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/avatar"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:text="money"
+                    android:textColor="#FF0000"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/renminbi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_alignTop="@+id/avatar"
+                    android:layout_marginRight="3dp"
+                    android:layout_toLeftOf="@+id/content_originalprice"
+                    android:gravity="center"
+                    android:text="￥"
+                    android:textColor="#FF0000"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/content_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/avatar"
+                    android:layout_alignRight="@+id/content_originalprice"
+                    android:layout_below="@+id/avatar"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="标题"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/content_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/content_title"
+                    android:layout_alignRight="@+id/content_title"
+                    android:layout_below="@+id/content_title"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="详情"
+                    android:textSize="15sp" />
+
+                <ListView
+                    android:id="@+id/image_goods"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/content_item"
+                    android:layout_below="@+id/content_item"
+                    android:layout_marginTop="5dp" >
+                </ListView>
+
+                <View
+                    android:id="@+id/line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/image_goods"
+                    android:layout_marginTop="5dp"
+                    android:background="@android:color/darker_gray" />
+
+                <TextView
+                    android:id="@+id/content_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/content_item"
+                    android:layout_alignRight="@+id/content_item"
+                    android:layout_below="@+id/line"
+                    android:layout_marginTop="5dp"
+                    android:text="留言区"
+                    android:textSize="15dp" />
+
+                <ListView
+                    android:id="@+id/commentlist"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignLeft="@+id/content_comment"
+                    android:layout_alignRight="@+id/content_comment"
+                    android:layout_below="@+id/content_comment"
+                    android:layout_marginBottom="55dp"
+                    android:layout_marginTop="5dp"
+                    tools:listitem="@layout/widget_comment_item" >
+                </ListView>
+            </RelativeLayout>
+        </ScrollView>
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/layoutOther"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:visibility="gone"
         android:layout_alignParentBottom="true" >
 
         <Button
@@ -207,6 +207,38 @@
             android:background="#FF0000"
             android:gravity="center"
             android:text="我想要"
+            android:textColor="@android:color/white"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutMe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone" >
+
+        <Button
+            android:id="@+id/btnComment"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@android:color/darker_gray"
+            android:gravity="center"
+            android:text="留言"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/btnEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:background="#FF0000"
+            android:gravity="center"
+            android:text="编辑"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30dp"
             android:textColor="@android:color/white"
             android:textSize="15sp" />
     </RelativeLayout>
