@@ -17,7 +17,7 @@
         android:textSize="10sp" />
 
     <TextView
-        android:id="@+id/parentcomment"
+        android:id="@+id/comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/id_account"
@@ -37,7 +37,7 @@
         android:id="@+id/createdate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/parentcomment"
+        android:layout_alignRight="@+id/comment"
         android:layout_alignTop="@+id/id_account"
         android:layout_centerVertical="true"
         android:layout_marginRight="5dp"

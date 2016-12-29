@@ -168,37 +168,35 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:id="@+id/layoutOther"
+        android:id="@+id/layoutOthers"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:visibility="gone"
-        android:layout_alignParentBottom="true" >
+        android:layout_marginBottom="10dp"
+        android:visibility="gone" >
 
         <Button
-            android:id="@+id/button_comment"
-            android:layout_width="wrap_content"
+            android:id="@+id/btnCommentOthers"
+            android:layout_width="32dp"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:background="@android:color/darker_gray"
+            android:background="@drawable/comment"
             android:gravity="center"
-            android:text="留言"
             android:textSize="15sp" />
 
         <Button
-            android:id="@+id/btnChat"
-            android:layout_width="wrap_content"
+            android:id="@+id/btnContact"
+            android:layout_width="120dp"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/button_comment"
-            android:background="@android:color/darker_gray"
+            android:layout_toRightOf="@+id/btnCommentOthers"
+            android:background="@drawable/contact"
             android:gravity="center"
-            android:text="联系卖家"
             android:textSize="15sp" />
 
         <Button
-            android:id="@+id/button_buy"
+            android:id="@+id/btnBuy"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
@@ -215,30 +213,68 @@
         android:id="@+id/layoutMe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:visibility="gone" >
 
         <Button
-            android:id="@+id/btnComment"
-            android:layout_width="wrap_content"
+            android:id="@+id/btnCommentMe"
+            android:layout_width="32dp"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:background="@android:color/darker_gray"
+            android:background="@drawable/comment"
             android:gravity="center"
-            android:text="留言"
             android:textSize="15sp" />
 
         <Button
             android:id="@+id/btnEdit"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
             android:background="#FF0000"
             android:gravity="center"
             android:text="编辑"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="30dp"
+            android:textColor="@android:color/white"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:visibility="gone" >
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/back" />
+
+        <EditText
+            android:id="@+id/editComment"
+            android:layout_width="200dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_toRightOf="@id/btnBack"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:hint="请发表留言"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/btnSendComment"
+            android:layout_width="50dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_toRightOf="@id/editComment"
+            android:background="#FF0000"
+            android:gravity="center"
+            android:text="发表"
             android:textColor="@android:color/white"
             android:textSize="15sp" />
     </RelativeLayout>

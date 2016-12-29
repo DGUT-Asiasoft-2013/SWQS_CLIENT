@@ -50,15 +50,18 @@ import okhttp3.Response;
 public class GoodsContentActivity extends Activity {
 	protected static final String TAG = "GoodsContentActivity";
 	private Goods goods;
-	// private View loadMoreView;
-	private Button btnLikes;
+//  private View loadMoreView;
+//	private Button btnLikes;
 
 	List<Comment> comments;
 	ListView lvImage;
 	ListView lvComment;
 	User user;
-	RelativeLayout layoutOther;
+	EditText editComment;
+	Button buttonEdit, buttonBack, buttonSendComment;
+	RelativeLayout layoutOthers;
 	RelativeLayout layoutMe;
+	RelativeLayout layoutComment;
 	
 
 	@Override
@@ -88,14 +91,14 @@ public class GoodsContentActivity extends Activity {
 		String dateStr = DateFormat.format("yyyy-MM-dd hh:mm", goods.getCreateDate()).toString();
 		textDate.setText(dateStr);
 
-		findViewById(R.id.button_comment).setOnClickListener(new View.OnClickListener() {
+		findViewById(R.id.btnCommentOthers).setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				makeComment();
 			}
 		});
-		findViewById(R.id.btnComment).setOnClickListener(new View.OnClickListener() {
+		findViewById(R.id.btnCommentMe).setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -103,7 +106,7 @@ public class GoodsContentActivity extends Activity {
 			}
 		});
 
-		findViewById(R.id.btnChat).setOnClickListener(new View.OnClickListener() {
+		findViewById(R.id.btnContact).setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -111,7 +114,7 @@ public class GoodsContentActivity extends Activity {
 			}
 		});
 
-		findViewById(R.id.button_buy).setOnClickListener(new View.OnClickListener() {
+		findViewById(R.id.btnBuy).setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -122,8 +125,16 @@ public class GoodsContentActivity extends Activity {
 		lvComment = (ListView) findViewById(R.id.commentlist);
 		lvComment.setAdapter(adapter);
 		lvImage.setAdapter(goodsImgaeAdapter);
-		layoutOther=(RelativeLayout) findViewById(R.id.layoutOther);
-		layoutMe=(RelativeLayout) findViewById(R.id.layoutMe);
+		
+		layoutOthers = (RelativeLayout) findViewById(R.id.layoutOthers);	
+		
+		layoutMe = (RelativeLayout) findViewById(R.id.layoutMe);
+		buttonEdit = (Button) findViewById(R.id.btnEdit);
+		
+		layoutComment = (RelativeLayout) findViewById(R.id.layoutComment);
+		editComment = (EditText) findViewById(R.id.editComment);
+		buttonBack = (Button) findViewById(R.id.btnBack);
+		buttonSendComment = (Button) findViewById(R.id.btnSendComment);
 		getUser();
 	}
 	
@@ -206,7 +217,7 @@ public class GoodsContentActivity extends Activity {
 				viewHolder = new ViewHolder();
 				LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 				view = inflater.inflate(R.layout.widget_comment_item, null);
-				viewHolder.ParentComment = (TextView) view.findViewById(R.id.parentcomment);
+				viewHolder.Comment = (TextView) view.findViewById(R.id.comment);
 				viewHolder.Account = (TextView) view.findViewById(R.id.id_account);
 				viewHolder.CreateDate = (TextView) view.findViewById(R.id.createdate);
 				viewHolder.Avatar = (AvatarView) view.findViewById(R.id.account_avatar);
@@ -217,18 +228,18 @@ public class GoodsContentActivity extends Activity {
 			}
 
 			Comment comment = comments.get(position);
-			viewHolder.ParentComment.setText(comment.getText());
+			viewHolder.Comment.setText(comment.getText());
 			viewHolder.Account.setText(comment.getAccount().getAccount());
 			viewHolder.Avatar.load(comment.getAccount().getFace_url());
 
-			String dateStr = DateFormat.format("yyyy-MM-dd", comment.getCreateDate()).toString();
+			String dateStr = DateFormat.format("yyyy-MM-dd hh:mm", comment.getCreateDate()).toString();
 			viewHolder.CreateDate.setText(dateStr);
 
 			return view;
 		};
 
 		class ViewHolder {
-			public TextView ParentComment;
+			public TextView Comment;
 			public TextView Account;
 			public TextView CreateDate;
 			public AvatarView Avatar;
@@ -250,15 +261,75 @@ public class GoodsContentActivity extends Activity {
 		}
 	};
 
-	// 发表留言方法
-	void makeComment() {
-		Intent itnt = new Intent(this, NewCommentActivity.class);
-		itnt.putExtra("data", goods);
-		startActivity(itnt);
-		overridePendingTransition(R.anim.slide_in_bottom, R.anim.none);
+	// 发表留言
+	void makeComment(){
+		if(user.getId().equals(goods.getAccount().getId())){
+			layoutMe.setVisibility(View.GONE);
+			layoutComment.setVisibility(View.VISIBLE);
+		}else{
+			layoutOthers.setVisibility(View.GONE);
+			layoutComment.setVisibility(View.VISIBLE);
+		}
+		
+		buttonSendComment.setOnClickListener(new View.OnClickListener() {		
+			@Override
+			public void onClick(View v) {
+				sendComment();
+			}
+		});
+		
+		buttonBack.setOnClickListener(new View.OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				if(user.getId().equals(goods.getAccount().getId())){
+					layoutComment.setVisibility(View.GONE);
+					layoutMe.setVisibility(View.VISIBLE);
+				}else{					
+					layoutComment.setVisibility(View.GONE);
+					layoutOthers.setVisibility(View.VISIBLE);
+				}
+			}
+		});	
+	}
+	
+	void sendComment(){
+		String text = editComment.getText().toString();
+
+		MultipartBody body = new MultipartBody.Builder().addFormDataPart("text", text).build();
+
+		Request request = Server.requestBuilderWithApi("/goods/"+goods.getId()+"/addParentComments").post(body).build();
+
+		Server.getSharedClient().newCall(request).enqueue(new Callback() {
+			@Override
+			public void onResponse(Call arg0, Response arg1) throws IOException {
+				final String responseBody = arg1.body().string();
+
+				runOnUiThread(new Runnable() {
+					public void run() {
+						reload();
+						if(user.getId().equals(goods.getAccount().getId())){
+							layoutComment.setVisibility(View.GONE);
+							layoutMe.setVisibility(View.VISIBLE);
+						}else{					
+							layoutComment.setVisibility(View.GONE);
+							layoutOthers.setVisibility(View.VISIBLE);
+						}
+					}
+				});
+			}
+
+			@Override
+			public void onFailure(Call arg0, final IOException arg1) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						GoodsContentActivity.this.onFailure(arg1);
+					}
+				});
+			}
+		});
 	}
 
-//	// 点赞方法
+//	// 点赞
 //	void like() {
 //		MultipartBody body = new MultipartBody.Builder().addFormDataPart("likes", String.valueOf(!isLiked)).build();
 //
@@ -382,7 +453,7 @@ public class GoodsContentActivity extends Activity {
 //		}
 //	}
 
-	// 购买方法
+	// 购买
 	void gotoBuy() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		final View dialogView = View.inflate(this, R.layout.dialog_input_password, null);
@@ -477,11 +548,11 @@ public class GoodsContentActivity extends Activity {
 						@Override
 						public void run() {
 							if(user.getId().equals(goods.getAccount().getId())){
-								layoutOther.setVisibility(View.GONE);
+								layoutOthers.setVisibility(View.GONE);
 								layoutMe.setVisibility(View.VISIBLE);
 							}else{
 								layoutMe.setVisibility(View.GONE);
-								layoutOther.setVisibility(View.VISIBLE);
+								layoutOthers.setVisibility(View.VISIBLE);
 							}
 						}
 					});
@@ -544,46 +615,45 @@ public class GoodsContentActivity extends Activity {
 		});
 	}
 
-	// void loadmore(){
-	//
-	// Request request
-	// =Server.requestBuilderWithApi("/goods/"+goods.getId()+"/comments/").get().build();
-	// //接口未正确设置
-	//
-	// Server.getSharedClient().newCall(request).enqueue(new Callback() {
-	// @Override
-	// public void onResponse(Call arg0, Response arg1) throws IOException {
-	// try{
-	// final List<Comment> data = new
-	// ObjectMapper().readValue(arg1.body().string(), new
-	// TypeReference<List<Comment>>() {});
-	//
-	// runOnUiThread(new Runnable() {
-	//
-	// @Override
-	// public void run() {
-	// GoodsContentActivity.this.appendData(data);
-	// }
-	// });
-	// }catch(final Exception e){
-	// runOnUiThread(new Runnable() {
-	// public void run() {
-	// GoodsContentActivity.this.onFailure(e);
-	// }
-	// });
-	// }
-	// }
-	//
-	// @Override
-	// public void onFailure(Call arg0, final IOException e) {
-	// runOnUiThread(new Runnable() {
-	// public void run() {
-	// GoodsContentActivity.this.onFailure(e);
-	// }
-	// });
-	// }
-	// });
-	// }
+//	void loadmore(){
+//
+//		Request request = Server.requestBuilderWithApi("/goods/"+goods.getId()+"/comments/").get().build();
+//		//接口未正确设置
+//
+//		Server.getSharedClient().newCall(request).enqueue(new Callback() {
+//			@Override
+//			public void onResponse(Call arg0, Response arg1) throws IOException {
+//				try{
+//					final List<Comment> data = new
+//							ObjectMapper().readValue(arg1.body().string(), new
+//									TypeReference<List<Comment>>() {});
+//
+//					runOnUiThread(new Runnable() {
+//
+//						@Override
+//						public void run() {
+//							GoodsContentActivity.this.appendData(data);
+//						}
+//					});
+//				}catch(final Exception e){
+//					runOnUiThread(new Runnable() {
+//						public void run() {
+//							GoodsContentActivity.this.onFailure(e);
+//						}
+//					});
+//				}
+//			}
+//
+//			@Override
+//			public void onFailure(Call arg0, final IOException e) {
+//				runOnUiThread(new Runnable() {
+//					public void run() {
+//						GoodsContentActivity.this.onFailure(e);
+//					}
+//				});
+//			}
+//		});
+//	}
 
 	protected void reloadData(List<Comment> data) {
 		comments = data;
