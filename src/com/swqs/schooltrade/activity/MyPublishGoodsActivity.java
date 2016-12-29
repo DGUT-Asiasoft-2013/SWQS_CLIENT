@@ -53,9 +53,14 @@ public class MyPublishGoodsActivity extends Activity {
 	}
 
 	private void onItemClicked(int position) {
-
-		Intent intent = new Intent(this, BuyOrderDetailsActivity.class);
-		intent.putExtra("goods", data.get(position));
+		Intent intent=null;
+		boolean isSell=data.get(position).isSell();
+		if(isSell){
+			intent = new Intent(this, BuyOrderDetailsActivity.class);
+		}else{
+			intent=new Intent(this,GoodsContentActivity.class);
+		}
+		intent.putExtra("data", data.get(position));
 		startActivity(intent);
 	}
 
