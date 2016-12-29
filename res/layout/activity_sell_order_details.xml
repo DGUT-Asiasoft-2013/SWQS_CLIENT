@@ -160,9 +160,10 @@
             android:layout_centerInParent="true"
             android:src="@drawable/ic_launcher" />
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:layout_marginLeft="90dp" >
 
             <TextView
@@ -170,6 +171,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="18dp"
                 android:text="Title"
+                android:layout_marginTop="10dp"
                 android:textColor="@android:color/black"
                 android:textStyle="bold" />
 
@@ -177,7 +179,7 @@
                 android:id="@+id/tvMoney"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="5dp"
                 android:gravity="left"
                 android:paddingRight="10dp"
                 android:text="Amount of money"
@@ -187,11 +189,11 @@
                 android:id="@+id/tvState"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="45dp"
+                android:layout_marginTop="5dp"
                 android:gravity="left"
                 android:paddingRight="10dp"
                 android:text="状态" />
-        </FrameLayout>
+        </LinearLayout>
     </FrameLayout>
 
     <View
@@ -203,24 +205,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:gravity="center"
         android:orientation="horizontal" >
 
         <Button
             android:id="@+id/btnback"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:background="@drawable/back"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:textSize="12sp"
+            android:background="@android:color/darker_gray"
+            android:text="返回"
              />
 
         <Button
-            android:id="@+id/btnlook"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1"
+            android:id="@+id/btnComment"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="30dp"
+            android:background="@android:color/holo_blue_bright"
+            android:textSize="12sp"
+            android:visibility="gone"
             android:text="查看评价" />
+         <Button
+            android:id="@+id/btnSendGoods"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="30dp"
+            android:background="@android:color/holo_blue_bright"
+            android:textSize="12sp"
+            android:visibility="gone"
+            android:text="我要发货" />
     </LinearLayout>
 
 </LinearLayout>

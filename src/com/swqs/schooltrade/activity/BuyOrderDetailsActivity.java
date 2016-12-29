@@ -50,7 +50,7 @@ public class BuyOrderDetailsActivity extends Activity {
 			}
 		});
 
-		findViewById(R.id.btnlook).setOnClickListener(new View.OnClickListener() {
+		findViewById(R.id.btnComment).setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
