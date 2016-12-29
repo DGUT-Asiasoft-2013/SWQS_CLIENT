@@ -6,7 +6,6 @@ import java.util.List;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swqs.schooltrade.R;
-import com.swqs.schooltrade.activity.BuyEvaluationDetailsActivity;
 import com.swqs.schooltrade.activity.BuyOrderDetailsActivity;
 import com.swqs.schooltrade.entity.Goods;
 import com.swqs.schooltrade.util.Server;
@@ -18,12 +17,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -75,7 +72,13 @@ public class BuyDetailsFragment extends Fragment {
 				List<Goods> goodsList=mapper.readValue(jsonString, new TypeReference<List<Goods>>() {
 				});
 				data=goodsList;
-				listAdapter.notifyDataSetChanged();
+				getActivity().runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						listAdapter.notifyDataSetChanged();
+					}
+				});
 			}
 			
 			@Override
@@ -98,15 +101,7 @@ public class BuyDetailsFragment extends Fragment {
 				holder.ivImg=(ImageView) convertView.findViewById(R.id.ivImg);
 				holder.tvTitle=(TextView) convertView.findViewById(R.id.tvTitle);
 				holder.tvMoney=(TextView) convertView.findViewById(R.id.tvMoney);
-				holder.btnLook=(Button) convertView.findViewById(R.id.btnLook);
-				holder.btnLook.setOnClickListener(new OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						Intent intent=new Intent(getActivity(),BuyEvaluationDetailsActivity.class);
-						startActivity(intent);
-					}
-				});
+				holder.tvState=(TextView) convertView.findViewById(R.id.tvState);
 				convertView.setTag(holder);
 			}else{
 				holder=(ViewHolder) convertView.getTag();
@@ -114,6 +109,7 @@ public class BuyDetailsFragment extends Fragment {
 			Goods goods=data.get(position);
 			holder.tvTitle.setText(goods.getTitle());
 			holder.tvMoney.setText("£¤"+goods.getCurPrice()+"");
+			holder.tvState.setText("×´Ì¬");
 			Util.loadImage(getActivity(),goods.getListImage().get(0).getPictureUrl() , holder.ivImg);
 			return convertView;
 		}
@@ -139,14 +135,14 @@ public class BuyDetailsFragment extends Fragment {
 			ImageView ivImg;
 			TextView tvTitle;
 			TextView tvMoney;
-			Button btnLook;
+			TextView tvState;
 		}
 	};
 	
 	void onItemClicked(int position){
 		
 		Intent itnt = new Intent(getActivity(), BuyOrderDetailsActivity.class);
-		itnt.putExtra("goods", data.get(position));
+		itnt.putExtra("data", data.get(position));
 		
 		
 		startActivity(itnt);

@@ -55,7 +55,7 @@ public class SellOrderDetailsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sell_order_details);
 		goods = (Goods) getIntent().getSerializableExtra("data");
-		tvReceiver=(TextView) findViewById(R.id.tvReceiver);
+		tvReceiver=(TextView) findViewById(R.id.tvBuyer);
 		tvTradeTime=(TextView) findViewById(R.id.tvTradeTime);
 		tvPhone=(TextView) findViewById(R.id.tvPhone);
 		tvTitle=(TextView) findViewById(R.id.tvTitle);

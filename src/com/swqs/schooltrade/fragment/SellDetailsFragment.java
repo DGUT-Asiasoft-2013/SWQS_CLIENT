@@ -104,15 +104,24 @@ public class SellDetailsFragment extends Fragment {
 				holder.ivImg = (ImageView) convertView.findViewById(R.id.ivImg);
 				holder.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
 				holder.tvMoney = (TextView) convertView.findViewById(R.id.tvMoney);
-				holder.btnLook = (Button) convertView.findViewById(R.id.btnLook);
-				holder.btnLook.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						Intent intent = new Intent(getActivity(), SellEvaluationDetailsActivity.class);
-						startActivity(intent);
-					}
-				});
+				holder.tvState = (TextView) convertView.findViewById(R.id.tvState);
+//				holder.btnCommunicate = (Button) convertView.findViewById(R.id.btnCommunicate);
+//				holder.btnComment = (Button) convertView.findViewById(R.id.btnComment);
+//				holder.btnComment.setOnClickListener(new OnClickListener() {
+//
+//					@Override
+//					public void onClick(View v) {
+//						Intent intent = new Intent(getActivity(), SellEvaluationDetailsActivity.class);
+//						startActivity(intent);
+//					}
+//				});
+//				holder.btnCommunicate.setOnClickListener(new OnClickListener() {
+//					
+//					@Override
+//					public void onClick(View v) {
+//						
+//					}
+//				});
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
@@ -121,6 +130,7 @@ public class SellDetailsFragment extends Fragment {
 			holder.tvTitle.setText(goods.getTitle());
 			holder.tvMoney.setText("£¤" + goods.getCurPrice() + "");
 			Util.loadImage(getActivity(), goods.getListImage().get(0).getPictureUrl(), holder.ivImg);
+			holder.tvState.setText("ÒÑ³öÊÛ");
 			return convertView;
 		}
 
@@ -143,14 +153,16 @@ public class SellDetailsFragment extends Fragment {
 			ImageView ivImg;
 			TextView tvTitle;
 			TextView tvMoney;
-			Button btnLook;
+			TextView tvState;
+//			Button btnCommunicate;
+//			Button btnComment;
 		}
 	};
 
 	void onItemClicked(int position) {
 
 		Intent itnt = new Intent(getActivity(), SellOrderDetailsActivity.class);
-		itnt.putExtra("goods", data.get(position));
+		itnt.putExtra("data", data.get(position));
 
 		startActivity(itnt);
 	}
