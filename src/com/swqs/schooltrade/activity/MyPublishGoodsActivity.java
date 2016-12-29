@@ -18,11 +18,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -40,7 +42,21 @@ public class MyPublishGoodsActivity extends Activity {
 		setContentView(R.layout.activity_mypublish);
 		lvGoods = (ListView) findViewById(R.id.lvGoods);
 		lvGoods.setAdapter(listAdapter);
+		lvGoods.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				onItemClicked(position);
+			}
+		});
 		getData();
+	}
+
+	private void onItemClicked(int position) {
+
+		Intent intent = new Intent(this, BuyOrderDetailsActivity.class);
+		intent.putExtra("goods", data.get(position));
+		startActivity(intent);
 	}
 
 	private void getData() {
@@ -58,7 +74,7 @@ public class MyPublishGoodsActivity extends Activity {
 				});
 				data = goodsList;
 				runOnUiThread(new Runnable() {
-					
+
 					@Override
 					public void run() {
 						listAdapter.notifyDataSetChanged();
@@ -94,7 +110,7 @@ public class MyPublishGoodsActivity extends Activity {
 			Goods goods = data.get(position);
 			holder.tvTitle.setText(goods.getTitle());
 			holder.tvMoney.setText("￥" + goods.getCurPrice() + "");
-			holder.tvState.setText(goods.isSell()?"已出售":"待出售");
+			holder.tvState.setText(goods.isSell() ? "已出售" : "待出售");
 			Util.loadImage(MyPublishGoodsActivity.this, goods.getListImage().get(0).getPictureUrl(), holder.ivImg);
 			return convertView;
 		}
