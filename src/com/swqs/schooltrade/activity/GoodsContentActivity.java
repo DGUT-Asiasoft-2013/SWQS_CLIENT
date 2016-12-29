@@ -11,6 +11,7 @@ import com.swqs.schooltrade.entity.Goods;
 import com.swqs.schooltrade.entity.User;
 import com.swqs.schooltrade.util.AvatarView;
 import com.swqs.schooltrade.util.MD5;
+import com.swqs.schooltrade.util.RoundImageView;
 import com.swqs.schooltrade.util.Server;
 import com.swqs.schooltrade.util.Util;
 
@@ -30,6 +31,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +49,8 @@ public class GoodsContentActivity extends Activity {
 	private Button btnLikes;
 
 	List<Comment> comments;
+	ListView lvImage;
+	ListView lvComment;
 	User user;
 
 	@Override
@@ -63,18 +67,17 @@ public class GoodsContentActivity extends Activity {
 		TextView textPrice = (TextView) findViewById(R.id.content_originalprice);
 		TextView textDate = (TextView) findViewById(R.id.content_createDate);
 
-		ImageView imageGoods = (ImageView) findViewById(R.id.image_goods);
-		AvatarView avatar = (AvatarView) findViewById(R.id.avatar);
+		lvImage = (ListView) findViewById(R.id.image_goods);
+		RoundImageView avatar = (RoundImageView) findViewById(R.id.avatar);
 
 		textContent.setText(goods.getContent());
 		textTitle.setText(goods.getTitle());
 		textAccount.setText(goods.getAccount().getAccount());
 		textPrice.setText(goods.getOriginalPrice() + "");
 
-		Util.loadImage(this, goods.getListImage().get(0).getPictureUrl(), imageGoods);
-		avatar.load(goods.getAccount());
+		Util.loadImage(this, goods.getAccount().getFace_url(), avatar);
 
-		String dateStr = DateFormat.format("yyyy-MM-dd", goods.getCreateDate()).toString();
+		String dateStr = DateFormat.format("yyyy-MM-dd hh:mm", goods.getCreateDate()).toString();
 		textDate.setText(dateStr);
 
 		findViewById(R.id.button_comment).setOnClickListener(new View.OnClickListener() {
@@ -101,10 +104,69 @@ public class GoodsContentActivity extends Activity {
 			}
 		});
 
-		ListView list = (ListView) findViewById(R.id.commentlist);
-		list.setAdapter(adapter);
+		lvComment = (ListView) findViewById(R.id.commentlist);
+		lvComment.setAdapter(adapter);
+		lvImage.setAdapter(goodsImgaeAdapter);
 		getUser();
 	}
+	
+	
+
+	public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter(); 
+        if (listAdapter == null) {
+            return;
+        }
+
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+    }
+	
+	BaseAdapter goodsImgaeAdapter = new BaseAdapter() {
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ViewHolder holder = null;
+			if (convertView == null) {
+				convertView = View.inflate(GoodsContentActivity.this, R.layout.item_goods_image, null);
+				holder = new ViewHolder();
+				holder.ivGoodsImage = (ImageView) convertView.findViewById(R.id.image_goods);
+				convertView.setTag(holder);
+			} else {
+				holder = (ViewHolder) convertView.getTag();
+			}
+			Util.loadImage(GoodsContentActivity.this, goods.getListImage().get(position).getPictureUrl(),
+					holder.ivGoodsImage);
+			return convertView;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return null;
+		}
+
+		@Override
+		public int getCount() {
+			return goods.getListImage()==null?0:goods.getListImage().size();
+		}
+
+		class ViewHolder {
+			ImageView ivGoodsImage;
+		}
+	};
 
 	// 留言区列表
 	BaseAdapter adapter = new BaseAdapter() {
@@ -342,7 +404,7 @@ public class GoodsContentActivity extends Activity {
 						}
 					});
 
-				} else if("Success".equals(responseString)){
+				} else if ("Success".equals(responseString)) {
 					runOnUiThread(new Runnable() {
 
 						@Override
@@ -351,7 +413,7 @@ public class GoodsContentActivity extends Activity {
 							finish();
 						}
 					});
-				}else{
+				} else {
 					runOnUiThread(new Runnable() {
 
 						@Override
@@ -399,7 +461,7 @@ public class GoodsContentActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-
+		setListViewHeightBasedOnChildren(lvImage);
 		reload();
 	}
 
@@ -443,46 +505,51 @@ public class GoodsContentActivity extends Activity {
 		});
 	}
 
-//	void loadmore(){
-//
-//		Request request =Server.requestBuilderWithApi("/goods/"+goods.getId()+"/comments/").get().build();  //接口未正确设置
-//
-//		Server.getSharedClient().newCall(request).enqueue(new Callback() {
-//			@Override
-//			public void onResponse(Call arg0, Response arg1) throws IOException {
-//				try{
-//					final List<Comment> data = new ObjectMapper().readValue(arg1.body().string(), new TypeReference<List<Comment>>() {});
-//
-//					runOnUiThread(new Runnable() {
-//
-//						@Override
-//						public void run() {
-//							GoodsContentActivity.this.appendData(data);
-//						}
-//					});
-//				}catch(final Exception e){
-//					runOnUiThread(new Runnable() {
-//						public void run() {
-//							GoodsContentActivity.this.onFailure(e);
-//						}
-//					});
-//				}
-//			}
-//
-//			@Override
-//			public void onFailure(Call arg0, final IOException e) {
-//				runOnUiThread(new Runnable() {
-//					public void run() {
-//						GoodsContentActivity.this.onFailure(e);
-//					}
-//				});
-//			}
-//		});
-//	}
+	// void loadmore(){
+	//
+	// Request request
+	// =Server.requestBuilderWithApi("/goods/"+goods.getId()+"/comments/").get().build();
+	// //接口未正确设置
+	//
+	// Server.getSharedClient().newCall(request).enqueue(new Callback() {
+	// @Override
+	// public void onResponse(Call arg0, Response arg1) throws IOException {
+	// try{
+	// final List<Comment> data = new
+	// ObjectMapper().readValue(arg1.body().string(), new
+	// TypeReference<List<Comment>>() {});
+	//
+	// runOnUiThread(new Runnable() {
+	//
+	// @Override
+	// public void run() {
+	// GoodsContentActivity.this.appendData(data);
+	// }
+	// });
+	// }catch(final Exception e){
+	// runOnUiThread(new Runnable() {
+	// public void run() {
+	// GoodsContentActivity.this.onFailure(e);
+	// }
+	// });
+	// }
+	// }
+	//
+	// @Override
+	// public void onFailure(Call arg0, final IOException e) {
+	// runOnUiThread(new Runnable() {
+	// public void run() {
+	// GoodsContentActivity.this.onFailure(e);
+	// }
+	// });
+	// }
+	// });
+	// }
 
 	protected void reloadData(List<Comment> data) {
 		comments = data;
 		adapter.notifyDataSetInvalidated();
+		setListViewHeightBasedOnChildren(lvComment);
 	}
 
 	protected void appendData(List<Comment> data) {
