@@ -20,12 +20,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -38,8 +36,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.jmessage.android.uikit.chatting.ChatActivity;
-import cn.jpush.im.android.api.JMessageClient;
-import cn.jpush.im.android.api.enums.ConversationType;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MultipartBody;
@@ -61,7 +57,6 @@ public class GoodsContentActivity extends Activity {
 	RelativeLayout layoutOthers;
 	RelativeLayout layoutMe;
 	RelativeLayout layoutComment;
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +65,7 @@ public class GoodsContentActivity extends Activity {
 		setContentView(R.layout.widget_goods_detail);
 
 		goods = (Goods) getIntent().getSerializableExtra("data");
-		
+
 		textTitle = (TextView) findViewById(R.id.content_title);
 		textContent = (TextView) findViewById(R.id.content_item);
 		textAccount = (TextView) findViewById(R.id.account_id);
@@ -79,7 +74,7 @@ public class GoodsContentActivity extends Activity {
 
 		lvImage = (ListView) findViewById(R.id.image_goods);
 		RoundImageView avatar = (RoundImageView) findViewById(R.id.avatar);
-		
+
 		textTitle.setText(goods.getTitle());
 		textContent.setText(goods.getContent());
 		textAccount.setText(goods.getAccount().getAccount());
@@ -98,7 +93,7 @@ public class GoodsContentActivity extends Activity {
 			}
 		});
 		findViewById(R.id.btnCommentMe).setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				makeComment();
@@ -120,36 +115,36 @@ public class GoodsContentActivity extends Activity {
 				gotoBuy();
 			}
 		});
-		
+
 		findViewById(R.id.btnEdit).setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(GoodsContentActivity.this, EditGoodsActivity.class);
 				intent.putExtra("data", goods);
-				startActivityForResult(intent,1);			
+				startActivityForResult(intent, 1);
 			}
 		});
 
 		lvComment = (ListView) findViewById(R.id.commentlist);
 		lvComment.setAdapter(adapter);
 		lvImage.setAdapter(goodsImgaeAdapter);
-		
-		layoutOthers = (RelativeLayout) findViewById(R.id.layoutOthers);			
+
+		layoutOthers = (RelativeLayout) findViewById(R.id.layoutOthers);
 		layoutMe = (RelativeLayout) findViewById(R.id.layoutMe);
-		
+
 		layoutComment = (RelativeLayout) findViewById(R.id.layoutComment);
 		editComment = (EditText) findViewById(R.id.editComment);
 		buttonBack = (Button) findViewById(R.id.btnBack);
 		buttonSendComment = (Button) findViewById(R.id.btnSendComment);
 		getUser();
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if(resultCode==RESULT_OK){
-			goods=(Goods) data.getSerializableExtra("goods");
+		if (resultCode == RESULT_OK) {
+			goods = (Goods) data.getSerializableExtra("goods");
 			textTitle.setText(goods.getTitle());
 			textContent.setText(goods.getContent());
 			textPrice.setText(goods.getCurPrice() + "");
@@ -159,30 +154,28 @@ public class GoodsContentActivity extends Activity {
 	protected void chatToSeller() {
 		Intent intent = new Intent(this, ChatActivity.class);
 		intent.putExtra(TradeApplication.TARGET_ID, goods.getAccount().getAccount());
-//		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		// intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+		// Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 	}
 
-
-
 	public static void setListViewHeightBasedOnChildren(ListView listView) {
-        ListAdapter listAdapter = listView.getAdapter(); 
-        if (listAdapter == null) {
-            return;
-        }
+		ListAdapter listAdapter = listView.getAdapter();
+		if (listAdapter == null) {
+			return;
+		}
+		int totalHeight = 0;
+		for (int i = 0; i < listAdapter.getCount(); i++) {
+			View listItem = listAdapter.getView(i, null, listView);
+			listItem.measure(0, 0);
+			totalHeight += listItem.getMeasuredHeight();
+		}
 
-        int totalHeight = 0;
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            View listItem = listAdapter.getView(i, null, listView);
-            listItem.measure(0, 0);
-            totalHeight += listItem.getMeasuredHeight();
-        }
+		ViewGroup.LayoutParams params = listView.getLayoutParams();
+		params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+		listView.setLayoutParams(params);
+	}
 
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
-    }
-	
 	BaseAdapter goodsImgaeAdapter = new BaseAdapter() {
 
 		@Override
@@ -213,7 +206,7 @@ public class GoodsContentActivity extends Activity {
 
 		@Override
 		public int getCount() {
-			return goods.getListImage()==null?0:goods.getListImage().size();
+			return goods.getListImage() == null ? 0 : goods.getListImage().size();
 		}
 
 		class ViewHolder {
@@ -231,8 +224,7 @@ public class GoodsContentActivity extends Activity {
 
 			if (convertView == null) {
 				viewHolder = new ViewHolder();
-				LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-				view = inflater.inflate(R.layout.widget_comment_item, null);
+				view = View.inflate(GoodsContentActivity.this, R.layout.widget_comment_item, null);
 				viewHolder.Comment = (TextView) view.findViewById(R.id.comment);
 				viewHolder.Account = (TextView) view.findViewById(R.id.id_account);
 				viewHolder.CreateDate = (TextView) view.findViewById(R.id.createdate);
@@ -263,7 +255,7 @@ public class GoodsContentActivity extends Activity {
 
 		@Override
 		public long getItemId(int position) {
-			return comments.get(position).getId();
+			return position;
 		}
 
 		@Override
@@ -278,42 +270,43 @@ public class GoodsContentActivity extends Activity {
 	};
 
 	// ·¢±íÁôÑÔ
-	void makeComment(){
-		if(user.getId().equals(goods.getAccount().getId())){
+	void makeComment() {
+		if (user.getId().equals(goods.getAccount().getId())) {
 			layoutMe.setVisibility(View.GONE);
 			layoutComment.setVisibility(View.VISIBLE);
-		}else{
+		} else {
 			layoutOthers.setVisibility(View.GONE);
 			layoutComment.setVisibility(View.VISIBLE);
 		}
-		
-		buttonSendComment.setOnClickListener(new View.OnClickListener() {		
+
+		buttonSendComment.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				sendComment();
 			}
 		});
-		
-		buttonBack.setOnClickListener(new View.OnClickListener() {			
+
+		buttonBack.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(user.getId().equals(goods.getAccount().getId())){
+				if (user.getId().equals(goods.getAccount().getId())) {
 					layoutComment.setVisibility(View.GONE);
 					layoutMe.setVisibility(View.VISIBLE);
-				}else{					
+				} else {
 					layoutComment.setVisibility(View.GONE);
 					layoutOthers.setVisibility(View.VISIBLE);
 				}
 			}
-		});	
+		});
 	}
-	
-	void sendComment(){
+
+	void sendComment() {
 		String text = editComment.getText().toString();
 
 		MultipartBody body = new MultipartBody.Builder().addFormDataPart("text", text).build();
 
-		Request request = Server.requestBuilderWithApi("/goods/"+goods.getId()+"/addParentComments").post(body).build();
+		Request request = Server.requestBuilderWithApi("/goods/" + goods.getId() + "/addParentComments").post(body)
+				.build();
 
 		Server.getSharedClient().newCall(request).enqueue(new Callback() {
 			@Override
@@ -323,10 +316,10 @@ public class GoodsContentActivity extends Activity {
 				runOnUiThread(new Runnable() {
 					public void run() {
 						reload();
-						if(user.getId().equals(goods.getAccount().getId())){
+						if (user.getId().equals(goods.getAccount().getId())) {
 							layoutComment.setVisibility(View.GONE);
 							layoutMe.setVisibility(View.VISIBLE);
-						}else{					
+						} else {
 							layoutComment.setVisibility(View.GONE);
 							layoutOthers.setVisibility(View.VISIBLE);
 						}
@@ -344,7 +337,7 @@ public class GoodsContentActivity extends Activity {
 			}
 		});
 	}
-	
+
 	// ¹ºÂò
 	void gotoBuy() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -383,7 +376,6 @@ public class GoodsContentActivity extends Activity {
 			@Override
 			public void onResponse(Call arg0, Response arg1) throws IOException {
 				String responseString = arg1.body().string();
-				Log.e(TAG, responseString + " g");
 				if ("passwordIsNotRight".equals(responseString)) {
 					runOnUiThread(new Runnable() {
 
@@ -435,13 +427,13 @@ public class GoodsContentActivity extends Activity {
 				try {
 					user = mapper.readValue(jsonString, User.class);
 					runOnUiThread(new Runnable() {
-						
+
 						@Override
 						public void run() {
-							if(user.getId().equals(goods.getAccount().getId())){
+							if (user.getId().equals(goods.getAccount().getId())) {
 								layoutOthers.setVisibility(View.GONE);
 								layoutMe.setVisibility(View.VISIBLE);
-							}else{
+							} else {
 								layoutMe.setVisibility(View.GONE);
 								layoutOthers.setVisibility(View.VISIBLE);
 							}
@@ -506,7 +498,7 @@ public class GoodsContentActivity extends Activity {
 
 	protected void reloadData(List<Comment> data) {
 		comments = data;
-		adapter.notifyDataSetInvalidated();
+		adapter.notifyDataSetChanged();
 		setListViewHeightBasedOnChildren(lvComment);
 	}
 
