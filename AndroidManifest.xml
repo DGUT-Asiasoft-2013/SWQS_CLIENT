@@ -188,6 +188,7 @@
          <activity android:name="cn.jmessage.android.uikit.multiselectphotos.AlbumListActivity"/>
         <activity android:name="cn.jmessage.android.uikit.multiselectphotos.BrowserViewPagerActivity" />
         <activity android:name="cn.jmessage.android.uikit.multiselectphotos.PickPictureActivity" />
+        <activity android:name="com.swqs.schooltrade.activity.EditPersonInfoActivity"></activity>
         <activity android:name="cn.jmessage.android.uikit.multiselectphotos.BrowserPhotoPagerActivity"></activity>
     </application>
 

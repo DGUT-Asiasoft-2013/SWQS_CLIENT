@@ -28,7 +28,7 @@
             <TextView 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="个人信息"
+                android:text="编辑资料"
                 android:textSize="18sp"
                 android:layout_centerInParent="true"
                 android:textColor="@android:color/white"
@@ -36,9 +36,9 @@
             <TextView 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="编辑资料"
+                android:text="保存"
+                android:id="@+id/tvSaveInfo"
                 android:textSize="15sp"
-                android:id="@+id/tvEditPersonInfo"
                 android:layout_marginRight="10dp"
                 android:textColor="@android:color/white"
                 android:layout_alignParentRight="true"
@@ -88,10 +88,15 @@
             android:id="@+id/tvNick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="25dp"
+            android:layout_marginRight="5dp"
             android:text="张三"
             android:textColor="@android:color/darker_gray" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingRight="10dp"
+            android:src="@drawable/arrow" />
     </LinearLayout>
 
     <View
@@ -122,10 +127,15 @@
             android:id="@+id/tvSex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="25dp"
+            android:layout_marginRight="5dp"
             android:text="男"
             android:textColor="@android:color/darker_gray" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingRight="10dp"
+            android:src="@drawable/arrow" />
     </LinearLayout>
 
     <View
@@ -156,10 +166,15 @@
             android:id="@+id/tvBirthday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="25dp"
+            android:layout_marginRight="5dp"
             android:text="1993-07-20"
             android:textColor="@android:color/darker_gray" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingRight="10dp"
+            android:src="@drawable/arrow" />
     </LinearLayout>
 
     <View
@@ -190,10 +205,15 @@
             android:id="@+id/tvPhone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="25dp"
+            android:layout_marginRight="5dp"
             android:text="10086"
             android:textColor="@android:color/darker_gray" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingRight="10dp"
+            android:src="@drawable/arrow" />
     </LinearLayout>
 
     <View
@@ -224,10 +244,15 @@
             android:id="@+id/tvEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="25dp"
+            android:layout_marginRight="5dp"
             android:text="10010@qq.com"
             android:textColor="@android:color/darker_gray" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingRight="10dp"
+            android:src="@drawable/arrow" />
     </LinearLayout>
 
     <View
@@ -258,10 +283,15 @@
             android:id="@+id/tvSchool"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="25dp"
+            android:layout_marginRight="5dp"
             android:text="东莞理工学院"
             android:textColor="@android:color/darker_gray" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingRight="10dp"
+            android:src="@drawable/arrow" />
     </LinearLayout>
 
     <View

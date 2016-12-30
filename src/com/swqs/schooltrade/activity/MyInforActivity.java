@@ -1,21 +1,21 @@
 package com.swqs.schooltrade.activity;
 
-
-
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swqs.schooltrade.R;
 import com.swqs.schooltrade.entity.User;
-import com.swqs.schooltrade.util.AvatarView;
+import com.swqs.schooltrade.util.RoundImageView;
 import com.swqs.schooltrade.util.Server;
+import com.swqs.schooltrade.util.Util;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ProgressBar;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -23,79 +23,96 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class MyInforActivity extends Activity {
+public class MyInforActivity extends Activity implements OnClickListener {
 
+	private Button btnBack;
+	private TextView tvNick;
+	private TextView tvSex;
+	private TextView tvBirthday;
+	private TextView tvPhone;
+	private TextView tvEmail;
+	private TextView tvSchool;
+	private RoundImageView roundAvatar;
+	private TextView tvAccount;
+	private TextView tvEditPersonInfo;
 	
-	TextView textView;
-	ProgressBar progress;
-	AvatarView avatar;
-	
-	TextView nickName;
-	TextView schoolName;
-	TextView sex ;
-	TextView telNo;
-	TextView emailNo;
-	TextView id;
-	TextView birthday;
-	TextView balance;
+	private User user;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_info);
-		
-		textView = (TextView)findViewById(R.id.text);
-		progress = (ProgressBar)findViewById(R.id.progress);
-		avatar = (AvatarView)findViewById(R.id.avatar);
-		nickName = (TextView) findViewById(R.id.nickName);
-		schoolName = (TextView) findViewById(R.id.schoolName);
-		sex= (TextView) findViewById(R.id.sex);
-		telNo =(TextView) findViewById(R.id.telNo);
-		emailNo=(TextView) findViewById(R.id.emailNo);
-		id=(TextView) findViewById(R.id.idNo);
-		birthday=(TextView) findViewById(R.id.birthdayTime);
-		balance=(TextView)findViewById(R.id.balance);
-		         
-				
+
+		tvNick = (TextView) findViewById(R.id.tvNick);
+		tvSex = (TextView) findViewById(R.id.tvSex);
+		tvBirthday = (TextView) findViewById(R.id.tvBirthday);
+		tvPhone = (TextView) findViewById(R.id.tvPhone);
+		tvEmail = (TextView) findViewById(R.id.tvEmail);
+		tvSchool = (TextView) findViewById(R.id.tvSchool);
+		btnBack = (Button) findViewById(R.id.btnBack);
+		roundAvatar=(RoundImageView) findViewById(R.id.roundAvatar);
+		tvAccount=(TextView) findViewById(R.id.tvAccount);
+		tvEditPersonInfo=(TextView) findViewById(R.id.tvEditPersonInfo);
+
+		btnBack.setOnClickListener(this);
+		tvEditPersonInfo.setOnClickListener(this);
 	}
 	
 	@Override
 	protected void onResume() {
-		textView.setVisibility(View.GONE);
-		progress.setVisibility(View.VISIBLE);	
-		
+		super.onResume();
+		getPersonInfo();
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.btnBack:
+			finish();
+			break;
+		case R.id.tvEditPersonInfo:
+			Intent intent=new Intent(this,EditPersonInfoActivity.class);
+			intent.putExtra("user", user);
+			startActivity(intent);
+			break;
+		}
+	}
+
+	private void getPersonInfo() {
 		OkHttpClient client = Server.getSharedClient();
-		Request request = Server.requestBuilderWithApi("me")
-				.method("get", null)
-				.build();
-		
+		Request request = Server.requestBuilderWithApi("me").method("get", null).build();
+
 		client.newCall(request).enqueue(new Callback() {
-			
+
 			@Override
 			public void onResponse(Call arg0, Response arg1) throws IOException {
-				final User user = new ObjectMapper().readValue(arg1.body().bytes(), User.class);
+				user = new ObjectMapper().readValue(arg1.body().bytes(), User.class);
 				runOnUiThread(new Runnable() {
-					
+
 					@Override
 					public void run() {
-						nickName.setText(user.getName());				
-						schoolName.setText(user.getSchool().getName());
-						sex.setText(user.getSex()==1?"ÄÐ":"Å®");
-						telNo.setText(user.getPhone());
-						emailNo.setText(user.getEmail());	
-						SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-						birthday.setText(sdf.format(user.getBirthday()));
+						setPersonInfo();
 					}
 				});
-				
+
 			}
-			
+
 			@Override
 			public void onFailure(Call arg0, IOException arg1) {
-				
-				
+
 			}
 		});
-		
-		super.onResume();
 	}
+	private void setPersonInfo(){
+		tvNick.setText(user.getName());
+		tvSex.setText(user.getSex()==1?"ÄÐ":"Å®");
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		tvBirthday.setText(sdf.format(user.getBirthday()));
+		tvPhone.setText(user.getPhone());
+		tvEmail.setText(user.getEmail());
+		tvSchool.setText(user.getSchool().getName());
+		tvAccount.setText(user.getAccount());
+		Util.loadImage(this, user.getFace_url(), roundAvatar);
+	}
+	
 }
