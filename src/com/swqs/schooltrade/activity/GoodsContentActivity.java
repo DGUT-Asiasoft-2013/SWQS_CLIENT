@@ -50,15 +50,14 @@ import okhttp3.Response;
 public class GoodsContentActivity extends Activity {
 	protected static final String TAG = "GoodsContentActivity";
 	private Goods goods;
-//  private View loadMoreView;
-//	private Button btnLikes;
 
 	List<Comment> comments;
 	ListView lvImage;
 	ListView lvComment;
 	User user;
+	TextView textTitle, textContent, textAccount, textPrice, textDate;
 	EditText editComment;
-	Button buttonEdit, buttonBack, buttonSendComment;
+	Button buttonBack, buttonSendComment;
 	RelativeLayout layoutOthers;
 	RelativeLayout layoutMe;
 	RelativeLayout layoutComment;
@@ -71,18 +70,18 @@ public class GoodsContentActivity extends Activity {
 		setContentView(R.layout.widget_goods_detail);
 
 		goods = (Goods) getIntent().getSerializableExtra("data");
-
-		TextView textContent = (TextView) findViewById(R.id.content_item);
-		TextView textTitle = (TextView) findViewById(R.id.content_title);
-		TextView textAccount = (TextView) findViewById(R.id.account_id);
-		TextView textPrice = (TextView) findViewById(R.id.content_originalprice);
-		TextView textDate = (TextView) findViewById(R.id.content_createDate);
+		
+		textTitle = (TextView) findViewById(R.id.content_title);
+		textContent = (TextView) findViewById(R.id.content_item);
+		textAccount = (TextView) findViewById(R.id.account_id);
+		textPrice = (TextView) findViewById(R.id.content_originalprice);
+		textDate = (TextView) findViewById(R.id.content_createDate);
 
 		lvImage = (ListView) findViewById(R.id.image_goods);
 		RoundImageView avatar = (RoundImageView) findViewById(R.id.avatar);
-
-		textContent.setText(goods.getContent());
+		
 		textTitle.setText(goods.getTitle());
+		textContent.setText(goods.getContent());
 		textAccount.setText(goods.getAccount().getAccount());
 		textPrice.setText(goods.getOriginalPrice() + "");
 
@@ -121,15 +120,23 @@ public class GoodsContentActivity extends Activity {
 				gotoBuy();
 			}
 		});
+		
+		findViewById(R.id.btnEdit).setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(GoodsContentActivity.this, EditGoodsActivity.class);
+				intent.putExtra("data", goods);
+				startActivityForResult(intent,1);			
+			}
+		});
 
 		lvComment = (ListView) findViewById(R.id.commentlist);
 		lvComment.setAdapter(adapter);
 		lvImage.setAdapter(goodsImgaeAdapter);
 		
-		layoutOthers = (RelativeLayout) findViewById(R.id.layoutOthers);	
-		
+		layoutOthers = (RelativeLayout) findViewById(R.id.layoutOthers);			
 		layoutMe = (RelativeLayout) findViewById(R.id.layoutMe);
-		buttonEdit = (Button) findViewById(R.id.btnEdit);
 		
 		layoutComment = (RelativeLayout) findViewById(R.id.layoutComment);
 		editComment = (EditText) findViewById(R.id.editComment);
@@ -138,7 +145,16 @@ public class GoodsContentActivity extends Activity {
 		getUser();
 	}
 	
-	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if(resultCode==RESULT_OK){
+			goods=(Goods) data.getSerializableExtra("goods");
+			textTitle.setText(goods.getTitle());
+			textContent.setText(goods.getContent());
+			textPrice.setText(goods.getCurPrice() + "");
+		}
+	}
 
 	protected void chatToSeller() {
 		Intent intent = new Intent(this, ChatActivity.class);
@@ -328,131 +344,7 @@ public class GoodsContentActivity extends Activity {
 			}
 		});
 	}
-
-//	// 点赞
-//	void like() {
-//		MultipartBody body = new MultipartBody.Builder().addFormDataPart("likes", String.valueOf(!isLiked)).build();
-//
-//		Request request = Server.requestBuilderWithApi("goods/" + goods.getId() + "/likes").post(body).build(); // 接口未正确设置
-//
-//		Server.getSharedClient().newCall(request).enqueue(new Callback() {
-//
-//			@Override
-//			public void onResponse(Call arg0, Response arg1) throws IOException {
-//				runOnUiThread(new Runnable() {
-//					public void run() {
-//						reload();
-//					}
-//				});
-//			}
-//
-//			@Override
-//			public void onFailure(Call arg0, IOException arg1) {
-//				runOnUiThread(new Runnable() {
-//					public void run() {
-//						reload();
-//					}
-//				});
-//			}
-//		});
-//	}
-//
-//	private boolean isLiked;
-//
-//	void checkLiked() {
-//		Request request = Server.requestBuilderWithApi("goods/" + goods.getId() + "/isliked").get().build(); // 接口未正确设置
-//
-//		Server.getSharedClient().newCall(request).enqueue(new Callback() {
-//			@Override
-//			public void onResponse(Call arg0, Response arg1) throws IOException {
-//				try {
-//					final String responseString = arg1.body().string();
-//					final Boolean result = new ObjectMapper().readValue(responseString, Boolean.class);
-//
-//					runOnUiThread(new Runnable() {
-//						@Override
-//						public void run() {
-//							onCheckLikedResult(result);
-//						}
-//					});
-//				} catch (final Exception e) {
-//					e.printStackTrace();
-//					runOnUiThread(new Runnable() {
-//						@Override
-//						public void run() {
-//							onCheckLikedResult(false);
-//						}
-//					});
-//				}
-//			}
-//
-//			@Override
-//			public void onFailure(Call arg0, IOException e) {
-//				e.printStackTrace();
-//				runOnUiThread(new Runnable() {
-//					@Override
-//					public void run() {
-//						onCheckLikedResult(false);
-//					}
-//				});
-//			}
-//		});
-//	}
-//
-//	void onCheckLikedResult(boolean result) {
-//		isLiked = result;
-//		btnLikes.setTextColor(result ? Color.BLUE : Color.BLACK);
-//	}
-//
-//	void reloadLikes() {
-//		Request request = Server.requestBuilderWithApi("/goods/" + goods.getId() + "/likes").get().build(); // 接口未正确设置
-//
-//		Server.getSharedClient().newCall(request).enqueue(new Callback() {
-//
-//			@Override
-//			public void onResponse(Call arg0, Response arg1) throws IOException {
-//				try {
-//					String responseString = arg1.body().string();
-//					final Integer count = new ObjectMapper().readValue(responseString, Integer.class);
-//
-//					runOnUiThread(new Runnable() {
-//						@Override
-//						public void run() {
-//							onReloadLikesResult(count);
-//						}
-//					});
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//					runOnUiThread(new Runnable() {
-//						@Override
-//						public void run() {
-//							onReloadLikesResult(0);
-//						}
-//					});
-//				}
-//			}
-//
-//			@Override
-//			public void onFailure(Call arg0, IOException e) {
-//				e.printStackTrace();
-//				runOnUiThread(new Runnable() {
-//					@Override
-//					public void run() {
-//						onReloadLikesResult(0);
-//					}
-//				});
-//			}
-//		});
-//	}
-//
-//	void onReloadLikesResult(int count) {
-//		if (count > 0) {
-//			btnLikes.setText("已赞");
-//		} else {
-//			btnLikes.setText("点赞");
-//		}
-//	}
-
+	
 	// 购买
 	void gotoBuy() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -524,7 +416,6 @@ public class GoodsContentActivity extends Activity {
 
 			@Override
 			public void onFailure(Call arg0, IOException arg1) {
-				// TODO Auto-generated method stub
 
 			}
 		});
@@ -576,8 +467,6 @@ public class GoodsContentActivity extends Activity {
 	}
 
 	void reload() {
-		// reloadLikes();
-		// checkLiked();
 
 		Request request = Server.requestBuilderWithApi("/goods/" + goods.getId() + "/comments").get().build();
 		Server.getSharedClient().newCall(request).enqueue(new Callback() {
@@ -614,46 +503,6 @@ public class GoodsContentActivity extends Activity {
 			}
 		});
 	}
-
-//	void loadmore(){
-//
-//		Request request = Server.requestBuilderWithApi("/goods/"+goods.getId()+"/comments/").get().build();
-//		//接口未正确设置
-//
-//		Server.getSharedClient().newCall(request).enqueue(new Callback() {
-//			@Override
-//			public void onResponse(Call arg0, Response arg1) throws IOException {
-//				try{
-//					final List<Comment> data = new
-//							ObjectMapper().readValue(arg1.body().string(), new
-//									TypeReference<List<Comment>>() {});
-//
-//					runOnUiThread(new Runnable() {
-//
-//						@Override
-//						public void run() {
-//							GoodsContentActivity.this.appendData(data);
-//						}
-//					});
-//				}catch(final Exception e){
-//					runOnUiThread(new Runnable() {
-//						public void run() {
-//							GoodsContentActivity.this.onFailure(e);
-//						}
-//					});
-//				}
-//			}
-//
-//			@Override
-//			public void onFailure(Call arg0, final IOException e) {
-//				runOnUiThread(new Runnable() {
-//					public void run() {
-//						GoodsContentActivity.this.onFailure(e);
-//					}
-//				});
-//			}
-//		});
-//	}
 
 	protected void reloadData(List<Comment> data) {
 		comments = data;
