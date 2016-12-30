@@ -71,7 +71,7 @@
         </activity>
         <activity android:name="com.swqs.schooltrade.activity.NewGoodsActivity" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.activity.NewCommentActivity" >
+        <activity android:name="com.swqs.schooltrade.activity.EditGoodsActivity" >
         </activity>
         <activity android:name="com.swqs.schooltrade.activity.BuyOrderDetailsActivity" >
         </activity>

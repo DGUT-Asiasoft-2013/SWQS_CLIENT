@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/text_edit"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#1F5B8D"
+        android:gravity="center"
+        android:text="编辑商品"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/edit_renminbi"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/text_edit"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="3dp"
+        android:gravity="center"
+        android:text="￥"
+        android:textColor="#FF0000"
+        android:textSize="10sp" />
+
+    <EditText
+        android:id="@+id/edit_curprice"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_below="@id/text_edit"
+        android:layout_marginRight="10dp"
+        android:layout_toRightOf="@id/edit_renminbi"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:hint="编辑价格"
+        android:textColor="#FF0000"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/edit_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edit_curprice"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical"
+        android:hint="编辑标题"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/edit_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edit_title"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical"
+        android:hint="编辑详情"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/btnCompleteEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/edit_curprice"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#FF0000"
+        android:gravity="center"
+        android:text="完成"
+        android:textColor="@android:color/white"
+        android:textSize="15sp" />
+
+</RelativeLayout>

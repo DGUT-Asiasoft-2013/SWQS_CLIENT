@@ -51,7 +51,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class NewGoodsActivity extends BaseActivity {
-	EditText editTitle, editContent, editOriginalPrice;
+	EditText newTitle, newContent, newOriginalPrice;
 
 	private GridView noScrollgridview;
 	private GridPhotoAdapter adapter;
@@ -70,9 +70,9 @@ public class NewGoodsActivity extends BaseActivity {
 		parentView = View.inflate(this, R.layout.activity_new_goods, null);
 		setContentView(parentView);
 
-		editTitle = (EditText) findViewById(R.id.edit_title);
-		editContent = (EditText) findViewById(R.id.edit_content);
-		editOriginalPrice = (EditText) findViewById(R.id.edit_originalprice);
+		newTitle = (EditText) findViewById(R.id.new_title);
+		newContent = (EditText) findViewById(R.id.new_content);
+		newOriginalPrice = (EditText) findViewById(R.id.new_originalprice);
 
 		findViewById(R.id.button_publish).setOnClickListener(new View.OnClickListener() {
 
@@ -287,9 +287,9 @@ public class NewGoodsActivity extends BaseActivity {
 	}
 
 	void publishContent() {
-		String title = editTitle.getText().toString();
-		String content = editContent.getText().toString();
-		String originalPrice = editOriginalPrice.getText().toString();
+		String title = newTitle.getText().toString();
+		String content = newContent.getText().toString();
+		String originalprice = newOriginalPrice.getText().toString();
 		if (TextUtils.isEmpty(title)) {
 			Toast.makeText(this, "请输入标题", Toast.LENGTH_SHORT).show();
 			return;
@@ -298,12 +298,14 @@ public class NewGoodsActivity extends BaseActivity {
 			Toast.makeText(this, "请输入商品描述", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		if (TextUtils.isEmpty(originalPrice)) {
+		if (TextUtils.isEmpty(originalprice)) {
 			Toast.makeText(this, "请输入商品价格", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		MultipartBody.Builder body = new MultipartBody.Builder().addFormDataPart("title", title)
-				.addFormDataPart("content", content).addFormDataPart("originalPrice", originalPrice);
+		MultipartBody.Builder body = new MultipartBody.Builder()
+				.addFormDataPart("title", title)
+				.addFormDataPart("content", content)
+				.addFormDataPart("originalPrice", originalprice);
 
 		for (int i = 0; i < imageItemList.size(); i++) {
 			ImageItem item=imageItemList.get(i);
