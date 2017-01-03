@@ -17,9 +17,9 @@
                 android:id="@+id/avatar"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:background="@drawable/ic_launcher"
+                android:layout_gravity="center_horizontal"
                 android:layout_margin="20dp"
-                android:layout_gravity="center_horizontal" />
+                android:background="@drawable/ic_launcher" />
 
             <TextView
                 android:id="@+id/tvUsername"
@@ -30,107 +30,218 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="0.5dp"
                 android:layout_marginTop="10dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@drawable/line" />
 
-            <TextView
-                android:id="@+id/tvPublish"
+            <LinearLayout
+                android:id="@+id/layoutPublish"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:text="我发布的" />
+                android:background="@drawable/selector_layout_info_bg"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="我发布的" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingRight="10dp"
+                    android:src="@drawable/arrow" />
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:background="@android:color/darker_gray" />
+                android:layout_height="0.5dp"
+                android:background="@drawable/line" />
 
-            <TextView
-                android:id="@+id/tvSelled"
+          <LinearLayout
+                android:id="@+id/layoutSelled"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:text="我卖出的 " />
+                android:background="@drawable/selector_layout_info_bg"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="我卖出的" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingRight="10dp"
+                    android:src="@drawable/arrow" />
+            </LinearLayout>
+
+           <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@drawable/line" />
+
+          <LinearLayout
+                android:id="@+id/layoutBuyed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_layout_info_bg"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="我买到的" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingRight="10dp"
+                    android:src="@drawable/arrow" />
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:background="@android:color/darker_gray" />
+                android:layout_height="0.5dp"
+                android:background="@drawable/line" />
 
-            <TextView
-                android:id="@+id/tvBuyed"
+          <LinearLayout
+                android:id="@+id/layoutCollect"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:text="我买到的 " />
+                android:background="@drawable/selector_layout_info_bg"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp" >
 
-            <View
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="我的收藏" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingRight="10dp"
+                    android:src="@drawable/arrow" />
+            </LinearLayout>
+
+             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:background="@android:color/darker_gray" />
+                android:layout_height="0.5dp"
+                android:background="@drawable/line" />
 
-            <TextView
-                android:id="@+id/tvCollection"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:text="我的收藏 " />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:background="@android:color/darker_gray" />
-
-            <TextView
-                android:id="@+id/tvReputation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:text="我的信誉" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:background="@android:color/darker_gray" />
-
-            <TextView
-                android:id="@+id/tvData"
+          <LinearLayout
+                android:id="@+id/layoutCredit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:text="我的信息" />
+                android:background="@drawable/selector_layout_info_bg"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp" >
 
-            <View
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="我的信誉" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingRight="10dp"
+                    android:src="@drawable/arrow" />
+            </LinearLayout>
+
+             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:background="@android:color/darker_gray" />
+                android:layout_height="0.5dp"
+                android:background="@drawable/line" />
 
-            <TextView
-                android:id="@+id/tvUser"
+          <LinearLayout
+                android:id="@+id/layoutInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:text="我的钱包" />
+                android:background="@drawable/selector_layout_info_bg"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp" >
 
-            <View
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="我的信息" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingRight="10dp"
+                    android:src="@drawable/arrow" />
+            </LinearLayout>
+
+             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:background="@android:color/darker_gray" />
+                android:layout_height="0.5dp"
+                android:background="@drawable/line" />
+
+          <LinearLayout
+                android:id="@+id/layoutWallet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_layout_info_bg"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="我的钱包" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingRight="10dp"
+                    android:src="@drawable/arrow" />
+            </LinearLayout>
+             <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@drawable/line" />
         </LinearLayout>
     </ScrollView>
 

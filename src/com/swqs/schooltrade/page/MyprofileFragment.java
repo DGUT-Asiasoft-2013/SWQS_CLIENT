@@ -59,7 +59,7 @@ public class MyprofileFragment extends Fragment {
 					updateImage();
 				}
 			});
-			view.findViewById(R.id.tvPublish).setOnClickListener(new OnClickListener() {
+			view.findViewById(R.id.layoutPublish).setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
@@ -67,46 +67,46 @@ public class MyprofileFragment extends Fragment {
 
 				}
 			});
-			view.findViewById(R.id.tvBuyed).setOnClickListener(new OnClickListener() {
+			view.findViewById(R.id.layoutBuyed).setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					hasBuyed();
 				}
 			});
-			view.findViewById(R.id.tvSelled).setOnClickListener(new OnClickListener() {
+			view.findViewById(R.id.layoutSelled).setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					hasSelled();
 				}
 			});
-			view.findViewById(R.id.tvData).setOnClickListener(new OnClickListener() {
+			view.findViewById(R.id.layoutInfo).setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
 					myInformation();
 				}
 			});
-			view.findViewById(R.id.tvCollection).setOnClickListener(new OnClickListener() {
+			view.findViewById(R.id.layoutCollect).setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					goCollection();
 				}
 			});
-			view.findViewById(R.id.tvReputation).setOnClickListener(new OnClickListener() {
+			view.findViewById(R.id.layoutCredit).setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					goReputation();
 				}
 			});
-			view.findViewById(R.id.tvUser).setOnClickListener(new OnClickListener() {
+			view.findViewById(R.id.layoutWallet).setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					goUser();
+					goMyWallet();
 				}
 			});
 			tvUsername = (TextView) view.findViewById(R.id.tvUsername);
@@ -284,7 +284,7 @@ public class MyprofileFragment extends Fragment {
 		startActivity(itnt);
 	}
 
-	private void goUser() {
+	private void goMyWallet() {
 		Intent itnt = new Intent(getActivity(), MyMoneyActivity.class);
 		startActivity(itnt);
 	}
