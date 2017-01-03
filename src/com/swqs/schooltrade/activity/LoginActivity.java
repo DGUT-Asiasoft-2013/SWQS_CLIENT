@@ -5,7 +5,6 @@ import java.io.IOException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swqs.schooltrade.R;
 import com.swqs.schooltrade.entity.User;
-import com.swqs.schooltrade.fragment.InputcellSimpletextFragment;
 import com.swqs.schooltrade.util.MD5;
 import com.swqs.schooltrade.util.Server;
 
@@ -15,6 +14,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.api.BasicCallback;
@@ -27,14 +27,16 @@ import okhttp3.Response;
 
 public class LoginActivity extends Activity {
 
-	InputcellSimpletextFragment fragAccount, fragPassword;
 
+	private EditText etAccount;
+	private EditText etPwd;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 
-		findViewById(R.id.btn_register).setOnClickListener(new View.OnClickListener() {
+		findViewById(R.id.tvRegister).setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -42,7 +44,7 @@ public class LoginActivity extends Activity {
 			}
 		});
 
-		findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
+		findViewById(R.id.btnLogin).setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -50,7 +52,7 @@ public class LoginActivity extends Activity {
 			}
 		});
 
-		findViewById(R.id.btn_forgot_password).setOnClickListener(new View.OnClickListener() {
+		findViewById(R.id.tvForgetPwd).setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -58,19 +60,8 @@ public class LoginActivity extends Activity {
 			}
 		});
 
-		fragAccount = (InputcellSimpletextFragment) getFragmentManager().findFragmentById(R.id.input_account);
-		fragPassword = (InputcellSimpletextFragment) getFragmentManager().findFragmentById(R.id.input_password);
-	}
-
-	protected void onResume() {
-		super.onResume();
-
-		fragAccount.setLabelText("账号");
-		fragAccount.setHintText("请输入用户名");
-		fragPassword.setLabelText("密码");
-		fragPassword.setHintText("请输入密码");
-		fragPassword.setIsPassword(true);
-
+		etAccount=(EditText) findViewById(R.id.etAccount);
+		etPwd=(EditText) findViewById(R.id.etPwd);
 	}
 
 	void goRegister() {
@@ -79,8 +70,8 @@ public class LoginActivity extends Activity {
 	}
 
 	void goLogin() {
-		String account = fragAccount.getText();
-		String password = fragPassword.getText();
+		String account = etAccount.getText().toString().trim();
+		String password = etPwd.getText().toString();
 
 		if (account.length() == 0) {
 			Toast.makeText(LoginActivity.this, "账号不能为空", Toast.LENGTH_SHORT).show();
@@ -102,8 +93,8 @@ public class LoginActivity extends Activity {
 
 			OkHttpClient client = Server.getSharedClient();
 
-			MultipartBody requestBody = new MultipartBody.Builder().addFormDataPart("account", fragAccount.getText())
-					.addFormDataPart("password", MD5.getMD5(fragPassword.getText())).build();
+			MultipartBody requestBody = new MultipartBody.Builder().addFormDataPart("account", account)
+					.addFormDataPart("password", MD5.getMD5(password)).build();
 
 			Request request = Server.requestBuilderWithApi("login").method("post", null).post(requestBody).build();
 
@@ -165,8 +156,8 @@ public class LoginActivity extends Activity {
 	}
 
 	public void loginToJpush() {
-		final String account = fragAccount.getText();
-		final String password = fragPassword.getText();
+		final String account = etAccount.getText().toString().trim();
+		final String password = etPwd.getText().toString();
 		/** ================= 调用SDk登陆接口 ================= */
 		JMessageClient.login(account, password, new BasicCallback() {
 			@Override
