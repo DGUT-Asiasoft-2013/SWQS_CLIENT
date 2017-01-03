@@ -13,11 +13,15 @@
         android:layout_weight="1" >
     </FrameLayout>
 
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@drawable/line"
+        />
     <LinearLayout
         android:id="@+id/ll"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="#000000"
+        android:layout_height="50dp"
         android:orientation="horizontal" >
 
         <LinearLayout
@@ -25,23 +29,24 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#000000"
+            android:background="#FFFFFF"
             android:gravity="center"
             android:orientation="vertical" >
 
             <ImageView
                 android:id="@+id/image_home"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:background="#000000" />
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:background="@drawable/selector_mainview" />
 
             <TextView
                 android:id="@+id/text_home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="首页"
+                android:textSize="12sp"
                 android:layout_gravity="center"
-                android:textColor="@android:color/white" />
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -49,31 +54,30 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#000000"
             android:gravity="center"
             android:orientation="vertical" >
 
             <ImageView
                 android:id="@+id/image_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#000000" />
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:background="@drawable/selector_search" />
 
             <TextView
                 android:id="@+id/text_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="搜索"
-                android:textColor="@android:color/white" />
+                android:textSize="12sp"
+                />
         </LinearLayout>
 
         <Button 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:id="@+id/btnAdd"
-            android:text="+"
-            android:background="@null"
-            android:textColor="@android:color/white"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/selector_add"
             />
 
         <LinearLayout
@@ -81,22 +85,23 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#000000"
             android:gravity="center"
             android:orientation="vertical" >
 
             <ImageView
                 android:id="@+id/image_message"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#000000" />
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/selector_msg" />
 
             <TextView
                 android:id="@+id/text_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="信息"
-                android:textColor="@android:color/white" />
+                android:textSize="12sp"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -104,22 +109,22 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#000000"
             android:gravity="center"
             android:orientation="vertical" >
 
             <ImageView
                 android:id="@+id/image_me"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#000000" />
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:background="@drawable/selector_myself" />
 
             <TextView
                 android:id="@+id/text_me"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="我的"
-                android:textColor="@android:color/white" />
+                android:textSize="12sp"
+                 />
         </LinearLayout>
     </LinearLayout>
 
