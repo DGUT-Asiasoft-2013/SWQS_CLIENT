@@ -32,7 +32,7 @@
             android:textColor="@android:color/black"
             android:textSize="15sp" />
 
-        <com.swqs.schooltrade.util.AvatarView
+        <com.swqs.schooltrade.util.RoundImageView
             android:id="@+id/account_avatar"
             android:layout_width="30dp"
             android:layout_height="30dp" />

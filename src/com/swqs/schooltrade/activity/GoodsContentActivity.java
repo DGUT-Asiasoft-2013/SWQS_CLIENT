@@ -228,7 +228,7 @@ public class GoodsContentActivity extends Activity {
 				viewHolder.Comment = (TextView) view.findViewById(R.id.comment);
 				viewHolder.Account = (TextView) view.findViewById(R.id.id_account);
 				viewHolder.CreateDate = (TextView) view.findViewById(R.id.createdate);
-				viewHolder.Avatar = (AvatarView) view.findViewById(R.id.account_avatar);
+				viewHolder.Avatar = (RoundImageView) view.findViewById(R.id.account_avatar);
 				view.setTag(viewHolder);
 			} else {
 				view = convertView;
@@ -238,7 +238,8 @@ public class GoodsContentActivity extends Activity {
 			Comment comment = comments.get(position);
 			viewHolder.Comment.setText(comment.getText());
 			viewHolder.Account.setText(comment.getAccount().getAccount());
-			viewHolder.Avatar.load(comment.getAccount().getFace_url());
+//			viewHolder.Avatar.load(comment.getAccount().getFace_url());
+			Util.loadImage(GoodsContentActivity.this, comment.getAccount().getFace_url(), viewHolder.Avatar);
 
 			String dateStr = DateFormat.format("yyyy-MM-dd hh:mm", comment.getCreateDate()).toString();
 			viewHolder.CreateDate.setText(dateStr);
@@ -250,7 +251,7 @@ public class GoodsContentActivity extends Activity {
 			public TextView Comment;
 			public TextView Account;
 			public TextView CreateDate;
-			public AvatarView Avatar;
+			public RoundImageView Avatar;
 		}
 
 		@Override
