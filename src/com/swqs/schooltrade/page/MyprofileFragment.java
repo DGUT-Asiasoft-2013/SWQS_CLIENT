@@ -3,14 +3,20 @@ package com.swqs.schooltrade.page;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.swqs.schooltrade.R;
+import com.swqs.schooltrade.activity.BuyAndSelledActivity;
+import com.swqs.schooltrade.activity.LoginActivity;
+import com.swqs.schooltrade.activity.MyCollection;
+import com.swqs.schooltrade.activity.MyCredit;
+import com.swqs.schooltrade.activity.MyInforActivity;
+import com.swqs.schooltrade.activity.MyMoneyActivity;
+import com.swqs.schooltrade.activity.MyPublishGoodsActivity;
+import com.swqs.schooltrade.app.TradeApplication;
+import com.swqs.schooltrade.entity.User;
+import com.swqs.schooltrade.util.RoundImageView;
+import com.swqs.schooltrade.util.Server;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -27,20 +33,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.swqs.schooltrade.R;
-import com.swqs.schooltrade.activity.BuyAndSelledActivity;
-import com.swqs.schooltrade.activity.LoginActivity;
-import com.swqs.schooltrade.activity.MyCollection;
-import com.swqs.schooltrade.activity.MyCredit;
-import com.swqs.schooltrade.activity.MyInforActivity;
-import com.swqs.schooltrade.activity.MyMoneyActivity;
-import com.swqs.schooltrade.activity.MyPublishGoodsActivity;
-import com.swqs.schooltrade.app.TradeApplication;
-import com.swqs.schooltrade.entity.User;
-import com.swqs.schooltrade.util.RoundImageView;
-import com.swqs.schooltrade.util.Server;
+import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.model.UserInfo;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class MyprofileFragment extends Fragment {
 
@@ -130,6 +132,10 @@ public class MyprofileFragment extends Fragment {
 		Editor editor=getActivity().getSharedPreferences(TradeApplication.SCHOOLTRADE_CONFIGS, Context.MODE_PRIVATE).edit();
 		editor.putBoolean(TradeApplication.IS_AUTO_LOGIN, false);
 		editor.commit();
+		UserInfo myInfo = JMessageClient.getMyInfo();
+        if (myInfo != null) {
+            JMessageClient.logout();
+        } 
 		Intent intent = new Intent(getActivity(),LoginActivity.class);
 		startActivity(intent);
 		getActivity().finish();
