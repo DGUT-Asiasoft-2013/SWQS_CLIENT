@@ -3,23 +3,21 @@ package com.swqs.schooltrade.page;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.swqs.schooltrade.R;
-import com.swqs.schooltrade.activity.BuyAndSelledActivity;
-import com.swqs.schooltrade.activity.MyCollection;
-import com.swqs.schooltrade.activity.MyCredit;
-import com.swqs.schooltrade.activity.MyInforActivity;
-import com.swqs.schooltrade.activity.MyMoneyActivity;
-import com.swqs.schooltrade.activity.MyPublishGoodsActivity;
-import com.swqs.schooltrade.entity.User;
-import com.swqs.schooltrade.util.RoundImageView;
-import com.swqs.schooltrade.util.Server;
-
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
@@ -29,14 +27,20 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.swqs.schooltrade.R;
+import com.swqs.schooltrade.activity.BuyAndSelledActivity;
+import com.swqs.schooltrade.activity.LoginActivity;
+import com.swqs.schooltrade.activity.MyCollection;
+import com.swqs.schooltrade.activity.MyCredit;
+import com.swqs.schooltrade.activity.MyInforActivity;
+import com.swqs.schooltrade.activity.MyMoneyActivity;
+import com.swqs.schooltrade.activity.MyPublishGoodsActivity;
+import com.swqs.schooltrade.app.TradeApplication;
+import com.swqs.schooltrade.entity.User;
+import com.swqs.schooltrade.util.RoundImageView;
+import com.swqs.schooltrade.util.Server;
 
 public class MyprofileFragment extends Fragment {
 
@@ -109,10 +113,26 @@ public class MyprofileFragment extends Fragment {
 					goMyWallet();
 				}
 			});
+			view.findViewById(R.id.btnLogout).setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					logout();
+				}
+			});
 			tvUsername = (TextView) view.findViewById(R.id.tvUsername);
 			getUser();
 		}
 		return view;
+	}
+
+	private void logout() {
+		Editor editor=getActivity().getSharedPreferences(TradeApplication.SCHOOLTRADE_CONFIGS, Context.MODE_PRIVATE).edit();
+		editor.putBoolean(TradeApplication.IS_AUTO_LOGIN, false);
+		editor.commit();
+		Intent intent = new Intent(getActivity(),LoginActivity.class);
+		startActivity(intent);
+		getActivity().finish();
 	}
 
 	private void myInformation() {

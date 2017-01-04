@@ -49,6 +49,9 @@ public class TradeApplication extends Application {
 	public static final String MsgIDs = "msgIDs";
 	public static final String DRAFT = "draft";
 	public static final String DELETE_MODE = "deleteMode";
+	public static final String ACCOUNT = "account";
+	public static final String PASSWORD = "password";
+	public static final String IS_AUTO_LOGIN = "is_auto_login";
 	public static String PICTURE_DIR = Environment.getExternalStorageDirectory()+"/SchoolTrade/pictures/";
 	public static String FILE_DIR = Environment.getExternalStorageDirectory()+"/SchoolTrade/recvFiles/";
 

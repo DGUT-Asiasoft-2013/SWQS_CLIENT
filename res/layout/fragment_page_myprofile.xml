@@ -64,7 +64,7 @@
                 android:layout_height="0.5dp"
                 android:background="@drawable/line" />
 
-          <LinearLayout
+            <LinearLayout
                 android:id="@+id/layoutSelled"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -89,12 +89,12 @@
                     android:src="@drawable/arrow" />
             </LinearLayout>
 
-           <View
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@drawable/line" />
 
-          <LinearLayout
+            <LinearLayout
                 android:id="@+id/layoutBuyed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -124,7 +124,7 @@
                 android:layout_height="0.5dp"
                 android:background="@drawable/line" />
 
-          <LinearLayout
+            <LinearLayout
                 android:id="@+id/layoutCollect"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -149,12 +149,12 @@
                     android:src="@drawable/arrow" />
             </LinearLayout>
 
-             <View
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@drawable/line" />
 
-          <LinearLayout
+            <LinearLayout
                 android:id="@+id/layoutCredit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -179,12 +179,12 @@
                     android:src="@drawable/arrow" />
             </LinearLayout>
 
-             <View
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@drawable/line" />
 
-          <LinearLayout
+            <LinearLayout
                 android:id="@+id/layoutInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -209,12 +209,12 @@
                     android:src="@drawable/arrow" />
             </LinearLayout>
 
-             <View
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@drawable/line" />
 
-          <LinearLayout
+            <LinearLayout
                 android:id="@+id/layoutWallet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -238,10 +238,20 @@
                     android:paddingRight="10dp"
                     android:src="@drawable/arrow" />
             </LinearLayout>
-             <View
+
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@drawable/line" />
+
+            <Button
+                android:id="@+id/btnLogout"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="15dp"
+                android:background="@drawable/selector_btn_logout"
+                android:text="退出当前账号"
+                android:textColor="@android:color/white" />
         </LinearLayout>
     </ScrollView>
 

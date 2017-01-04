@@ -2,15 +2,18 @@ package com.swqs.schooltrade.activity;
 
 import java.io.IOException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.swqs.schooltrade.R;
-import com.swqs.schooltrade.entity.User;
-import com.swqs.schooltrade.util.MD5;
-import com.swqs.schooltrade.util.Server;
-
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,19 +21,19 @@ import android.widget.EditText;
 import android.widget.Toast;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.api.BasicCallback;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.swqs.schooltrade.R;
+import com.swqs.schooltrade.app.TradeApplication;
+import com.swqs.schooltrade.entity.User;
+import com.swqs.schooltrade.util.MD5;
+import com.swqs.schooltrade.util.Server;
 
 public class LoginActivity extends Activity {
 
-
 	private EditText etAccount;
 	private EditText etPwd;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -60,8 +63,17 @@ public class LoginActivity extends Activity {
 			}
 		});
 
-		etAccount=(EditText) findViewById(R.id.etAccount);
-		etPwd=(EditText) findViewById(R.id.etPwd);
+		etAccount = (EditText) findViewById(R.id.etAccount);
+		etPwd = (EditText) findViewById(R.id.etPwd);
+		initAccountAndPwd();
+	}
+
+	private void initAccountAndPwd() {
+		SharedPreferences sp = getSharedPreferences(TradeApplication.SCHOOLTRADE_CONFIGS, Context.MODE_PRIVATE);
+		final String account = sp.getString(TradeApplication.ACCOUNT, "");
+		final String password = sp.getString(TradeApplication.PASSWORD, "");
+		etAccount.setText(account);
+		etPwd.setText(password);
 	}
 
 	void goRegister() {
@@ -75,20 +87,10 @@ public class LoginActivity extends Activity {
 
 		if (account.length() == 0) {
 			Toast.makeText(LoginActivity.this, "账号不能为空", Toast.LENGTH_SHORT).show();
-			// new AlertDialog.Builder(LoginActivity.this).setMessage("账号不能为空")
-			// .setIcon(android.R.drawable.ic_dialog_alert).setNegativeButton("好",
-			// null).show();
-			//
-			// return;
 		}
 
 		else if (password.length() == 0) {
 			Toast.makeText(LoginActivity.this, "密码不能为空", Toast.LENGTH_SHORT).show();
-			// new AlertDialog.Builder(LoginActivity.this).setMessage("密码不能为空")
-			// .setIcon(android.R.drawable.ic_dialog_alert).setNegativeButton("好",
-			// null).show();
-			//
-			// return;
 		} else {
 
 			OkHttpClient client = Server.getSharedClient();
@@ -163,16 +165,21 @@ public class LoginActivity extends Activity {
 			@Override
 			public void gotResult(int responseCode, String LoginDesc) {
 				if (responseCode == 0) {
-					// mProgressDialog.dismiss();
 					Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
 					Log.i("MainActivity", "JMessageClient.login" + ", responseCode = " + responseCode
 							+ " ; LoginDesc = " + LoginDesc);
+					// 保存用户名和密码
+					Editor editor = getSharedPreferences(TradeApplication.SCHOOLTRADE_CONFIGS, Context.MODE_PRIVATE)
+							.edit();
+					editor.putString(TradeApplication.ACCOUNT, account);
+					editor.putString(TradeApplication.PASSWORD, password);
+					editor.putBoolean(TradeApplication.IS_AUTO_LOGIN, true);
+					editor.commit();
 					Intent intent = new Intent();
 					intent.setClass(getApplicationContext(), HomeActivity.class);
 					startActivity(intent);
 					finish();
 				} else {
-					// mProgressDialog.dismiss();
 					Toast.makeText(getApplicationContext(), "登录失败", Toast.LENGTH_SHORT).show();
 					Log.i("MainActivity", "JMessageClient.login" + ", responseCode = " + responseCode
 							+ " ; LoginDesc = " + LoginDesc);
