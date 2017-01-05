@@ -13,6 +13,7 @@ import com.swqs.schooltrade.util.Util;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -35,7 +36,7 @@ public class MyInforActivity extends Activity implements OnClickListener {
 	private RoundImageView roundAvatar;
 	private TextView tvAccount;
 	private TextView tvEditPersonInfo;
-	
+
 	private User user;
 
 	@Override
@@ -50,14 +51,14 @@ public class MyInforActivity extends Activity implements OnClickListener {
 		tvEmail = (TextView) findViewById(R.id.tvEmail);
 		tvSchool = (TextView) findViewById(R.id.tvSchool);
 		btnBack = (Button) findViewById(R.id.btnBack);
-		roundAvatar=(RoundImageView) findViewById(R.id.roundAvatar);
-		tvAccount=(TextView) findViewById(R.id.tvAccount);
-		tvEditPersonInfo=(TextView) findViewById(R.id.tvEditPersonInfo);
+		roundAvatar = (RoundImageView) findViewById(R.id.roundAvatar);
+		tvAccount = (TextView) findViewById(R.id.tvAccount);
+		tvEditPersonInfo = (TextView) findViewById(R.id.tvEditPersonInfo);
 
 		btnBack.setOnClickListener(this);
 		tvEditPersonInfo.setOnClickListener(this);
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -71,7 +72,7 @@ public class MyInforActivity extends Activity implements OnClickListener {
 			finish();
 			break;
 		case R.id.tvEditPersonInfo:
-			Intent intent=new Intent(this,EditPersonInfoActivity.class);
+			Intent intent = new Intent(this, EditPersonInfoActivity.class);
 			intent.putExtra("user", user);
 			startActivity(intent);
 			break;
@@ -103,16 +104,27 @@ public class MyInforActivity extends Activity implements OnClickListener {
 			}
 		});
 	}
-	private void setPersonInfo(){
+
+	private void setPersonInfo() {
 		tvNick.setText(user.getName());
-		tvSex.setText(user.getSex()==1?"ÄÐ":"Å®");
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		String sex = "Î´Ñ¡Ôñ";
+		if (user.getSex() == 1) {
+			sex = "ÄÐ";
+		} else if (user.getSex() == 2) {
+			sex = "Å®";
+		}
+		tvSex.setText(sex);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		tvBirthday.setText(sdf.format(user.getBirthday()));
-		tvPhone.setText(user.getPhone());
+		if (TextUtils.isEmpty(user.getPhone())) {
+			tvPhone.setText("");
+		} else {
+			tvPhone.setText(user.getPhone());
+		}
 		tvEmail.setText(user.getEmail());
 		tvSchool.setText(user.getSchool().getName());
 		tvAccount.setText(user.getAccount());
 		Util.loadImage(this, user.getFace_url(), roundAvatar);
 	}
-	
+
 }

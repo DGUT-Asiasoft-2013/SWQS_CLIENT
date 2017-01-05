@@ -92,7 +92,7 @@ public class EditPersonInfoActivity extends Activity implements OnClickListener 
 		layoutSex.setOnClickListener(this);
 		layoutBirthday.setOnClickListener(this);
 		layoutPhone.setOnClickListener(this);
-		layoutEmail.setOnClickListener(this);
+//		layoutEmail.setOnClickListener(this);
 		layoutSchool.setOnClickListener(this);
 		btnBack.setOnClickListener(this);
 		tvSaveInfo.setOnClickListener(this);
@@ -102,10 +102,20 @@ public class EditPersonInfoActivity extends Activity implements OnClickListener 
 
 	private void setPersonInfo() {
 		tvNick.setText(user.getName());
-		tvSex.setText(user.getSex() == 1 ? "男" : "女");
+		String sex = "未选择";
+		if (user.getSex() == 1) {
+			sex = "男";
+		} else if (user.getSex() == 2) {
+			sex = "女";
+		}
+		tvSex.setText(sex);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		tvBirthday.setText(sdf.format(user.getBirthday()));
-		tvPhone.setText(user.getPhone());
+		if (TextUtils.isEmpty(user.getPhone())) {
+			tvPhone.setText("");
+		} else {
+			tvPhone.setText(user.getPhone());
+		}
 		tvEmail.setText(user.getEmail());
 		tvSchool.setText(user.getSchool().getName());
 		tvAccount.setText(user.getAccount());
@@ -119,7 +129,7 @@ public class EditPersonInfoActivity extends Activity implements OnClickListener 
 			showInputDialog("修改昵称", tvNick.getText().toString(), tvNick);
 			break;
 		case R.id.layoutSex:
-			// showSexDialog(tvSex);
+			 showSexDialog(tvSex);
 			break;
 		case R.id.layoutBirthday:
 			showBirthdayDialog(tvBirthday);
@@ -152,7 +162,8 @@ public class EditPersonInfoActivity extends Activity implements OnClickListener 
 		}
 		OkHttpClient client = Server.getSharedClient();
 		MultipartBody.Builder requestBodyBuilder = new MultipartBody.Builder()
-				.addFormDataPart("email", tvEmail.getText().toString())
+				.addFormDataPart("sex", tvSex.getText().toString().equals("男")?"1":"2")
+//				.addFormDataPart("email", tvEmail.getText().toString())
 				.addFormDataPart("name", tvNick.getText().toString()).addFormDataPart("birthday", time + "")
 				.addFormDataPart("phone", tvPhone.getText().toString());
 		if (curSchool != null) {
@@ -219,10 +230,19 @@ public class EditPersonInfoActivity extends Activity implements OnClickListener 
 			public void onClick(View view) {
 				String str = etContent.getText().toString();
 				if (TextUtils.isEmpty(str)) {
-					etContent.setError("输入内容不能为空");
+					Toast.makeText(EditPersonInfoActivity.this, "输入内容不能为空", Toast.LENGTH_SHORT).show();
 				} else {
-					dialog.dismiss();
-					textView.setText(str);
+					if(textView==tvPhone){
+						if(!Util.checkMobileNumber(str)){
+							Toast.makeText(EditPersonInfoActivity.this, "手机号码格式不正确", Toast.LENGTH_SHORT).show();
+						}else{
+							dialog.dismiss();
+							textView.setText(str);
+						}
+					}else{
+						dialog.dismiss();
+						textView.setText(str);
+					}
 				}
 			}
 		});
