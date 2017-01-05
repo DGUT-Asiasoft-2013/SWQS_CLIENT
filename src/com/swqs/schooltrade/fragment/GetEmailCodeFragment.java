@@ -69,7 +69,7 @@ public class GetEmailCodeFragment extends Fragment {
 					identifyCode = etCode.getText().toString().trim();
 					// 如果邮箱格式正确
 					// TODO 验证邮箱格式
-					if (Util.checkEmail(email)) {
+					if (Util.checkEmail(email)&&timer==null) {
 						btnSendCode.setEnabled(true);
 						btnSendCode
 								.setBackgroundResource(R.drawable.selector_btn_send_code);

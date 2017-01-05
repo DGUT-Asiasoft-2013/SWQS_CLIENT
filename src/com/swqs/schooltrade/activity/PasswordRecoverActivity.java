@@ -2,21 +2,23 @@ package com.swqs.schooltrade.activity;
 
 import java.io.IOException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swqs.schooltrade.R;
-import com.swqs.schooltrade.entity.User;
-import com.swqs.schooltrade.fragment.PasswordRecoverStep1Fragment;
-import com.swqs.schooltrade.fragment.PasswordRecoverStep2Fragment;
-import com.swqs.schooltrade.fragment.PasswordRecoverStep1Fragment.OnGoNextListener;
-import com.swqs.schooltrade.fragment.PasswordRecoverStep2Fragment.OnSubmitClickedListener;
+import com.swqs.schooltrade.fragment.GetEmailCodeFragment;
+import com.swqs.schooltrade.fragment.ResetPwdFragment;
+import com.swqs.schooltrade.util.CustomProgressDialog;
 import com.swqs.schooltrade.util.MD5;
 import com.swqs.schooltrade.util.Server;
+import com.swqs.schooltrade.util.Util;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Display;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Toast;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MultipartBody;
@@ -26,82 +28,270 @@ import okhttp3.Response;
 
 public class PasswordRecoverActivity extends Activity {
 
-	PasswordRecoverStep1Fragment step1 = new PasswordRecoverStep1Fragment();
-	PasswordRecoverStep2Fragment step2 = new PasswordRecoverStep2Fragment();
-	
+	private GetEmailCodeFragment fragmentEmailCode;
+	private CustomProgressDialog progressDialog;
+	private CustomProgressDialog alertDialog;
+	private String email;
+	ResetPwdFragment resetPwdFragment = new ResetPwdFragment();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setContentView(R.layout.activity_password_recover);
-		
- 		step1.setOnGoNextListener(new OnGoNextListener() {
-			
-			public void onGoNext() {
-				goStep2();
+		fragmentEmailCode = new GetEmailCodeFragment();
+		fragmentEmailCode.setListener(new GetEmailCodeFragment.OnClickListener() {
+
+			@Override
+			public void onSendCodeClick() {
+				getCode();
+			}
+
+			@Override
+			public void onNextClick() {
+				goResetPwdFragment();
+			}
+
+			@Override
+			public void onBackClick() {
+				finish();
 			}
 		});
- 		
- 		step2.setOnSubmitClickedListener(new OnSubmitClickedListener() {
-			
+		resetPwdFragment.setListener(new ResetPwdFragment.OnClickListener() {
+
 			@Override
-			public void onSubmitClicked() {
+			public void onSubmitClick() {
 				goSubmit();
 			}
+
+			@Override
+			public void onBackClick() {
+				finish();
+			}
 		});
- 		
- 		getFragmentManager().beginTransaction().replace(R.id.container, step1).commit();
+
+		getFragmentManager().beginTransaction().replace(R.id.container, fragmentEmailCode).commit();
 	}
-	
-	void goStep2(){
-		
-		getFragmentManager()
-		.beginTransaction()	
-		.setCustomAnimations(
-				R.animator.slide_in_right,
-				R.animator.slide_out_left,
-				R.animator.slide_in_left,
-				R.animator.slide_out_right)
-		.replace(R.id.container, step2)
-		.addToBackStack(null)
-		.commit();
-	}
-	
-	void goSubmit(){
-		OkHttpClient client = Server.getSharedClient();
-		MultipartBody body = new MultipartBody.Builder()
-				.addFormDataPart("email", step1.getText())
-				.addFormDataPart("passwordHash", MD5.getMD5(step2.getText()))
+
+	private void goResetPwdFragment() {
+		showProgress(R.layout.custom_progressdialog);
+		// 如果邮箱无效
+		// TODO
+		if (!Util.checkEmail(fragmentEmailCode.getEmail())) {
+			progressDialog.dismiss();
+			showAlertDialog(R.layout.custom_alertdialog);
+			return;
+		}
+		MultipartBody requestBodyNext = new MultipartBody.Builder().addFormDataPart("code", fragmentEmailCode.getCode())
 				.build();
-		
-		Request request = Server.requestBuilderWithApi("passwordrecover").post(body).build();
-				
+		Request requestNext = Server.requestBuilderWithApi("checkcode").method("post", null).post(requestBodyNext)
+				.build();
+		Server.getSharedClient().newCall(requestNext).enqueue(new Callback() {
+			@Override
+			public void onResponse(Call arg0, Response arg1) throws IOException {
+				final String responseSrting = arg1.body().string();
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							progressDialog.dismiss();
+							boolean flag = Boolean.parseBoolean(responseSrting);
+							if (!flag) {
+								Toast.makeText(PasswordRecoverActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
+								return;
+							}
+							goStep2();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+
+				});
+
+			}
+
+			@Override
+			public void onFailure(Call arg0, final IOException arg1) {
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						progressDialog.dismiss();
+						Toast.makeText(PasswordRecoverActivity.this, arg1.getLocalizedMessage(), Toast.LENGTH_LONG)
+								.show();
+					}
+				});
+			}
+		});
+	}
+
+	private void getCode() {
+		showProgress(R.layout.custom_progressdialog);
+		// 如果邮箱无效
+		if (!Util.checkEmail(fragmentEmailCode.getEmail())) {
+			progressDialog.dismiss();
+			showAlertDialog(R.layout.custom_alertdialog);
+			return;
+		}
+		email = fragmentEmailCode.getEmail();
+		OkHttpClient client = Server.getSharedClient();
+		MultipartBody requestBody = new MultipartBody.Builder().addFormDataPart("email", email).build();
+		Request request = Server.requestBuilderWithApi("passwordCheckEmail").method("post", null).post(requestBody)
+				.build();
 		client.newCall(request).enqueue(new Callback() {
-			
+			@Override
+			public void onResponse(Call arg0, Response arg1) throws IOException {
+				final String responseSrting = arg1.body().string();
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							progressDialog.dismiss();
+							boolean flag = Boolean.parseBoolean(responseSrting);
+							if (!flag) {
+								Toast.makeText(PasswordRecoverActivity.this, "该邮箱还没注册", Toast.LENGTH_SHORT).show();
+								return;
+							}
+							Toast.makeText(PasswordRecoverActivity.this, "已发送验证码到该邮箱", Toast.LENGTH_SHORT).show();
+							fragmentEmailCode.setLeftTime();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+
+				});
+
+			}
+
+			@Override
+			public void onFailure(Call arg0, final IOException arg1) {
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						progressDialog.dismiss();
+						Toast.makeText(PasswordRecoverActivity.this, arg1.getLocalizedMessage(), Toast.LENGTH_LONG)
+								.show();
+					}
+				});
+			}
+		});
+	}
+
+	public void showProgress(int layoutResID) {
+		if (progressDialog != null) {
+			progressDialog.cancel();
+		}
+		progressDialog = new CustomProgressDialog(this, layoutResID);
+		/*
+		 * 将对话框的大小按屏幕大小的百分比设置
+		 */
+		Window dialogWindow = progressDialog.getWindow();
+		WindowManager m = getWindowManager();
+		Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+		WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+		p.width = (int) (d.getWidth() * 0.9); // 宽度设置为屏幕的0.9
+		dialogWindow.setAttributes(p);
+		progressDialog.show();
+	}
+
+	private void showAlertDialog(int layoutResID) {
+		if (alertDialog != null) {
+			alertDialog.show();
+		} else {
+			alertDialog = new CustomProgressDialog(this, layoutResID);
+			alertDialog.findViewById(R.id.btn_know).setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					alertDialog.cancel();
+				}
+			});
+			Window dialogWindow = alertDialog.getWindow();
+			WindowManager m = getWindowManager();
+			Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+			WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+			p.width = (int) (d.getWidth() * 0.9); // 宽度设置为屏幕的0.9
+			dialogWindow.setAttributes(p);
+			alertDialog.show();
+		}
+	}
+
+	private void goStep2() {
+
+		getFragmentManager()
+				.beginTransaction().setCustomAnimations(R.animator.slide_in_right, R.animator.slide_out_left,
+						R.animator.slide_in_left, R.animator.slide_out_right)
+				.replace(R.id.container, resetPwdFragment).commit();
+	}
+
+	private void goSubmit() {
+		showProgress(R.layout.custom_progressdialog);
+		String newPwd = resetPwdFragment.getPwd();
+		String newPwdConfirm = resetPwdFragment.getPwdConfirm();
+		if (TextUtils.isEmpty(newPwd)) {
+			progressDialog.dismiss();
+			Toast.makeText(this, "密码不能为空", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		if (!newPwd.equals(newPwdConfirm)) {
+			progressDialog.dismiss();
+			Toast.makeText(this, "两次输入的密码不一致", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		if (newPwd.length() < 6 || newPwd.length() > 16) {
+			progressDialog.dismiss();
+			Toast.makeText(this, "密码长度在6到16之间", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		OkHttpClient client = Server.getSharedClient();
+		MultipartBody body = new MultipartBody.Builder().addFormDataPart("email", email)
+				.addFormDataPart("password", MD5.getMD5(newPwd)).build();
+
+		Request request = Server.requestBuilderWithApi("updatePwd").post(body).build();
+
+		client.newCall(request).enqueue(new Callback() {
+
 			@Override
 			public void onResponse(Call arg0, Response arg1) throws IOException {
 				final String responseString = arg1.body().string();
-				ObjectMapper mapper = new ObjectMapper();
-				
-				User user = mapper.readValue(responseString, User.class);
-				
-				new AlertDialog.Builder(PasswordRecoverActivity.this).setMessage("seccuse,"+ user.getName())
-				.setPositiveButton("ok",new DialogInterface.OnClickListener(){
+				progressDialog.dismiss();
+				try {
+					final int flag=Integer.parseInt(responseString);
+					runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							if(flag==1){
+								Toast.makeText(PasswordRecoverActivity.this, "找回密码成功", Toast.LENGTH_SHORT)
+								.show();
+								finish();
+							}else{
+								Toast.makeText(PasswordRecoverActivity.this, "找回密码失败", Toast.LENGTH_SHORT)
+								.show();
+							}
+						}
+					});
+				} catch (Exception e) {
+					runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							Toast.makeText(PasswordRecoverActivity.this, "解析异常", Toast.LENGTH_SHORT)
+							.show();
+						}
+					});
+				}
+			}
+
+			@Override
+			public void onFailure(Call arg0, final IOException arg1) {
+				runOnUiThread(new Runnable() {
 
 					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						Intent itnt = new Intent(PasswordRecoverActivity.this, PasswordRecoverStep1Fragment.class);
-						startActivity(itnt);// TODO Auto-generated method stub			
+					public void run() {
+						Toast.makeText(PasswordRecoverActivity.this, arg1.getLocalizedMessage(), Toast.LENGTH_SHORT)
+								.show();
 					}
-					
-				}).show();// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onFailure(Call arg0, IOException arg1) {
-				// TODO Auto-generated method stub
-				
+				});
 			}
 		});
 	}

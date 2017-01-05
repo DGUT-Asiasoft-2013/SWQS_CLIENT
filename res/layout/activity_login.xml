@@ -37,8 +37,7 @@
             <EditText
                 android:id="@+id/etAccount"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/ivNick"
+                android:layout_height="40dp"
                 android:layout_alignTop="@id/ivNick"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/ivNick"
@@ -65,8 +64,7 @@
             <EditText
                 android:id="@+id/etPwd"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/ivPwd"
+                android:layout_height="40dp"
                 android:layout_alignTop="@id/ivPwd"
                 android:layout_below="@id/etAccount"
                 android:layout_marginLeft="10dp"
