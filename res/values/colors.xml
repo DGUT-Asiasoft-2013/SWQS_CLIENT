@@ -18,7 +18,6 @@
 
     <!-- 灰色 -->
 
-
     <color name="green">#008000</color>
 
     <!-- 绿色 -->
@@ -32,11 +31,16 @@
     <!-- 蓝色 -->
 
     <color name="white">#FFFFFF</color>
-
     <color name="light_blue">#8CA4FF</color>
     <color name="conv_list_split_line_color">#d6d6d6</color>
     <color name="network_disconnected_bg_color">#ffdfe0</color>
     <color name="jmui_reset_password_title_color">#4e4e4e</color>
     <color name="item_click_bg_color">#dddddd</color>
     <color name="menu_item_back_pres_color">#3773cb</color>
+    <color name="pale_blue">#3f80dc</color>
+    <color name="press_blue">#1F5B8D</color>
+    <color name="forbit_color">#D9D9D9</color>
+    <color name="french_gray">#D0D0D0</color>
+    <color name="edittext_color">#333333</color>
+
 </resources>
