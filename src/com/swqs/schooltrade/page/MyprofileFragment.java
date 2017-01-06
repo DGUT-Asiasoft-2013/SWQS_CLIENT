@@ -3,6 +3,7 @@ package com.swqs.schooltrade.page;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Set;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swqs.schooltrade.R;
@@ -39,6 +40,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.model.UserInfo;
 import cn.jpush.im.api.BasicCallback;
@@ -144,10 +147,16 @@ public class MyprofileFragment extends Fragment {
 		UserInfo myInfo = JMessageClient.getMyInfo();
         if (myInfo != null) {
             JMessageClient.logout();
+            JPushInterface.setAlias(getActivity(), "", new TagAliasCallback() {
+
+				@Override
+				public void gotResult(int arg0, String arg1, Set<String> arg2) {
+					Intent intent = new Intent(getActivity(),LoginActivity.class);
+					startActivity(intent);
+					getActivity().finish();
+				}
+			});
         } 
-		Intent intent = new Intent(getActivity(),LoginActivity.class);
-		startActivity(intent);
-		getActivity().finish();
 	}
 
 	private void myInformation() {

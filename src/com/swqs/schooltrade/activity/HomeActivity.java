@@ -1,5 +1,7 @@
 package com.swqs.schooltrade.activity;
 
+import java.util.Set;
+
 import com.swqs.schooltrade.R;
 import com.swqs.schooltrade.page.GoodsListFragment;
 import com.swqs.schooltrade.page.MyprofileFragment;
@@ -10,12 +12,17 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import cn.jmessage.android.uikit.chatting.ConversationListFragment;
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
+import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.model.UserInfo;
 
 public class HomeActivity extends Activity implements OnClickListener {
 
@@ -35,6 +42,7 @@ public class HomeActivity extends Activity implements OnClickListener {
 	private MyprofileFragment fragmentPageMe;
 	private SearchFragment fragmentPageSearch;
 	private ConversationListFragment fragmentconversation;
+	private static final String TAG = "HomeActivity";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +55,17 @@ public class HomeActivity extends Activity implements OnClickListener {
 		home();
 		// 提交事务
 		ft.commit();
+		UserInfo myInfo = JMessageClient.getMyInfo();
+		if (myInfo != null) {
+			JPushInterface.setAlias(HomeActivity.this, myInfo.getUserName(), new TagAliasCallback() {
+
+				@Override
+				public void gotResult(int arg0, String arg1, Set<String> arg2) {
+					Log.e(TAG, arg0 + "");
+					Log.e(TAG, arg1);
+				}
+			});
+		}
 	}
 
 	private void initView() {

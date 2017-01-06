@@ -193,6 +193,19 @@
         <activity android:name="cn.jmessage.android.uikit.multiselectphotos.PickPictureActivity" />
         <activity android:name="com.swqs.schooltrade.activity.EditPersonInfoActivity"></activity>
         <activity android:name="cn.jmessage.android.uikit.multiselectphotos.BrowserPhotoPagerActivity"></activity>
+         <receiver
+            android:name="com.swqs.schooltrade.receiver.MyReceiver"
+            android:enabled="true" >
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTRATION" />
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
+
+                <category android:name="com.swqs.schooltrade" />
+            </intent-filter>
+        </receiver>
+        
     </application>
 
 </manifest>

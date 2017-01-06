@@ -2,12 +2,13 @@ package com.swqs.schooltrade.activity;
 
 import java.io.IOException;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.swqs.schooltrade.R;
+import com.swqs.schooltrade.app.TradeApplication;
+import com.swqs.schooltrade.entity.User;
+import com.swqs.schooltrade.util.MD5;
+import com.swqs.schooltrade.util.Server;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -21,19 +22,19 @@ import android.widget.EditText;
 import android.widget.Toast;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.api.BasicCallback;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.swqs.schooltrade.R;
-import com.swqs.schooltrade.app.TradeApplication;
-import com.swqs.schooltrade.entity.User;
-import com.swqs.schooltrade.util.MD5;
-import com.swqs.schooltrade.util.Server;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class LoginActivity extends Activity {
 
 	private EditText etAccount;
 	private EditText etPwd;
 	private ProgressDialog dlg;
+	private static final String TAG="LoginActivity";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
