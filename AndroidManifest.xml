@@ -36,9 +36,9 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
     <application
+        android:name="com.swqs.schooltrade.app.TradeApplication"
         android:allowBackup="true"
         android:icon="@drawable/icon"
-        android:name="com.swqs.schooltrade.app.TradeApplication"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
@@ -50,14 +50,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.swqs.schooltrade.activity.LoginActivity" 
-            android:windowSoftInputMode="stateHidden|adjustResize">
+        <activity
+            android:name="com.swqs.schooltrade.activity.LoginActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.activity.RegisterActivity" 
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            >
+        <activity
+            android:name="com.swqs.schooltrade.activity.RegisterActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
-
         <activity android:name="com.swqs.schooltrade.activity.HomeActivity" >
         </activity>
         <activity android:name="com.swqs.schooltrade.activity.PasswordRecoverActivity" >
@@ -76,13 +76,17 @@
         </activity>
         <activity android:name="com.swqs.schooltrade.activity.EditGoodsActivity" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.activity.BuyOrderDetailsActivity" >
+        <activity android:name="com.swqs.schooltrade.activity.BuyOrderDetailsActivity" 
+            android:launchMode="singleTask"
+            >
         </activity>
         <activity android:name="com.swqs.schooltrade.activity.BuyEvaluationDetailsActivity" >
         </activity>
         <activity android:name="com.swqs.schooltrade.activity.BuyAdditionalEvaluationActivity" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.activity.SellOrderDetailsActivity" >
+        <activity android:name="com.swqs.schooltrade.activity.SellOrderDetailsActivity" 
+            android:launchMode="singleTask"
+            >
         </activity>
         <activity android:name="com.swqs.schooltrade.activity.SellEvaluationDetailsActivity" >
         </activity>
@@ -90,11 +94,13 @@
         </activity>
         <activity android:name="com.swqs.schooltrade.activity.BuyAndSelledActivity" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.activity.MyPublishGoodsActivity"></activity>
-        <activity android:name="com.swqs.schooltrade.activity.MyInforActivity"></activity>
-        
+        <activity android:name="com.swqs.schooltrade.activity.MyPublishGoodsActivity" >
+        </activity>
+        <activity android:name="com.swqs.schooltrade.activity.MyInforActivity" >
+        </activity>
+
         <!-- 极光IM所需要的一些东西 -->
-         <service
+        <service
             android:name="cn.jpush.android.service.PushService"
             android:enabled="true"
             android:exported="false"
@@ -185,15 +191,21 @@
         <activity
             android:name="cn.jmessage.android.uikit.chatting.ChatActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name="cn.jmessage.android.uikit.chatting.BrowserViewPagerActivity"></activity>
-        <activity android:name="cn.jmessage.android.uikit.chatting.PickPictureTotalActivity"></activity>
-        <activity android:name="cn.jmessage.android.uikit.chatting.PickPictureActivity"></activity>
-         <activity android:name="cn.jmessage.android.uikit.multiselectphotos.AlbumListActivity"/>
+        <activity android:name="cn.jmessage.android.uikit.chatting.BrowserViewPagerActivity" >
+        </activity>
+        <activity android:name="cn.jmessage.android.uikit.chatting.PickPictureTotalActivity" >
+        </activity>
+        <activity android:name="cn.jmessage.android.uikit.chatting.PickPictureActivity" >
+        </activity>
+        <activity android:name="cn.jmessage.android.uikit.multiselectphotos.AlbumListActivity" />
         <activity android:name="cn.jmessage.android.uikit.multiselectphotos.BrowserViewPagerActivity" />
         <activity android:name="cn.jmessage.android.uikit.multiselectphotos.PickPictureActivity" />
-        <activity android:name="com.swqs.schooltrade.activity.EditPersonInfoActivity"></activity>
-        <activity android:name="cn.jmessage.android.uikit.multiselectphotos.BrowserPhotoPagerActivity"></activity>
-         <receiver
+        <activity android:name="com.swqs.schooltrade.activity.EditPersonInfoActivity" >
+        </activity>
+        <activity android:name="cn.jmessage.android.uikit.multiselectphotos.BrowserPhotoPagerActivity" >
+        </activity>
+
+        <receiver
             android:name="com.swqs.schooltrade.receiver.MyReceiver"
             android:enabled="true" >
             <intent-filter>
@@ -205,7 +217,6 @@
                 <category android:name="com.swqs.schooltrade" />
             </intent-filter>
         </receiver>
-        
     </application>
 
 </manifest>

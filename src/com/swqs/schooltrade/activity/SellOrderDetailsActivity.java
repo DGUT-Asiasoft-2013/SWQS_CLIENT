@@ -8,8 +8,6 @@ import com.swqs.schooltrade.R;
 import com.swqs.schooltrade.app.TradeApplication;
 import com.swqs.schooltrade.entity.Goods;
 import com.swqs.schooltrade.entity.Identify;
-import com.swqs.schooltrade.entity.User;
-import com.swqs.schooltrade.util.MD5;
 import com.swqs.schooltrade.util.Server;
 import com.swqs.schooltrade.util.Util;
 
@@ -101,6 +99,13 @@ public class SellOrderDetailsActivity extends Activity {
 				sendGoods();
 			}
 		});
+		getOrderDetail();
+	}
+	
+	@Override
+	protected void onNewIntent(Intent intent) {
+		setIntent(intent);
+		goods = (Goods) getIntent().getSerializableExtra("data");
 		getOrderDetail();
 	}
 

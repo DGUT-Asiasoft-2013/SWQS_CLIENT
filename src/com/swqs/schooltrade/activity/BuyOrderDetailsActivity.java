@@ -2,9 +2,7 @@ package com.swqs.schooltrade.activity;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.List;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swqs.schooltrade.R;
 import com.swqs.schooltrade.app.TradeApplication;
@@ -117,6 +115,13 @@ public class BuyOrderDetailsActivity extends Activity {
 		getOrderDetail();
 	}
 
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		setIntent(intent);
+		goods = (Goods) getIntent().getSerializableExtra("data");
+		getOrderDetail();
+	}
 	protected void confirmReceive() {
 		OkHttpClient client = Server.getSharedClient();
 
