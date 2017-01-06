@@ -1,30 +1,36 @@
 package com.swqs.schooltrade.activity;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
-import com.swqs.schooltrade.R;
-import com.swqs.schooltrade.fragment.GetEmailCodeFragment;
-import com.swqs.schooltrade.fragment.ResetPwdFragment;
-import com.swqs.schooltrade.util.CustomProgressDialog;
-import com.swqs.schooltrade.util.MD5;
-import com.swqs.schooltrade.util.Server;
-import com.swqs.schooltrade.util.Util;
-
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.swqs.schooltrade.R;
+import com.swqs.schooltrade.entity.User;
+import com.swqs.schooltrade.fragment.GetEmailCodeFragment;
+import com.swqs.schooltrade.fragment.ResetPwdFragment;
+import com.swqs.schooltrade.util.CustomProgressDialog;
+import com.swqs.schooltrade.util.MD5;
+import com.swqs.schooltrade.util.Server;
+import com.swqs.schooltrade.util.Util;
 
 public class PasswordRecoverActivity extends Activity {
 
@@ -253,30 +259,39 @@ public class PasswordRecoverActivity extends Activity {
 			@Override
 			public void onResponse(Call arg0, Response arg1) throws IOException {
 				final String responseString = arg1.body().string();
-				progressDialog.dismiss();
+				
 				try {
-					final int flag=Integer.parseInt(responseString);
-					runOnUiThread(new Runnable() {
-						
-						@Override
-						public void run() {
-							if(flag==1){
-								Toast.makeText(PasswordRecoverActivity.this, "’“ªÿ√‹¬Î≥…π¶", Toast.LENGTH_SHORT)
-								.show();
-								finish();
-							}else{
-								Toast.makeText(PasswordRecoverActivity.this, "’“ªÿ√‹¬Î ß∞‹", Toast.LENGTH_SHORT)
-								.show();
+					if (responseString == null) {
+						runOnUiThread(new Runnable() {
+
+							@Override
+							public void run() {
+								progressDialog.dismiss();
+								Toast.makeText(PasswordRecoverActivity.this, "’“ªÿ√‹¬Î ß∞‹", Toast.LENGTH_SHORT).show();
 							}
-						}
-					});
+						});
+					} else {
+						ObjectMapper mapper = new ObjectMapper();
+						final User user = mapper.readValue(responseString, User.class);
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								if (user.getAccount() != null) {
+									resetJpushPwd(user.getAccount());
+								} else {
+									progressDialog.dismiss();
+									Toast.makeText(PasswordRecoverActivity.this, "’“ªÿ√‹¬Î ß∞‹", Toast.LENGTH_SHORT).show();
+								}
+							}
+						});
+					}
 				} catch (Exception e) {
 					runOnUiThread(new Runnable() {
-						
+
 						@Override
 						public void run() {
-							Toast.makeText(PasswordRecoverActivity.this, "Ω‚Œˆ“Ï≥£", Toast.LENGTH_SHORT)
-							.show();
+							progressDialog.dismiss();
+							Toast.makeText(PasswordRecoverActivity.this, "Ω‚Œˆ“Ï≥£", Toast.LENGTH_SHORT).show();
 						}
 					});
 				}
@@ -288,11 +303,59 @@ public class PasswordRecoverActivity extends Activity {
 
 					@Override
 					public void run() {
+						progressDialog.dismiss();
 						Toast.makeText(PasswordRecoverActivity.this, arg1.getLocalizedMessage(), Toast.LENGTH_SHORT)
 								.show();
 					}
 				});
 			}
 		});
+	}
+
+	private void resetJpushPwd(String account) {
+		String appKey = "f6d10137deeefed4339d2888";
+		String masterSecret = "8ea0c0339a86747b97f5024c";
+		String base64 = getBase64(appKey + ":" + masterSecret);
+		OkHttpClient client = Server.getSharedClient();
+		RequestBody body=RequestBody.create(MediaType.parse("application/json"), "{'new_password': '"+resetPwdFragment.getPwd()+"' }");
+		Request request = new Request.Builder().url("https://api.im.jpush.cn/v1/users/" + account + "/password")
+				.addHeader("Authorization", "Basic "+base64)
+				.put(body).build();
+		client.newCall(request).enqueue(new Callback() {
+
+			@Override
+			public void onResponse(Call arg0, Response arg1) throws IOException {
+				final String jsonString = arg1.body().string();
+				progressDialog.dismiss();
+				runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						Log.e("OK", jsonString);
+						Toast.makeText(PasswordRecoverActivity.this, "’“ªÿ√‹¬Î≥…π¶" + jsonString, Toast.LENGTH_LONG).show();
+						finish();
+					}
+				});
+			}
+
+			@Override
+			public void onFailure(Call arg0, IOException arg1) {
+				Toast.makeText(PasswordRecoverActivity.this, arg1.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+			}
+		});
+	}
+
+	private String getBase64(String str) {
+		byte[] b = null;
+		String s = null;
+		try {
+			b = str.getBytes("utf-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		if (b != null) {
+			s = new Decoder.BASE64Encoder().encode(b);
+		}
+		return s;
 	}
 }
