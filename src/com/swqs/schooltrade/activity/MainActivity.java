@@ -47,7 +47,7 @@ public class MainActivity extends Activity {
 					final String account = sp.getString(TradeApplication.ACCOUNT, "");
 					final String password = sp.getString(TradeApplication.PASSWORD, "");
 					OkHttpClient client = Server.getSharedClient();
-					MultipartBody requestBody = new MultipartBody.Builder().addFormDataPart("account", account)
+					MultipartBody requestBody = new MultipartBody.Builder().addFormDataPart("accountOrEmail", account)
 							.addFormDataPart("password", MD5.getMD5(password)).build();
 					Request request = Server.requestBuilderWithApi("login").method("post", null).post(requestBody)
 							.build();
@@ -64,14 +64,14 @@ public class MainActivity extends Activity {
 								public void run() {
 									try {
 										final User user = mapper.readValue(responseSrting, User.class);
-										if (user.getAccount().equals("accountIsNotExist")) {
+										if (user.getAccount().equals("userIsNotExist")) {
 											startLoginActivity();
 											return;
 										} else if (user.getAccount().equals("passwordIsNotRight")) {
 											startLoginActivity();
 											return;
 										}
-										loginToJpush(account, password);
+										loginToJpush(user.getAccount(), password);
 
 									} catch (Exception e) {
 										startLoginActivity();

@@ -199,7 +199,7 @@ public class MyprofileFragment extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == Activity.RESULT_CANCELED)
 			return;
-		if (requestCode == REQUESTCODE_CAMERA&&data!=null) {
+		if (requestCode == REQUESTCODE_CAMERA) {
 //			Bitmap bmp = (Bitmap) data.getExtras().get("data");
 //			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 //			bmp.compress(CompressFormat.PNG, 100, baos);
