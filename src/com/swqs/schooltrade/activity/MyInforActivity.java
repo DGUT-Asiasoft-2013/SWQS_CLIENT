@@ -115,7 +115,11 @@ public class MyInforActivity extends Activity implements OnClickListener {
 		}
 		tvSex.setText(sex);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		tvBirthday.setText(sdf.format(user.getBirthday()));
+		if (user.getBirthday() != null) {
+			tvBirthday.setText(sdf.format(user.getBirthday()));
+		}else{
+			tvBirthday.setText("");
+		}
 		if (TextUtils.isEmpty(user.getPhone())) {
 			tvPhone.setText("");
 		} else {
