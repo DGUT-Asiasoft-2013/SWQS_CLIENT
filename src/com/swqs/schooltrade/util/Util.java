@@ -9,6 +9,9 @@ import com.swqs.schooltrade.R;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.view.Display;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -96,5 +99,21 @@ public class Util {
 			flag = false;
 		}
 		return flag;
+	}
+	
+	public static CustomProgressDialog getProgressDialog(Activity act,int layoutResID) {
+		CustomProgressDialog progressDialog;
+		progressDialog = new CustomProgressDialog(act, layoutResID);
+		progressDialog.setCanceledOnTouchOutside(false);
+		/*
+		 * 将对话框的大小按屏幕大小的百分比设置
+		 */
+		Window dialogWindow = progressDialog.getWindow();
+		WindowManager m = act.getWindowManager();
+		Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+		WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+		p.width = (int) (d.getWidth() * 0.9); // 宽度设置为屏幕的0.9
+		dialogWindow.setAttributes(p);
+		return progressDialog;
 	}
 }

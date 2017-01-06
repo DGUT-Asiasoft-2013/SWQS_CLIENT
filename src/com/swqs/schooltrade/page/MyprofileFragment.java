@@ -1,7 +1,8 @@
 package com.swqs.schooltrade.page;
 
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swqs.schooltrade.R;
@@ -14,8 +15,11 @@ import com.swqs.schooltrade.activity.MyMoneyActivity;
 import com.swqs.schooltrade.activity.MyPublishGoodsActivity;
 import com.swqs.schooltrade.app.TradeApplication;
 import com.swqs.schooltrade.entity.User;
+import com.swqs.schooltrade.util.CustomProgressDialog;
+import com.swqs.schooltrade.util.FileUtils;
 import com.swqs.schooltrade.util.RoundImageView;
 import com.swqs.schooltrade.util.Server;
+import com.swqs.schooltrade.util.Util;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -24,17 +28,20 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.model.UserInfo;
+import cn.jpush.im.api.BasicCallback;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -52,6 +59,8 @@ public class MyprofileFragment extends Fragment {
 	public static final int REQUESTCODE_CAMERA = 0x123;
 	public static final int REQUESTCODE_ALBUM = 0x124;
 	private byte[] pngData;
+	private String photoPath;
+	private CustomProgressDialog progressDialog;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -169,8 +178,15 @@ public class MyprofileFragment extends Fragment {
 	}
 
 	void takePhoto() {
-		Intent itnt = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		startActivityForResult(itnt, REQUESTCODE_CAMERA);
+		File FileDir = new File(FileUtils.SDPATH);
+		if (!FileDir.exists()) {
+			FileDir.mkdirs();
+		}
+		photoPath = FileUtils.SDPATH + "/" + new Date().getTime() + ".jpg";
+		Uri photoUri = Uri.fromFile(new File(photoPath));
+		Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+		startActivityForResult(openCameraIntent, REQUESTCODE_CAMERA);
 	}
 
 	void pickFromAlbum() {
@@ -183,29 +199,41 @@ public class MyprofileFragment extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == Activity.RESULT_CANCELED)
 			return;
-		if (requestCode == REQUESTCODE_CAMERA) {
-			Bitmap bmp = (Bitmap) data.getExtras().get("data");
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			bmp.compress(CompressFormat.PNG, 100, baos);
-			pngData = baos.toByteArray();
-			uploadImage();
-		} else if (requestCode == REQUESTCODE_ALBUM) {
+		if (requestCode == REQUESTCODE_CAMERA&&data!=null) {
+//			Bitmap bmp = (Bitmap) data.getExtras().get("data");
+//			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//			bmp.compress(CompressFormat.PNG, 100, baos);
+//			pngData = baos.toByteArray();
+			uploadImage(photoPath);
+		} else if (requestCode == REQUESTCODE_ALBUM&&data!=null) {
 			try {
-				Bitmap bmp = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), data.getData());
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				bmp.compress(CompressFormat.PNG, 100, baos);
-				pngData = baos.toByteArray();
-				uploadImage();
+//				Bitmap bmp = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), data.getData());
+//				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//				bmp.compress(CompressFormat.PNG, 100, baos);
+//				pngData = baos.toByteArray();
+				Uri selectedImage = data.getData();
+	            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+	            Cursor cursor = getActivity().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+	            cursor.moveToFirst();
+
+	            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+	            String path = cursor.getString(columnIndex);
+
+	            cursor.close();
+				uploadImage(path);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	private void uploadImage() {
-		if (pngData != null) {
+	private void uploadImage(final String path) {
+		if (path != null) {
+			progressDialog=Util.getProgressDialog(getActivity(), R.layout.custom_progressdialog);
+			progressDialog.show();
 			MultipartBody.Builder body = new MultipartBody.Builder();
-			body.addFormDataPart("avatar", "avatar", RequestBody.create(MediaType.parse("image/png"), pngData));
+			body.addFormDataPart("avatar", "avatar", RequestBody.create(MediaType.parse("image/png"), new File(path)));
 			Request request = Server.requestBuilderWithApi("updateFace").post(body.build()).build();
 
 			Server.getSharedClient().newCall(request).enqueue(new Callback() {
@@ -215,18 +243,43 @@ public class MyprofileFragment extends Fragment {
 					final String responseSrting = arg1.body().string();
 					final ObjectMapper mapper = new ObjectMapper();
 					final User user = mapper.readValue(responseSrting, User.class);
+					File file = new File(path);
+                    try {
+                        JMessageClient.updateUserAvatar(file, new BasicCallback() {
+                            @Override
+                            public void gotResult(final int i, final String s) {
+                            	getActivity().runOnUiThread(new Runnable() {
+									
+									@Override
+									public void run() {
+										 if (i == 0) {
+			                                	progressDialog.dismiss();
+			                                	avatar.load(Server.serverAddress+user.getFace_url());
+			                                    Toast.makeText(getActivity(), "修改成功", Toast.LENGTH_SHORT).show();
+			                                } else {
+			                                	progressDialog.dismiss();
+			                                    Toast.makeText(getActivity(), "修改失败", Toast.LENGTH_SHORT).show();
+			                                    Log.i("UpdateUserAvatar", "JMessageClient.updateUserAvatar" + ", responseCode = " + i + " ; LoginDesc = " + s);
+			                                }
+									}
+								});
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+				}
+				
+				@Override
+				public void onFailure(Call arg0, final IOException arg1) {
+					progressDialog.dismiss();
 					getActivity().runOnUiThread(new Runnable() {
 						
 						@Override
 						public void run() {
-							avatar.load(Server.serverAddress+user.getFace_url());
+							Toast.makeText(getActivity(), arg1.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
 						}
 					});
-				}
-				
-				@Override
-				public void onFailure(Call arg0, IOException arg1) {
-					
 				}
 			});
 		}

@@ -33,7 +33,8 @@ public class LoginActivity extends Activity {
 
 	private EditText etAccount;
 	private EditText etPwd;
-
+	private ProgressDialog dlg;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -95,13 +96,12 @@ public class LoginActivity extends Activity {
 
 			OkHttpClient client = Server.getSharedClient();
 
-			MultipartBody requestBody = new MultipartBody.Builder().addFormDataPart("account", account)
+			MultipartBody requestBody = new MultipartBody.Builder().addFormDataPart("accountOrEmail", account)
 					.addFormDataPart("password", MD5.getMD5(password)).build();
 
 			Request request = Server.requestBuilderWithApi("login").method("post", null).post(requestBody).build();
 
-			final ProgressDialog dlg = new ProgressDialog(this);
-			dlg.setCancelable(false);
+			dlg = new ProgressDialog(this);
 			dlg.setCanceledOnTouchOutside(false);
 			dlg.setMessage("loading");
 			dlg.show();
@@ -119,15 +119,16 @@ public class LoginActivity extends Activity {
 						public void run() {
 							try {
 								final User user = mapper.readValue(responseSrting, User.class);
-								dlg.dismiss();
-								if (user.getAccount().equals("accountIsNotExist")) {
-									Toast.makeText(LoginActivity.this, "账号不存在", Toast.LENGTH_SHORT).show();
+								if (user.getAccount().equals("userIsNotExist")) {
+									dlg.dismiss();
+									Toast.makeText(LoginActivity.this, "用户不存在", Toast.LENGTH_SHORT).show();
 									return;
 								} else if (user.getAccount().equals("passwordIsNotRight")) {
+									dlg.dismiss();
 									Toast.makeText(LoginActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
 									return;
 								}
-								loginToJpush();
+								loginToJpush(user.getAccount());
 
 							} catch (Exception e) {
 
@@ -157,14 +158,14 @@ public class LoginActivity extends Activity {
 		startActivity(itnt);
 	}
 
-	public void loginToJpush() {
-		final String account = etAccount.getText().toString().trim();
+	public void loginToJpush(final String account) {
 		final String password = etPwd.getText().toString();
 		/** ================= 调用SDk登陆接口 ================= */
 		JMessageClient.login(account, password, new BasicCallback() {
 			@Override
 			public void gotResult(int responseCode, String LoginDesc) {
 				if (responseCode == 0) {
+					dlg.dismiss();
 					Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
 					Log.i("MainActivity", "JMessageClient.login" + ", responseCode = " + responseCode
 							+ " ; LoginDesc = " + LoginDesc);
@@ -180,6 +181,7 @@ public class LoginActivity extends Activity {
 					startActivity(intent);
 					finish();
 				} else {
+					dlg.dismiss();
 					Toast.makeText(getApplicationContext(), "登录失败", Toast.LENGTH_SHORT).show();
 					Log.i("MainActivity", "JMessageClient.login" + ", responseCode = " + responseCode
 							+ " ; LoginDesc = " + LoginDesc);
