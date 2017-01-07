@@ -43,7 +43,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".activity.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,51 +53,87 @@
         </activity>
         <activity
             android:name="com.swqs.schooltrade.activity.LoginActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
             android:name="com.swqs.schooltrade.activity.RegisterActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.activity.HomeActivity" >
+        <activity
+            android:name="com.swqs.schooltrade.activity.HomeActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.activity.PasswordRecoverActivity" >
+        <activity
+            android:name="com.swqs.schooltrade.activity.PasswordRecoverActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.activity.MyMoneyActivity" >
+        <activity
+            android:name="com.swqs.schooltrade.activity.MyMoneyActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.activity.MyCollection" >
+        <activity
+            android:name="com.swqs.schooltrade.activity.MyCollection"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.activity.MyCredit" >
+        <activity
+            android:name="com.swqs.schooltrade.activity.MyCredit"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.activity.RechargeActivity" >
+        <activity
+            android:name="com.swqs.schooltrade.activity.RechargeActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.activity.GoodsContentActivity" >
+        <activity
+            android:name="com.swqs.schooltrade.activity.GoodsContentActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.activity.NewGoodsActivity" >
+        <activity
+            android:name="com.swqs.schooltrade.activity.NewGoodsActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.activity.EditGoodsActivity" >
+        <activity
+            android:name="com.swqs.schooltrade.activity.EditGoodsActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.activity.BuyOrderDetailsActivity" 
+        <activity
+            android:name="com.swqs.schooltrade.activity.BuyOrderDetailsActivity"
             android:launchMode="singleTask"
-            >
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.activity.BuyEvaluationDetailsActivity" >
+        <activity
+            android:name="com.swqs.schooltrade.activity.BuyEvaluationDetailsActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.activity.BuyAdditionalEvaluationActivity" >
+        <activity
+            android:name="com.swqs.schooltrade.activity.BuyAdditionalEvaluationActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.activity.SellOrderDetailsActivity" 
+        <activity
+            android:name="com.swqs.schooltrade.activity.SellOrderDetailsActivity"
             android:launchMode="singleTask"
-            >
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.activity.SellEvaluationDetailsActivity" >
+        <activity
+            android:name="com.swqs.schooltrade.activity.SellEvaluationDetailsActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.activity.SellAdditionalEvaluationActivity" >
+        <activity
+            android:name="com.swqs.schooltrade.activity.SellAdditionalEvaluationActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.activity.BuyAndSelledActivity" >
+        <activity
+            android:name="com.swqs.schooltrade.activity.BuyAndSelledActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.activity.MyPublishGoodsActivity" >
+        <activity
+            android:name="com.swqs.schooltrade.activity.MyPublishGoodsActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.swqs.schooltrade.activity.MyInforActivity" >
+        <activity
+            android:name="com.swqs.schooltrade.activity.MyInforActivity"
+            android:screenOrientation="portrait" >
         </activity>
 
         <!-- 极光IM所需要的一些东西 -->
@@ -190,19 +227,36 @@
         <activity android:name="cn.jmessage.android.uikit.chatting.BaseActivity" />
         <activity
             android:name="cn.jmessage.android.uikit.chatting.ChatActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name="cn.jmessage.android.uikit.chatting.BrowserViewPagerActivity" >
+        <activity
+            android:name="cn.jmessage.android.uikit.chatting.BrowserViewPagerActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="cn.jmessage.android.uikit.chatting.PickPictureTotalActivity" >
+        <activity
+            android:name="cn.jmessage.android.uikit.chatting.PickPictureTotalActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="cn.jmessage.android.uikit.chatting.PickPictureActivity" >
+        <activity
+            android:name="cn.jmessage.android.uikit.chatting.PickPictureActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="cn.jmessage.android.uikit.multiselectphotos.AlbumListActivity" />
-        <activity android:name="cn.jmessage.android.uikit.multiselectphotos.BrowserViewPagerActivity" />
-        <activity android:name="cn.jmessage.android.uikit.multiselectphotos.PickPictureActivity" />
-        <activity android:name="com.swqs.schooltrade.activity.EditPersonInfoActivity" >
+        <activity
+            android:name="cn.jmessage.android.uikit.multiselectphotos.AlbumListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="cn.jmessage.android.uikit.multiselectphotos.BrowserViewPagerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="cn.jmessage.android.uikit.multiselectphotos.PickPictureActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.swqs.schooltrade.activity.EditPersonInfoActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="cn.jmessage.android.uikit.multiselectphotos.BrowserPhotoPagerActivity" >
+        <activity
+            android:name="cn.jmessage.android.uikit.multiselectphotos.BrowserPhotoPagerActivity"
+            android:screenOrientation="portrait" >
         </activity>
 
         <receiver

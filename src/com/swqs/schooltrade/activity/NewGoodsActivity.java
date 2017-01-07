@@ -302,6 +302,10 @@ public class NewGoodsActivity extends BaseActivity {
 			Toast.makeText(this, "请输入商品价格", Toast.LENGTH_SHORT).show();
 			return;
 		}
+		if(imageItemList.size()<=0){
+			Toast.makeText(this, "请选择商品图片", Toast.LENGTH_SHORT).show();
+			return;
+		}
 		MultipartBody.Builder body = new MultipartBody.Builder()
 				.addFormDataPart("title", title)
 				.addFormDataPart("content", content)

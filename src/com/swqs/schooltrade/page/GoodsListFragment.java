@@ -46,9 +46,9 @@ public class GoodsListFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		if (view==null){
+		if (view == null) {
 			view = inflater.inflate(R.layout.fragment_page_goods_list, null);
-			
+
 			listView = (ListView) view.findViewById(R.id.goodslist);
 
 			listView.setAdapter(listAdapter);
@@ -66,42 +66,44 @@ public class GoodsListFragment extends Fragment {
 	}
 
 	BaseAdapter listAdapter = new BaseAdapter() {
-		
+
 		@SuppressLint("InflateParams")
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View view = null;
-            ViewHolder viewHolder;
-			
-			if(convertView==null){
+			ViewHolder viewHolder;
+
+			if (convertView == null) {
 				viewHolder = new ViewHolder();
 				LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 				view = inflater.inflate(R.layout.widget_goods_item, null);
 				viewHolder.textTitle = (TextView) view.findViewById(R.id.title_content);
-				viewHolder.textPrice = (TextView)view.findViewById(R.id.originalprice_content);
+				viewHolder.textPrice = (TextView) view.findViewById(R.id.originalprice_content);
 				viewHolder.imageGoods = (ImageView) view.findViewById(R.id.goods_image);
-				viewHolder.tvName=(TextView) view.findViewById(R.id.tvName);
-				viewHolder.roundAvatar=(RoundImageView) view.findViewById(R.id.roundAvatar);
-				viewHolder.tvTime=(TextView) view.findViewById(R.id.tvTime);
+				viewHolder.tvName = (TextView) view.findViewById(R.id.tvName);
+				viewHolder.roundAvatar = (RoundImageView) view.findViewById(R.id.roundAvatar);
+				viewHolder.tvTime = (TextView) view.findViewById(R.id.tvTime);
 				view.setTag(viewHolder);
-			}else{
+			} else {
 				view = convertView;
 				viewHolder = (ViewHolder) view.getTag();
-			}		
+			}
 
 			Goods goods = data.get(position);
 			viewHolder.tvName.setText(goods.getAccount().getAccount());
 			viewHolder.textTitle.setText(goods.getTitle());
-			viewHolder.textPrice.setText(goods.getOriginalPrice()+"");
-			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm");
+			viewHolder.textPrice.setText(goods.getOriginalPrice() + "");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 			viewHolder.tvTime.setText(sdf.format(goods.getCreateDate()));
 			Util.loadImage(getActivity(), goods.getAccount().getFace_url(), viewHolder.roundAvatar);
-			Util.loadImage(getActivity(), goods.getListImage().get(0).getPictureUrl(), viewHolder.imageGoods);
+			if (goods.getListImage() != null && goods.getListImage().size() > 0) {
+				Util.loadImage(getActivity(), goods.getListImage().get(0).getPictureUrl(), viewHolder.imageGoods);
+			}
 
 			return view;
 		}
-		
-		class ViewHolder{
+
+		class ViewHolder {
 			public TextView tvName;
 			public RoundImageView roundAvatar;
 			public TextView tvTime;
@@ -122,11 +124,11 @@ public class GoodsListFragment extends Fragment {
 
 		@Override
 		public int getCount() {
-			return data==null ? 0 : data.size();
+			return data == null ? 0 : data.size();
 		}
 	};
 
-	void onItemClicked(int position){
+	void onItemClicked(int position) {
 		Goods goods = data.get(position);
 
 		Intent itnt = new Intent(getActivity(), GoodsContentActivity.class);
@@ -141,14 +143,16 @@ public class GoodsListFragment extends Fragment {
 		reload();
 	}
 
-	void reload(){
+	void reload() {
 		Request request = Server.requestBuilderWithApi("getlistgoods").get().build();
 
 		Server.getSharedClient().newCall(request).enqueue(new Callback() {
 			@Override
 			public void onResponse(Call arg0, Response arg1) throws IOException {
-				try{
-					final List<Goods> data = new ObjectMapper().readValue(arg1.body().string(), new TypeReference<List<Goods>>(){});
+				try {
+					final List<Goods> data = new ObjectMapper().readValue(arg1.body().string(),
+							new TypeReference<List<Goods>>() {
+							});
 
 					getActivity().runOnUiThread(new Runnable() {
 						public void run() {
@@ -156,7 +160,7 @@ public class GoodsListFragment extends Fragment {
 							listAdapter.notifyDataSetInvalidated();
 						}
 					});
-				}catch(final Exception e){
+				} catch (final Exception e) {
 					getActivity().runOnUiThread(new Runnable() {
 						public void run() {
 							new AlertDialog.Builder(getActivity()).setMessage(e.getMessage()).show();
