@@ -6,9 +6,8 @@ import java.util.List;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swqs.schooltrade.R;
-import com.swqs.schooltrade.activity.SellEvaluationDetailsActivity;
 import com.swqs.schooltrade.activity.SellOrderDetailsActivity;
-import com.swqs.schooltrade.entity.Goods;
+import com.swqs.schooltrade.entity.Identify;
 import com.swqs.schooltrade.util.Server;
 import com.swqs.schooltrade.util.Util;
 
@@ -18,11 +17,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,7 +34,7 @@ public class SellDetailsFragment extends Fragment {
 	View view;
 	ListView listView;
 
-	List<Goods> data;
+	List<Identify> data;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,7 +69,7 @@ public class SellDetailsFragment extends Fragment {
 			public void onResponse(Call arg0, Response arg1) throws IOException {
 				String jsonString = arg1.body().string();
 				ObjectMapper mapper = new ObjectMapper();
-				List<Goods> goodsList = mapper.readValue(jsonString, new TypeReference<List<Goods>>() {
+				List<Identify> goodsList = mapper.readValue(jsonString, new TypeReference<List<Identify>>() {
 				});
 				data = goodsList;
 				getActivity().runOnUiThread(new Runnable() {
@@ -126,11 +123,20 @@ public class SellDetailsFragment extends Fragment {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			Goods goods = data.get(position);
-			holder.tvTitle.setText(goods.getTitle());
-			holder.tvMoney.setText("￥" + goods.getCurPrice() + "");
-			Util.loadImage(getActivity(), goods.getListImage().get(0).getPictureUrl(), holder.ivImg);
-			holder.tvState.setText("已出售");
+			Identify identify = data.get(position);
+			holder.tvTitle.setText(identify.getGoods().getTitle());
+			holder.tvMoney.setText("￥" + identify.getGoods().getCurPrice());
+			Util.loadImage(getActivity(), identify.getGoods().getListImage().get(0).getPictureUrl(), holder.ivImg);
+			int state=identify.getTradeState();
+			String strState="";
+			if(state==1){
+				strState="未发货";
+			}else if(state==2){
+				strState="已发货";
+			}else if(state==3){
+				strState="买家已收货";
+			}
+			holder.tvState.setText(strState);
 			return convertView;
 		}
 
@@ -162,7 +168,7 @@ public class SellDetailsFragment extends Fragment {
 	void onItemClicked(int position) {
 
 		Intent itnt = new Intent(getActivity(), SellOrderDetailsActivity.class);
-		itnt.putExtra("data", data.get(position));
+		itnt.putExtra("data", data.get(position).getGoods());
 
 		startActivity(itnt);
 	}
