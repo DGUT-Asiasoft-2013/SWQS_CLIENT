@@ -10,7 +10,7 @@ import com.swqs.schooltrade.app.TradeApplication;
 import com.swqs.schooltrade.entity.Comment;
 import com.swqs.schooltrade.entity.Goods;
 import com.swqs.schooltrade.entity.User;
-import com.swqs.schooltrade.util.AvatarView;
+import com.swqs.schooltrade.util.CustomProgressDialog;
 import com.swqs.schooltrade.util.MD5;
 import com.swqs.schooltrade.util.RoundImageView;
 import com.swqs.schooltrade.util.Server;
@@ -23,7 +23,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -57,6 +56,7 @@ public class GoodsContentActivity extends Activity {
 	RelativeLayout layoutOthers;
 	RelativeLayout layoutMe;
 	RelativeLayout layoutComment;
+	private CustomProgressDialog progressDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -366,6 +366,8 @@ public class GoodsContentActivity extends Activity {
 	}
 
 	private void buyGoods(String pwd) {
+		progressDialog=Util.getProgressDialog(this, R.layout.custom_progressdialog);
+		progressDialog.show();
 		MultipartBody.Builder requestBodyBuilder = new MultipartBody.Builder().addFormDataPart("password",
 				MD5.getMD5(pwd));
 
@@ -377,6 +379,7 @@ public class GoodsContentActivity extends Activity {
 			@Override
 			public void onResponse(Call arg0, Response arg1) throws IOException {
 				String responseString = arg1.body().string();
+				progressDialog.dismiss();
 				if ("passwordIsNotRight".equals(responseString)) {
 					runOnUiThread(new Runnable() {
 
@@ -409,7 +412,8 @@ public class GoodsContentActivity extends Activity {
 
 			@Override
 			public void onFailure(Call arg0, IOException arg1) {
-
+				progressDialog.dismiss();
+				Toast.makeText(GoodsContentActivity.this, arg1.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
 			}
 		});
 	}

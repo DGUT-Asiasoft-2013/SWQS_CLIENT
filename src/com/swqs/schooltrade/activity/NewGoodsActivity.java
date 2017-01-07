@@ -7,10 +7,12 @@ import java.util.Date;
 import java.util.List;
 
 import com.swqs.schooltrade.R;
+import com.swqs.schooltrade.util.CustomProgressDialog;
 import com.swqs.schooltrade.util.FileUtils;
 import com.swqs.schooltrade.util.GridPhotoAdapter;
 import com.swqs.schooltrade.util.ImageItem;
 import com.swqs.schooltrade.util.Server;
+import com.swqs.schooltrade.util.Util;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -63,6 +65,7 @@ public class NewGoodsActivity extends BaseActivity {
 	private List<ImageItem> imageItemList = new ArrayList<ImageItem>();
 	private String photoPath = null;
 	private View parentView;
+	private CustomProgressDialog progressDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -306,6 +309,8 @@ public class NewGoodsActivity extends BaseActivity {
 			Toast.makeText(this, "请选择商品图片", Toast.LENGTH_SHORT).show();
 			return;
 		}
+		progressDialog=Util.getProgressDialog(this, R.layout.custom_progressdialog);
+		progressDialog.show();
 		MultipartBody.Builder body = new MultipartBody.Builder()
 				.addFormDataPart("title", title)
 				.addFormDataPart("content", content)
@@ -343,6 +348,7 @@ public class NewGoodsActivity extends BaseActivity {
 	}
 
 	void onSucceed(String text) {
+		progressDialog.dismiss();
 		Toast.makeText(this, "发布成功", Toast.LENGTH_SHORT).show();
 		finish();
 		overridePendingTransition(R.anim.none, R.anim.slide_out_bottom);
@@ -358,6 +364,7 @@ public class NewGoodsActivity extends BaseActivity {
 	}
 
 	void onFailure(Exception e) {
+		progressDialog.dismiss();
 		new AlertDialog.Builder(this).setMessage(e.getMessage()).show();
 	}
 }
