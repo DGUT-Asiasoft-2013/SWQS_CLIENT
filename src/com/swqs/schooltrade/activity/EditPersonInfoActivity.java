@@ -168,6 +168,10 @@ public class EditPersonInfoActivity extends Activity implements OnClickListener 
 		String sex=tvSex.getText().toString();
 		if(sex.equals("Î´Ñ¡Ôñ")){
 			sex="0";
+		}else if(sex.equals("ÄÐ")){
+			sex="1";
+		}else if(sex.equals("Å®")){
+			sex="2";
 		}
 		OkHttpClient client = Server.getSharedClient();
 		MultipartBody.Builder requestBodyBuilder = new MultipartBody.Builder()
