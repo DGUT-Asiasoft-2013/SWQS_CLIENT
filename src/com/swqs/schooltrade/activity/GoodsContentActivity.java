@@ -316,6 +316,7 @@ public class GoodsContentActivity extends Activity {
 
 				runOnUiThread(new Runnable() {
 					public void run() {
+						editComment.setText("");
 						reload();
 						if (user.getId().equals(goods.getAccount().getId())) {
 							layoutComment.setVisibility(View.GONE);
