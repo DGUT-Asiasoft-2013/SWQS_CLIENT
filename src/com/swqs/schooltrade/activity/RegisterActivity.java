@@ -99,6 +99,11 @@ public class RegisterActivity extends Activity{
 			Toast.makeText(this, "两次输入的密码不一致", Toast.LENGTH_SHORT).show();
 			return;
 		}
+		if(account.length()<4){
+			progressDialog.dismiss();
+			Toast.makeText(this, "账号长度至少4位", Toast.LENGTH_SHORT).show();
+			return;
+		}
 		if(pwd.length()<6||pwd.length()>16){
 			progressDialog.dismiss();
 			Toast.makeText(this, "密码长度在6到16之间", Toast.LENGTH_SHORT).show();
