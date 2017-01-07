@@ -3,33 +3,30 @@ package com.swqs.schooltrade.page;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swqs.schooltrade.R;
 import com.swqs.schooltrade.activity.GoodsContentActivity;
 import com.swqs.schooltrade.entity.Goods;
-import com.swqs.schooltrade.util.AvatarView;
 import com.swqs.schooltrade.util.RoundImageView;
 import com.swqs.schooltrade.util.Server;
 import com.swqs.schooltrade.util.Util;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.ReferenceType;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import okhttp3.Call;
@@ -43,6 +40,7 @@ public class GoodsListFragment extends Fragment {
 	ListView listView;
 
 	List<Goods> data;
+	ImageView ivRefresh;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,9 +58,35 @@ public class GoodsListFragment extends Fragment {
 					onItemClicked(position);
 				}
 			});
+			ivRefresh = (ImageView) view.findViewById(R.id.ivRefresh);
+			ivRefresh.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					runFrame();
+					reload();
+				}
+			});
+			ivRefresh.setBackgroundResource(R.drawable.refresh_loading);
 		}
 
 		return view;
+	}
+
+	public void runFrame() {
+		// 完全编码实现的动画效果
+		AnimationDrawable anim = new AnimationDrawable();
+		for (int i = 1; i <= 12; i++) {
+			// 根据资源名称和目录获取R.java中对应的资源ID
+			int id = getResources().getIdentifier("refresh_loading_" + i, "drawable", getActivity().getPackageName());
+			// 根据资源ID获取到Drawable对象
+			Drawable drawable = getResources().getDrawable(id);
+			// 将此帧添加到AnimationDrawable中
+			anim.addFrame(drawable, 80);
+		}
+		anim.setOneShot(true); // 设置为loop
+		ivRefresh.setBackgroundDrawable(anim); // 将动画设置为ImageView背景
+		anim.start(); // 开始动画
 	}
 
 	BaseAdapter listAdapter = new BaseAdapter() {
