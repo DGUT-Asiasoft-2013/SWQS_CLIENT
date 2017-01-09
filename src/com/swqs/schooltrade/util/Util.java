@@ -32,7 +32,7 @@ public class Util {
 			public void onResponse(Call arg0, Response arg1) throws IOException {
 				try {
 					byte[] bytes = arg1.body().bytes();
-					final Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+					final Bitmap bmp = FileUtils.revitionImageSize(bytes);
 					activity.runOnUiThread(new Runnable() {
 
 						@Override

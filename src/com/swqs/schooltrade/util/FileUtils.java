@@ -38,6 +38,24 @@ public class FileUtils {
 		}
 		return bitmap;
 	}
+	public static Bitmap revitionImageSize(byte[] byteArray) throws IOException {
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length, options);
+		int i = 0;
+		Bitmap bitmap = null;
+		while (true) {
+			if ((options.outWidth >> i <= 1000)
+					&& (options.outHeight >> i <= 1000)) {
+				options.inSampleSize = (int) Math.pow(2.0D, i);
+				options.inJustDecodeBounds = false;
+				bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length, options);
+				break;
+			}
+			i += 1;
+		}
+		return bitmap;
+	}
 	
 	public static void saveBitmap(Bitmap bm, String picName) {
 		try {
