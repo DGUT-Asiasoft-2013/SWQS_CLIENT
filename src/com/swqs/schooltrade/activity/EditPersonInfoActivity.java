@@ -10,6 +10,7 @@ import java.util.List;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swqs.schooltrade.R;
+import com.swqs.schooltrade.app.TradeApplication;
 import com.swqs.schooltrade.entity.School;
 import com.swqs.schooltrade.entity.User;
 import com.swqs.schooltrade.util.RoundImageView;
@@ -22,7 +23,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -175,7 +175,7 @@ public class EditPersonInfoActivity extends Activity implements OnClickListener 
 		}
 		OkHttpClient client = Server.getSharedClient();
 		MultipartBody.Builder requestBodyBuilder = new MultipartBody.Builder()
-				.addFormDataPart("sex", sex)
+				.addFormDataPart("sex", sex).addFormDataPart("uid", TradeApplication.uid)
 				// .addFormDataPart("email", tvEmail.getText().toString())
 				.addFormDataPart("name", tvNick.getText().toString()).addFormDataPart("birthday", time + "")
 				.addFormDataPart("phone", tvPhone.getText().toString());

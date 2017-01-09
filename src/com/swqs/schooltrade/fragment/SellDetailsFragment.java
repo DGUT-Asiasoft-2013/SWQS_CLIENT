@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swqs.schooltrade.R;
 import com.swqs.schooltrade.activity.SellOrderDetailsActivity;
+import com.swqs.schooltrade.app.TradeApplication;
 import com.swqs.schooltrade.entity.Identify;
 import com.swqs.schooltrade.util.Server;
 import com.swqs.schooltrade.util.Util;
@@ -25,6 +26,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -60,8 +62,8 @@ public class SellDetailsFragment extends Fragment {
 
 	private void getData() {
 		OkHttpClient client = Server.getSharedClient();
-
-		Request request = Server.requestBuilderWithApi("mysell/goodslist").build();
+		FormBody body=new FormBody.Builder().add("uid", TradeApplication.uid).build();
+		Request request = Server.requestBuilderWithApi("mysell/goodslist").post(body).build();
 
 		client.newCall(request).enqueue(new Callback() {
 

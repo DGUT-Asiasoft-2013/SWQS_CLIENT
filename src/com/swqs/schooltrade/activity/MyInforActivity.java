@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swqs.schooltrade.R;
+import com.swqs.schooltrade.app.TradeApplication;
 import com.swqs.schooltrade.entity.User;
 import com.swqs.schooltrade.util.RoundImageView;
 import com.swqs.schooltrade.util.Server;
@@ -20,6 +21,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -81,7 +83,8 @@ public class MyInforActivity extends Activity implements OnClickListener {
 
 	private void getPersonInfo() {
 		OkHttpClient client = Server.getSharedClient();
-		Request request = Server.requestBuilderWithApi("me").method("get", null).build();
+		FormBody body=new FormBody.Builder().add("uid", TradeApplication.uid).build();
+		Request request = Server.requestBuilderWithApi("me").method("get", null).post(body).build();
 
 		client.newCall(request).enqueue(new Callback() {
 

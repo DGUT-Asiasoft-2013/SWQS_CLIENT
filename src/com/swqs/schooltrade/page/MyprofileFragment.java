@@ -47,6 +47,7 @@ import cn.jpush.im.android.api.model.UserInfo;
 import cn.jpush.im.api.BasicCallback;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -61,7 +62,6 @@ public class MyprofileFragment extends Fragment {
 	TextView tvUsername;
 	public static final int REQUESTCODE_CAMERA = 0x123;
 	public static final int REQUESTCODE_ALBUM = 0x124;
-	private byte[] pngData;
 	private String photoPath;
 	private CustomProgressDialog progressDialog;
 
@@ -100,7 +100,7 @@ public class MyprofileFragment extends Fragment {
 				}
 			});
 			view.findViewById(R.id.layoutInfo).setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					myInformation();
@@ -128,7 +128,7 @@ public class MyprofileFragment extends Fragment {
 				}
 			});
 			view.findViewById(R.id.btnLogout).setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					logout();
@@ -141,22 +141,23 @@ public class MyprofileFragment extends Fragment {
 	}
 
 	private void logout() {
-		Editor editor=getActivity().getSharedPreferences(TradeApplication.SCHOOLTRADE_CONFIGS, Context.MODE_PRIVATE).edit();
+		Editor editor = getActivity().getSharedPreferences(TradeApplication.SCHOOLTRADE_CONFIGS, Context.MODE_PRIVATE)
+				.edit();
 		editor.putBoolean(TradeApplication.IS_AUTO_LOGIN, false);
 		editor.commit();
 		UserInfo myInfo = JMessageClient.getMyInfo();
-        if (myInfo != null) {
-            JMessageClient.logout();
-            JPushInterface.setAlias(getActivity(), "", new TagAliasCallback() {
+		if (myInfo != null) {
+			JMessageClient.logout();
+			JPushInterface.setAlias(getActivity(), "", new TagAliasCallback() {
 
 				@Override
 				public void gotResult(int arg0, String arg1, Set<String> arg2) {
-					Intent intent = new Intent(getActivity(),LoginActivity.class);
+					Intent intent = new Intent(getActivity(), LoginActivity.class);
 					startActivity(intent);
 					getActivity().finish();
 				}
 			});
-        } 
+		}
 	}
 
 	private void myInformation() {
@@ -209,27 +210,30 @@ public class MyprofileFragment extends Fragment {
 		if (requestCode == Activity.RESULT_CANCELED)
 			return;
 		if (requestCode == REQUESTCODE_CAMERA) {
-//			Bitmap bmp = (Bitmap) data.getExtras().get("data");
-//			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//			bmp.compress(CompressFormat.PNG, 100, baos);
-//			pngData = baos.toByteArray();
+			// Bitmap bmp = (Bitmap) data.getExtras().get("data");
+			// ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			// bmp.compress(CompressFormat.PNG, 100, baos);
+			// pngData = baos.toByteArray();
 			uploadImage(photoPath);
-		} else if (requestCode == REQUESTCODE_ALBUM&&data!=null) {
+		} else if (requestCode == REQUESTCODE_ALBUM && data != null) {
 			try {
-//				Bitmap bmp = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), data.getData());
-//				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//				bmp.compress(CompressFormat.PNG, 100, baos);
-//				pngData = baos.toByteArray();
+				// Bitmap bmp =
+				// MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),
+				// data.getData());
+				// ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				// bmp.compress(CompressFormat.PNG, 100, baos);
+				// pngData = baos.toByteArray();
 				Uri selectedImage = data.getData();
-	            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+				String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
-	            Cursor cursor = getActivity().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-	            cursor.moveToFirst();
+				Cursor cursor = getActivity().getContentResolver().query(selectedImage, filePathColumn, null, null,
+						null);
+				cursor.moveToFirst();
 
-	            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-	            String path = cursor.getString(columnIndex);
+				int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+				String path = cursor.getString(columnIndex);
 
-	            cursor.close();
+				cursor.close();
 				uploadImage(path);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -239,51 +243,53 @@ public class MyprofileFragment extends Fragment {
 
 	private void uploadImage(final String path) {
 		if (path != null) {
-			progressDialog=Util.getProgressDialog(getActivity(), R.layout.custom_progressdialog);
+			progressDialog = Util.getProgressDialog(getActivity(), R.layout.custom_progressdialog);
 			progressDialog.show();
 			MultipartBody.Builder body = new MultipartBody.Builder();
-			body.addFormDataPart("avatar", "avatar", RequestBody.create(MediaType.parse("image/png"), new File(path)));
+			body.addFormDataPart("avatar", "avatar", RequestBody.create(MediaType.parse("image/png"), new File(path)))
+					.addFormDataPart("uid", TradeApplication.uid);
 			Request request = Server.requestBuilderWithApi("updateFace").post(body.build()).build();
 
 			Server.getSharedClient().newCall(request).enqueue(new Callback() {
-				
+
 				@Override
 				public void onResponse(Call arg0, Response arg1) throws IOException {
 					final String responseSrting = arg1.body().string();
 					final ObjectMapper mapper = new ObjectMapper();
 					final User user = mapper.readValue(responseSrting, User.class);
 					File file = new File(path);
-                    try {
-                        JMessageClient.updateUserAvatar(file, new BasicCallback() {
-                            @Override
-                            public void gotResult(final int i, final String s) {
-                            	getActivity().runOnUiThread(new Runnable() {
-									
+					try {
+						JMessageClient.updateUserAvatar(file, new BasicCallback() {
+							@Override
+							public void gotResult(final int i, final String s) {
+								getActivity().runOnUiThread(new Runnable() {
+
 									@Override
 									public void run() {
-										 if (i == 0) {
-			                                	progressDialog.dismiss();
-			                                	avatar.load(Server.serverAddress+user.getFace_url());
-			                                    Toast.makeText(getActivity(), "修改成功", Toast.LENGTH_SHORT).show();
-			                                } else {
-			                                	progressDialog.dismiss();
-			                                    Toast.makeText(getActivity(), "修改失败", Toast.LENGTH_SHORT).show();
-			                                    Log.i("UpdateUserAvatar", "JMessageClient.updateUserAvatar" + ", responseCode = " + i + " ; LoginDesc = " + s);
-			                                }
+										if (i == 0) {
+											progressDialog.dismiss();
+											avatar.load(Server.serverAddress + user.getFace_url());
+											Toast.makeText(getActivity(), "修改成功", Toast.LENGTH_SHORT).show();
+										} else {
+											progressDialog.dismiss();
+											Toast.makeText(getActivity(), "修改失败", Toast.LENGTH_SHORT).show();
+											Log.i("UpdateUserAvatar", "JMessageClient.updateUserAvatar"
+													+ ", responseCode = " + i + " ; LoginDesc = " + s);
+										}
 									}
 								});
-                            }
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+							}
+						});
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
-				
+
 				@Override
 				public void onFailure(Call arg0, final IOException arg1) {
 					progressDialog.dismiss();
 					getActivity().runOnUiThread(new Runnable() {
-						
+
 						@Override
 						public void run() {
 							Toast.makeText(getActivity(), arg1.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
@@ -292,7 +298,7 @@ public class MyprofileFragment extends Fragment {
 				}
 			});
 		}
-		
+
 	}
 
 	private void myPublish() {
@@ -302,7 +308,8 @@ public class MyprofileFragment extends Fragment {
 
 	private void getUser() {
 		OkHttpClient client = Server.getSharedClient();
-		Request request = Server.requestBuilderWithApi("me").method("GET", null).build();
+		FormBody requestBody = new FormBody.Builder().add("uid", TradeApplication.uid).build();
+		Request request = Server.requestBuilderWithApi("me").method("post", null).post(requestBody).build();
 		// 异步发起请求
 		client.newCall(request).enqueue(new Callback() {
 
@@ -319,7 +326,7 @@ public class MyprofileFragment extends Fragment {
 							@Override
 							public void run() {
 								tvUsername.setText(user.getName());
-								avatar.load(Server.serverAddress+user.getFace_url());
+								avatar.load(Server.serverAddress + user.getFace_url());
 							}
 						});
 					}

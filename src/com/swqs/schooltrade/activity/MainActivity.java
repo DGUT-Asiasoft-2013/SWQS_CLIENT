@@ -71,6 +71,7 @@ public class MainActivity extends Activity {
 											startLoginActivity();
 											return;
 										}
+										TradeApplication.uid=user.getId()+"";
 										loginToJpush(user.getAccount(), password);
 
 									} catch (Exception e) {

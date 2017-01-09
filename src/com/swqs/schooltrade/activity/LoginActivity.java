@@ -129,6 +129,7 @@ public class LoginActivity extends Activity {
 									Toast.makeText(LoginActivity.this, "√‹¬Î¥ÌŒÛ", Toast.LENGTH_SHORT).show();
 									return;
 								}
+								TradeApplication.uid=user.getId()+"";
 								loginToJpush(user.getAccount());
 
 							} catch (Exception e) {

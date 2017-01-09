@@ -55,7 +55,7 @@ public class TradeApplication extends Application {
 	public static String PICTURE_DIR = Environment.getExternalStorageDirectory()+"/SchoolTrade/pictures/";
 	public static String FILE_DIR = Environment.getExternalStorageDirectory()+"/SchoolTrade/recvFiles/";
 
-	
+	public static String uid="";
 	@Override
 	public void onCreate() {
 		super.onCreate();

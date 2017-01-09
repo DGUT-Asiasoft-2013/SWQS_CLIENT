@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swqs.schooltrade.R;
+import com.swqs.schooltrade.app.TradeApplication;
 import com.swqs.schooltrade.entity.User;
 import com.swqs.schooltrade.util.Server;
 
@@ -19,6 +20,7 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Toast;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -106,8 +108,8 @@ public class RechargeActivity extends Activity implements OnClickListener {
 			return;
 		}
 		OkHttpClient client = Server.getSharedClient();
-
-		MultipartBody requestBody = new MultipartBody.Builder().addFormDataPart("money", money).build();
+		MultipartBody requestBody = new MultipartBody.Builder().addFormDataPart("money", money)
+				.addFormDataPart("uid", TradeApplication.uid).build();
 
 		Request request = Server.requestBuilderWithApi("recharge").method("post", null).post(requestBody).build();
 		client.newCall(request).enqueue(new Callback() {

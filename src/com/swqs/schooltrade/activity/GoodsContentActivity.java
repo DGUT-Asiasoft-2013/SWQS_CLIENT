@@ -37,6 +37,7 @@ import android.widget.Toast;
 import cn.jmessage.android.uikit.chatting.ChatActivity;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -238,7 +239,7 @@ public class GoodsContentActivity extends Activity {
 			Comment comment = comments.get(position);
 			viewHolder.Comment.setText(comment.getText());
 			viewHolder.Account.setText(comment.getAccount().getAccount());
-//			viewHolder.Avatar.load(comment.getAccount().getFace_url());
+			// viewHolder.Avatar.load(comment.getAccount().getFace_url());
 			Util.loadImage(GoodsContentActivity.this, comment.getAccount().getFace_url(), viewHolder.Avatar);
 
 			String dateStr = DateFormat.format("yyyy-MM-dd hh:mm", comment.getCreateDate()).toString();
@@ -304,7 +305,8 @@ public class GoodsContentActivity extends Activity {
 	void sendComment() {
 		String text = editComment.getText().toString();
 
-		MultipartBody body = new MultipartBody.Builder().addFormDataPart("text", text).build();
+		MultipartBody body = new MultipartBody.Builder().addFormDataPart("text", text)
+				.addFormDataPart("uid", TradeApplication.uid).build();
 
 		Request request = Server.requestBuilderWithApi("/goods/" + goods.getId() + "/addParentComments").post(body)
 				.build();
@@ -367,10 +369,10 @@ public class GoodsContentActivity extends Activity {
 	}
 
 	private void buyGoods(String pwd) {
-		progressDialog=Util.getProgressDialog(this, R.layout.custom_progressdialog);
+		progressDialog = Util.getProgressDialog(this, R.layout.custom_progressdialog);
 		progressDialog.show();
 		MultipartBody.Builder requestBodyBuilder = new MultipartBody.Builder().addFormDataPart("password",
-				MD5.getMD5(pwd));
+				MD5.getMD5(pwd)).addFormDataPart("uid", TradeApplication.uid);
 
 		Request request = Server.requestBuilderWithApi("buygoods/" + goods.getId()).method("get", null)
 				.post(requestBodyBuilder.build()).build();
@@ -421,7 +423,8 @@ public class GoodsContentActivity extends Activity {
 
 	private void getUser() {
 		OkHttpClient client = Server.getSharedClient();
-		Request request = Server.requestBuilderWithApi("me").method("GET", null).build();
+		FormBody requestBody = new FormBody.Builder().add("uid", TradeApplication.uid).build();
+		Request request = Server.requestBuilderWithApi("me").method("post", null).post(requestBody).build();
 		// 异步发起请求
 		client.newCall(request).enqueue(new Callback() {
 

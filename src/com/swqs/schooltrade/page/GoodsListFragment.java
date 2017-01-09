@@ -116,7 +116,7 @@ public class GoodsListFragment extends Fragment {
 			Goods goods = data.get(position);
 			viewHolder.tvName.setText(goods.getAccount().getAccount());
 			viewHolder.textTitle.setText(goods.getTitle());
-			viewHolder.textPrice.setText(goods.getOriginalPrice() + "");
+			viewHolder.textPrice.setText(goods.getCurPrice() + "");
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 			viewHolder.tvTime.setText(sdf.format(goods.getCreateDate()));
 			Util.loadImage(getActivity(), goods.getAccount().getFace_url(), viewHolder.roundAvatar);

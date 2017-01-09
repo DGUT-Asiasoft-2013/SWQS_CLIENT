@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swqs.schooltrade.R;
+import com.swqs.schooltrade.app.TradeApplication;
+import com.swqs.schooltrade.entity.Goods;
 import com.swqs.schooltrade.util.CustomProgressDialog;
 import com.swqs.schooltrade.util.FileUtils;
 import com.swqs.schooltrade.util.GridPhotoAdapter;
@@ -305,21 +308,20 @@ public class NewGoodsActivity extends BaseActivity {
 			Toast.makeText(this, "请输入商品价格", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		if(imageItemList.size()<=0){
+		if (imageItemList.size() <= 0) {
 			Toast.makeText(this, "请选择商品图片", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		progressDialog=Util.getProgressDialog(this, R.layout.custom_progressdialog);
+		progressDialog = Util.getProgressDialog(this, R.layout.custom_progressdialog);
 		progressDialog.show();
-		MultipartBody.Builder body = new MultipartBody.Builder()
-				.addFormDataPart("title", title)
-				.addFormDataPart("content", content)
-				.addFormDataPart("originalPrice", originalprice);
+		MultipartBody.Builder body = new MultipartBody.Builder().addFormDataPart("title", title)
+				.addFormDataPart("content", content).addFormDataPart("originalPrice", originalprice)
+				.addFormDataPart("uid", TradeApplication.uid);
 
 		for (int i = 0; i < imageItemList.size(); i++) {
-			ImageItem item=imageItemList.get(i);
+			ImageItem item = imageItemList.get(i);
 			File file = new File(item.getImagePath());
-			body.addFormDataPart("listImage", "listImage"+i, RequestBody.create(MediaType.parse("image/png"), file));
+			body.addFormDataPart("listImage", "listImage" + i, RequestBody.create(MediaType.parse("image/png"), file));
 		}
 
 		Request request = Server.requestBuilderWithApi("addgoods").post(body.build()).build();
@@ -328,12 +330,23 @@ public class NewGoodsActivity extends BaseActivity {
 			@Override
 			public void onResponse(Call arg0, Response arg1) throws IOException {
 				final String responseBody = arg1.body().string();
-
-				runOnUiThread(new Runnable() {
-					public void run() {
-						NewGoodsActivity.this.onSucceed(responseBody);
+				ObjectMapper mapper = new ObjectMapper();
+				try {
+					Goods goods = mapper.readValue(responseBody, Goods.class);
+					if (goods != null) {
+						runOnUiThread(new Runnable() {
+							public void run() {
+								NewGoodsActivity.this.onSucceed(responseBody);
+							}
+						});
 					}
-				});
+				} catch (final Exception e) {
+					runOnUiThread(new Runnable() {
+						public void run() {
+							NewGoodsActivity.this.onFailure(e);
+						}
+					});
+				}
 			}
 
 			@Override

@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swqs.schooltrade.R;
+import com.swqs.schooltrade.app.TradeApplication;
 import com.swqs.schooltrade.entity.Goods;
 import com.swqs.schooltrade.util.Server;
 
@@ -42,7 +43,7 @@ public class EditGoodsActivity extends Activity {
     	
     	editTitle.setText(goods.getTitle());
     	editContent.setText(goods.getContent());
-    	editCurPrice.setText(goods.getOriginalPrice() + "");
+    	editCurPrice.setText(goods.getCurPrice() + "");
     	
     	buttonCompleteEdit.setOnClickListener(new View.OnClickListener() {			
 			@Override
@@ -60,7 +61,8 @@ public class EditGoodsActivity extends Activity {
 		MultipartBody.Builder body = new MultipartBody.Builder()
 				.addFormDataPart("title", title)
 				.addFormDataPart("content", content)
-				.addFormDataPart("curPrice", curprice);
+				.addFormDataPart("curPrice", curprice)
+				.addFormDataPart("uid", TradeApplication.uid);
 		
 		Request request = Server.requestBuilderWithApi("/updategoods/"+goods.getId()).post(body.build()).build();
 

@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swqs.schooltrade.R;
+import com.swqs.schooltrade.app.TradeApplication;
 import com.swqs.schooltrade.entity.Goods;
 import com.swqs.schooltrade.util.Server;
 import com.swqs.schooltrade.util.Util;
@@ -27,6 +28,7 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -66,8 +68,8 @@ public class MyPublishGoodsActivity extends Activity {
 
 	private void getData() {
 		OkHttpClient client = Server.getSharedClient();
-
-		Request request = Server.requestBuilderWithApi("mypublishment/goodslist").build();
+		FormBody body=new FormBody.Builder().add("uid", TradeApplication.uid).build();
+		Request request = Server.requestBuilderWithApi("mypublishment/goodslist").post(body).build();
 
 		client.newCall(request).enqueue(new Callback() {
 
