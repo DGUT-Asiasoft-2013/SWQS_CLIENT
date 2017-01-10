@@ -222,7 +222,7 @@ public class SellOrderDetailsActivity extends Activity {
 			tvState1.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
 			tvState2.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
 			tvState3.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
-			btnComment.setVisibility(View.VISIBLE);
+			btnComment.setVisibility(View.GONE);
 			btnSendGoods.setVisibility(View.GONE);
 		}else{
 			strState="ÒÑÆÀ¼Û";
@@ -238,8 +238,10 @@ public class SellOrderDetailsActivity extends Activity {
 	}
 	
 	void goSellEvaluationDetails() {
-		Intent itnt = new Intent(this, SellEvaluationDetailsActivity.class);
-		startActivity(itnt);
+		Intent intent = new Intent(this, SellEvaluationDetailsActivity.class);
+		intent.putExtra("goods_id", identify.getGoods().getId());
+		intent.putExtra("buyer_id", identify.getBuyer().getId());
+		startActivity(intent);
 	}
 
 	void goChatbuyer() {

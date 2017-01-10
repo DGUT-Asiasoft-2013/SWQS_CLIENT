@@ -137,6 +137,8 @@ public class SellDetailsFragment extends Fragment {
 				strState="已发货";
 			}else if(state==3){
 				strState="买家已收货";
+			}else{
+				strState="买家已评价";
 			}
 			holder.tvState.setText(strState);
 			return convertView;

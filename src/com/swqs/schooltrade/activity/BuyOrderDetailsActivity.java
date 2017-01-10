@@ -51,6 +51,7 @@ public class BuyOrderDetailsActivity extends Activity {
 	Identify identify = null;
 	private Button btnConfirm;
 	private Button btnComment;
+	private Button btnGotoComment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,14 @@ public class BuyOrderDetailsActivity extends Activity {
 		ivImg = (ImageView) findViewById(R.id.ivImg);
 		btnConfirm = (Button) findViewById(R.id.btnConfirm);
 		btnComment = (Button) findViewById(R.id.btnComment);
+		btnGotoComment = (Button) findViewById(R.id.btnGotoComment);
+		btnGotoComment.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				gotoComment();
+			}
+		});
 		findViewById(R.id.btnCommunicate).setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -112,7 +121,17 @@ public class BuyOrderDetailsActivity extends Activity {
 				builder.show();
 			}
 		});
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
 		getOrderDetail();
+	}
+	private void gotoComment() {
+		Intent intent=new Intent(this,AddEvaluationActivity.class);
+		intent.putExtra("identify", identify);
+		startActivity(intent);
 	}
 
 	@Override
@@ -224,19 +243,22 @@ public class BuyOrderDetailsActivity extends Activity {
 			tvState1.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
 			btnComment.setVisibility(View.GONE);
 			btnConfirm.setVisibility(View.GONE);
+			btnGotoComment.setVisibility(View.GONE);
 		} else if (state == 2) {
 			strState = "已发货";
 			tvState1.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
 			tvState2.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
 			btnComment.setVisibility(View.GONE);
 			btnConfirm.setVisibility(View.VISIBLE);
+			btnGotoComment.setVisibility(View.GONE);
 		} else if (state == 3) {
 			strState = "已收货";
 			tvState1.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
 			tvState2.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
 			tvState3.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
-			btnComment.setVisibility(View.VISIBLE);
+			btnComment.setVisibility(View.GONE);
 			btnConfirm.setVisibility(View.GONE);
+			btnGotoComment.setVisibility(View.VISIBLE);
 		} else {
 			strState = "已评价";
 			tvState1.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
@@ -245,14 +267,17 @@ public class BuyOrderDetailsActivity extends Activity {
 			tvState4.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
 			btnComment.setVisibility(View.VISIBLE);
 			btnConfirm.setVisibility(View.GONE);
+			btnGotoComment.setVisibility(View.GONE);
 		}
 		tvState.setText("销售状态：" + strState);
 
 	}
 
 	void goEvaluationDetails() {
-		Intent itnt = new Intent(this, BuyEvaluationDetailsActivity.class);
-		startActivity(itnt);
+		Intent intent = new Intent(this, BuyEvaluationDetailsActivity.class);
+		intent.putExtra("goods_id", identify.getGoods().getId());
+		intent.putExtra("buyer_id", identify.getBuyer().getId());
+		startActivity(intent);
 	}
 
 	void goChatSeller() {

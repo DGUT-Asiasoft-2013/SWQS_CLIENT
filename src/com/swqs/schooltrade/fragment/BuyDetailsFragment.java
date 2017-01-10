@@ -120,6 +120,8 @@ public class BuyDetailsFragment extends Fragment {
 				strState="卖家已发货";
 			}else if(state==3){
 				strState="已收货";
+			}else{
+				strState="已评价";
 			}
 			holder.tvState.setText(strState);
 			return convertView;

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/pale_blue" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="评价详情"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/back" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutEvaluation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@drawable/line" />
+
+        <com.swqs.schooltrade.util.RoundImageView
+            android:id="@+id/roundImageAvatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp" />
+
+        <TextView
+            android:id="@+id/tvBuyerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/roundImageAvatar"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/roundImageAvatar"
+            android:text="买家名字"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/ivLike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/tvBuyerName"
+            android:layout_marginRight="20dp" />
+
+        <TextView
+            android:id="@+id/tvEvaluation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/roundImageAvatar"
+            android:layout_below="@id/roundImageAvatar"
+            android:layout_marginTop="5dp"
+            android:text="评价内容"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tvEvaluateTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tvEvaluation"
+            android:layout_below="@id/tvEvaluation"
+            android:layout_marginTop="5dp"
+            android:text="2016-12-23 14:23"
+            android:textSize="10sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/tvEvaluateTime"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/line" />
+    </RelativeLayout>
+
+</LinearLayout>
