@@ -115,7 +115,7 @@ public class SellOrderDetailsActivity extends Activity {
 			OkHttpClient client = Server.getSharedClient();
 
 			MultipartBody requestBody = new MultipartBody.Builder().addFormDataPart("identifyId", identify.getId()+"")
-					.addFormDataPart("flag", "2").build();
+					.addFormDataPart("flag", "2").addFormDataPart("uid", TradeApplication.uid).build();
 
 			Request request = Server.requestBuilderWithApi("settradestate").method("post", null).post(requestBody).build();
 

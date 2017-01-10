@@ -39,14 +39,14 @@ public class BuyOrderDetailsActivity extends Activity {
 	private TextView tvTitle;
 	private TextView tvMoney;
 	private TextView tvState;
-	
+
 	private TextView tvState1;
 	private TextView tvState2;
 	private TextView tvState3;
 	private TextView tvState4;
-	
+
 	private TextView tvBuyer;
-	
+
 	Goods goods = null;
 	Identify identify = null;
 	private Button btnConfirm;
@@ -57,20 +57,20 @@ public class BuyOrderDetailsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_buy_order_details);
 		goods = (Goods) getIntent().getSerializableExtra("data");
-		tvSeller=(TextView) findViewById(R.id.tvSeller);
-		tvBuyer=(TextView) findViewById(R.id.tvBuyer);
-		tvTradeTime=(TextView) findViewById(R.id.tvTradeTime);
-		tvPhone=(TextView) findViewById(R.id.tvPhone);
-		tvTitle=(TextView) findViewById(R.id.tvTitle);
-		tvMoney=(TextView) findViewById(R.id.tvMoney);
-		tvState=(TextView) findViewById(R.id.tvState);
-		tvState1=(TextView) findViewById(R.id.tvState1);
-		tvState2=(TextView) findViewById(R.id.tvState2);
-		tvState3=(TextView) findViewById(R.id.tvState3);
-		tvState4=(TextView) findViewById(R.id.tvState4);
-		ivImg=(ImageView) findViewById(R.id.ivImg);
-		btnConfirm=(Button) findViewById(R.id.btnConfirm);
-		btnComment=(Button) findViewById(R.id.btnComment);
+		tvSeller = (TextView) findViewById(R.id.tvSeller);
+		tvBuyer = (TextView) findViewById(R.id.tvBuyer);
+		tvTradeTime = (TextView) findViewById(R.id.tvTradeTime);
+		tvPhone = (TextView) findViewById(R.id.tvPhone);
+		tvTitle = (TextView) findViewById(R.id.tvTitle);
+		tvMoney = (TextView) findViewById(R.id.tvMoney);
+		tvState = (TextView) findViewById(R.id.tvState);
+		tvState1 = (TextView) findViewById(R.id.tvState1);
+		tvState2 = (TextView) findViewById(R.id.tvState2);
+		tvState3 = (TextView) findViewById(R.id.tvState3);
+		tvState4 = (TextView) findViewById(R.id.tvState4);
+		ivImg = (ImageView) findViewById(R.id.ivImg);
+		btnConfirm = (Button) findViewById(R.id.btnConfirm);
+		btnComment = (Button) findViewById(R.id.btnComment);
 		findViewById(R.id.btnCommunicate).setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -96,13 +96,13 @@ public class BuyOrderDetailsActivity extends Activity {
 			}
 		});
 		btnConfirm.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				AlertDialog.Builder builder=new AlertDialog.Builder(BuyOrderDetailsActivity.this);
+				AlertDialog.Builder builder = new AlertDialog.Builder(BuyOrderDetailsActivity.this);
 				builder.setMessage("点击确认后,钱款将会打到卖家账号中");
 				builder.setNegativeButton("确认", new DialogInterface.OnClickListener() {
-					
+
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						confirmReceive();
@@ -122,18 +122,19 @@ public class BuyOrderDetailsActivity extends Activity {
 		goods = (Goods) getIntent().getSerializableExtra("data");
 		getOrderDetail();
 	}
+
 	protected void confirmReceive() {
 		OkHttpClient client = Server.getSharedClient();
 
-		MultipartBody requestBody = new MultipartBody.Builder().addFormDataPart("identifyId", identify.getId()+"")
-				.addFormDataPart("flag", "3").build();
+		MultipartBody requestBody = new MultipartBody.Builder().addFormDataPart("identifyId", identify.getId() + "")
+				.addFormDataPart("flag", "3").addFormDataPart("uid", TradeApplication.uid).build();
 
 		Request request = Server.requestBuilderWithApi("settradestate").method("post", null).post(requestBody).build();
 
 		final ProgressDialog dlg = new ProgressDialog(this);
 		dlg.setCancelable(true);
 		dlg.setCanceledOnTouchOutside(false);
-		dlg.setMessage("confirm...");
+		dlg.setMessage("确认中...");
 		dlg.show();
 
 		client.newCall(request).enqueue(new Callback() {
@@ -148,8 +149,8 @@ public class BuyOrderDetailsActivity extends Activity {
 					public void run() {
 						try {
 							dlg.dismiss();
-							int flag=Integer.parseInt(responseSrting);
-							if(flag==1){
+							int flag = Integer.parseInt(responseSrting);
+							if (flag == 1) {
 								getOrderDetail();
 							}
 						} catch (Exception e) {
@@ -167,7 +168,8 @@ public class BuyOrderDetailsActivity extends Activity {
 					@Override
 					public void run() {
 						dlg.dismiss();
-						Toast.makeText(BuyOrderDetailsActivity.this, arg1.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+						Toast.makeText(BuyOrderDetailsActivity.this, arg1.getLocalizedMessage(), Toast.LENGTH_LONG)
+								.show();
 					}
 				});
 			}
@@ -205,37 +207,38 @@ public class BuyOrderDetailsActivity extends Activity {
 		});
 
 	}
-	private void setOrderDetailData(){
-		tvSeller.setText("卖家："+identify.getSeller().getAccount());
-		tvBuyer.setText("收货人："+identify.getBuyer().getAccount());
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm");
-		tvTradeTime.setText("交易时间："+sdf.format(identify.getCreateDate()));
-		tvPhone.setText("手机号码："+identify.getBuyer().getPhone());
+
+	private void setOrderDetailData() {
+		tvSeller.setText("卖家：" + identify.getSeller().getAccount());
+		tvBuyer.setText("收货人：" + identify.getBuyer().getAccount());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+		tvTradeTime.setText("交易时间：" + sdf.format(identify.getCreateDate()));
+		tvPhone.setText("手机号码：" + identify.getBuyer().getPhone());
 		Util.loadImage(this, goods.getListImage().get(0).getPictureUrl(), ivImg);
 		tvTitle.setText(goods.getTitle());
-		tvMoney.setText("￥"+goods.getOriginalPrice()+"");
-		int state=identify.getTradeState();
+		tvMoney.setText("￥" + goods.getOriginalPrice() + "");
+		int state = identify.getTradeState();
 		String strState;
-		if(state==1){
-			strState="未发货";
+		if (state == 1) {
+			strState = "未发货";
 			tvState1.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
 			btnComment.setVisibility(View.GONE);
 			btnConfirm.setVisibility(View.GONE);
-		}else if(state==2){
-			strState="已发货";
+		} else if (state == 2) {
+			strState = "已发货";
 			tvState1.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
 			tvState2.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
 			btnComment.setVisibility(View.GONE);
 			btnConfirm.setVisibility(View.VISIBLE);
-		}else if(state==3){
-			strState="已收货";
+		} else if (state == 3) {
+			strState = "已收货";
 			tvState1.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
 			tvState2.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
 			tvState3.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
 			btnComment.setVisibility(View.VISIBLE);
 			btnConfirm.setVisibility(View.GONE);
-		}else{
-			strState="已评价";
+		} else {
+			strState = "已评价";
 			tvState1.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
 			tvState2.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
 			tvState3.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
@@ -243,8 +246,8 @@ public class BuyOrderDetailsActivity extends Activity {
 			btnComment.setVisibility(View.VISIBLE);
 			btnConfirm.setVisibility(View.GONE);
 		}
-		tvState.setText("销售状态："+strState);
-		
+		tvState.setText("销售状态：" + strState);
+
 	}
 
 	void goEvaluationDetails() {

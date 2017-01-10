@@ -25,6 +25,8 @@ import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -138,6 +140,15 @@ public class GoodsContentActivity extends Activity {
 		editComment = (EditText) findViewById(R.id.editComment);
 		buttonBack = (Button) findViewById(R.id.btnBack);
 		buttonSendComment = (Button) findViewById(R.id.btnSendComment);
+		lvComment.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Intent intent = new Intent(GoodsContentActivity.this, CommentToOthersActivity.class);
+				intent.putExtra("comment", comments.get(position));
+				startActivity(intent);
+			}
+		});
 		getUser();
 	}
 
@@ -169,7 +180,8 @@ public class GoodsContentActivity extends Activity {
 		for (int i = 0; i < listAdapter.getCount(); i++) {
 			View listItem = listAdapter.getView(i, null, listView);
 			listItem.measure(0, 0);
-			totalHeight += listItem.getMeasuredHeight();
+			totalHeight = totalHeight + listItem.getMeasuredHeight() + listItem.getPaddingTop()
+					+ listItem.getPaddingBottom();
 		}
 
 		ViewGroup.LayoutParams params = listView.getLayoutParams();
@@ -230,6 +242,7 @@ public class GoodsContentActivity extends Activity {
 				viewHolder.Account = (TextView) view.findViewById(R.id.id_account);
 				viewHolder.CreateDate = (TextView) view.findViewById(R.id.createdate);
 				viewHolder.Avatar = (RoundImageView) view.findViewById(R.id.account_avatar);
+				viewHolder.tvNumFloor = (TextView) view.findViewById(R.id.tvNumFloor);
 				view.setTag(viewHolder);
 			} else {
 				view = convertView;
@@ -237,7 +250,21 @@ public class GoodsContentActivity extends Activity {
 			}
 
 			Comment comment = comments.get(position);
-			viewHolder.Comment.setText(comment.getText());
+			if (comment.getParentComment() != null) {
+				viewHolder.Comment
+						.setText("»Ø¸´@" + comment.getParentComment().getAccount().getName() + ":" + comment.getText());
+			} else {
+				viewHolder.Comment.setText(comment.getText());
+			}
+			if (position == 0) {
+				viewHolder.tvNumFloor.setText("É³·¢");
+			} else if (position == 1) {
+				viewHolder.tvNumFloor.setText("°åµÊ");
+			} else if (position == 2) {
+				viewHolder.tvNumFloor.setText("µØ°å");
+			} else {
+				viewHolder.tvNumFloor.setText(position + 1 + "Â¥");
+			}
 			viewHolder.Account.setText(comment.getAccount().getAccount());
 			// viewHolder.Avatar.load(comment.getAccount().getFace_url());
 			Util.loadImage(GoodsContentActivity.this, comment.getAccount().getFace_url(), viewHolder.Avatar);
@@ -253,6 +280,7 @@ public class GoodsContentActivity extends Activity {
 			public TextView Account;
 			public TextView CreateDate;
 			public RoundImageView Avatar;
+			public TextView tvNumFloor;
 		}
 
 		@Override
@@ -371,8 +399,8 @@ public class GoodsContentActivity extends Activity {
 	private void buyGoods(String pwd) {
 		progressDialog = Util.getProgressDialog(this, R.layout.custom_progressdialog);
 		progressDialog.show();
-		MultipartBody.Builder requestBodyBuilder = new MultipartBody.Builder().addFormDataPart("password",
-				MD5.getMD5(pwd)).addFormDataPart("uid", TradeApplication.uid);
+		MultipartBody.Builder requestBodyBuilder = new MultipartBody.Builder()
+				.addFormDataPart("password", MD5.getMD5(pwd)).addFormDataPart("uid", TradeApplication.uid);
 
 		Request request = Server.requestBuilderWithApi("buygoods/" + goods.getId()).method("get", null)
 				.post(requestBodyBuilder.build()).build();

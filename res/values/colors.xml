@@ -39,6 +39,7 @@
     <color name="menu_item_back_pres_color">#3773cb</color>
     <color name="pale_blue">#3f80dc</color>
     <color name="press_blue">#1F5B8D</color>
+    <color name="app_theme">#1F5B8D</color>
     <color name="forbit_color">#D9D9D9</color>
     <color name="french_gray">#D0D0D0</color>
     <color name="edittext_color">#333333</color>

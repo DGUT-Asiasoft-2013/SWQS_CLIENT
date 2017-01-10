@@ -258,6 +258,10 @@
             android:name="cn.jmessage.android.uikit.multiselectphotos.BrowserPhotoPagerActivity"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name="com.swqs.schooltrade.activity.CommentToOthersActivity"
+            android:screenOrientation="portrait" >
+        </activity>
 
         <receiver
             android:name="com.swqs.schooltrade.receiver.MyReceiver"
