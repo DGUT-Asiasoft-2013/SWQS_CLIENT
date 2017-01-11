@@ -6,7 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swqs.schooltrade.R;
 import com.swqs.schooltrade.app.TradeApplication;
 import com.swqs.schooltrade.entity.User;
+import com.swqs.schooltrade.util.CustomProgressDialog;
 import com.swqs.schooltrade.util.Server;
+import com.swqs.schooltrade.util.Util;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -20,7 +22,6 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Toast;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -32,6 +33,7 @@ public class RechargeActivity extends Activity implements OnClickListener {
 	private Button btnThird;
 	private Button btnMoney100, btnMoney200, btnMoney500, btnMoney1000;
 	private EditText etInputMoney;
+	private CustomProgressDialog progressDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +96,13 @@ public class RechargeActivity extends Activity implements OnClickListener {
 				etInputMoney.setText("1000");
 			}
 		});
+		findViewById(R.id.ivBack).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 	}
 
 	@Override
@@ -107,6 +116,8 @@ public class RechargeActivity extends Activity implements OnClickListener {
 			Toast.makeText(this, "请输入或选择充值金额", Toast.LENGTH_SHORT).show();
 			return;
 		}
+		progressDialog=Util.getProgressDialog(this, R.layout.custom_progressdialog);
+		progressDialog.show();
 		OkHttpClient client = Server.getSharedClient();
 		MultipartBody requestBody = new MultipartBody.Builder().addFormDataPart("money", money)
 				.addFormDataPart("uid", TradeApplication.uid).build();
@@ -118,6 +129,7 @@ public class RechargeActivity extends Activity implements OnClickListener {
 			public void onResponse(Call arg0, Response arg1) throws IOException {
 				String jsonString = arg1.body().string();
 				final ObjectMapper mapper = new ObjectMapper();
+				progressDialog.dismiss();
 				try {
 					User user = mapper.readValue(jsonString, User.class);
 					if (user != null) {
@@ -146,6 +158,7 @@ public class RechargeActivity extends Activity implements OnClickListener {
 
 			@Override
 			public void onFailure(Call arg0, IOException arg1) {
+				progressDialog.dismiss();
 				runOnUiThread(new Runnable() {
 
 					@Override

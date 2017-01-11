@@ -4,73 +4,83 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="40dp"
+        android:background="@color/pale_blue" >
 
         <TextView
-            android:id="@+id/tvBalance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="当前余额:" />
+            android:layout_centerInParent="true"
+            android:text="充值"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/textView4"
+        <ImageView
+            android:id="@+id/ivBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="" />
-
-    </LinearLayout>
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/back" />
+    </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="充值金额:" />
+        android:layout_margin="10dp"
+        android:text="充值金额:"
+        android:textSize="20sp" />
 
     <EditText
         android:id="@+id/etInputMoney"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/shape_search"
         android:hint="请选择或输入充值金额"
         android:inputType="number"
-        android:textSize="20sp"
-        />
+        android:paddingLeft="10dp"
+        android:textSize="20sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal" >
 
         <Button
             android:id="@+id/btnMoney100"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/selector_btn_send_code"
             android:text="100" />
 
         <Button
             android:id="@+id/btnMoney200"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/selector_btn_send_code"
             android:text="200" />
 
         <Button
             android:id="@+id/btnMoney500"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/selector_btn_send_code"
             android:text="500" />
 
         <Button
             android:id="@+id/btnMoney1000"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/selector_btn_send_code"
             android:text="1000" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -81,8 +91,8 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:text="请点击选择付款方式:" />
+            android:text="请点击选择付款方式:"
+            android:textSize="15dp" />
 
         <RadioGroup
             android:id="@+id/rgBankCark"
@@ -108,19 +118,22 @@
                 android:layout_height="wrap_content"
                 android:text="支付宝支付" />
         </RadioGroup>
-
     </LinearLayout>
 
     <Button
         android:id="@+id/btnThird"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+        android:background="@drawable/selector_btn_send_code"
+        android:layout_margin="10dp"
         android:text="提交第三方充值" />
 
     <Button
         android:id="@+id/btnTwoCode"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+        android:background="@drawable/selector_btn_send_code"
+        android:layout_margin="10dp"
         android:text="二维码充值(功能未实现)" />
 
 </LinearLayout>

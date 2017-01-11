@@ -1,6 +1,12 @@
 package com.swqs.schooltrade.activity;
 
+import java.io.IOException;
+
+import org.json.JSONArray;
+
 import com.swqs.schooltrade.R;
+import com.swqs.schooltrade.app.TradeApplication;
+import com.swqs.schooltrade.util.Server;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,72 +14,116 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MyCredit extends Activity {
-	private ProgressBar PB1;
-	private int mProgressStatus=0;
+	private ProgressBar pbCredit;
+	private int mProgressStatus = 0;
 	private Handler mHandler;
+	private TextView tvLike;
+	private TextView tvUnlike;
 
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my_credit);
-		findViewById(R.id.btnback).setOnClickListener(new View.OnClickListener() {
-			
+		findViewById(R.id.ivBack).setOnClickListener(new View.OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
-				goMyBuy();
-				
+				finish();
 			}
 		});
-		
-		PB1=(ProgressBar) findViewById(R.id.progressBar1);
-		mHandler= new Handler(){
+
+		pbCredit = (ProgressBar) findViewById(R.id.pbCredit);
+		mHandler = new Handler() {
 			public void handleMessage(android.os.Message msg) {
-				if(msg.what==0x111){
-					PB1.setProgress(mProgressStatus);
-				}else{
+				if (msg.what == 0x111) {
+					pbCredit.setProgress(mProgressStatus);
+				} else {
 					Toast.makeText(MyCredit.this, "∫Ù¿≤¿≤∫Ù¿≤¿≤", Toast.LENGTH_SHORT).show();
 				}
 			}
 		};
-			
-		new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				while(true){
-					mProgressStatus=doWork();
-					Message m= new Message();
-					if(mProgressStatus<100){
-						m.what=0x111;
-						mHandler.sendMessage(m);
-					}else{
-						m.what=0x111;
-						mHandler.sendMessage(m);
-						break;
-					}
-				}
-				
-			}
-			private int doWork(){
-				mProgressStatus+=Math.random()*10;
-				try{
-					Thread.sleep(200);
-				}catch(InterruptedException e){
-					e.printStackTrace();
-				}
-				return mProgressStatus;
-			}
-		}).start();
-		
-	}
-	void goMyBuy(){
-		finish();
+		tvLike=(TextView) findViewById(R.id.tvLike);
+		tvUnlike=(TextView) findViewById(R.id.tvUnlike);
+		getMyCredit();
 	}
 
-	
+	private void getMyCredit() {
+		FormBody formBody = new FormBody.Builder().add("uid", TradeApplication.uid).build();
+		Request request = Server.requestBuilderWithApi("myCredit").post(formBody).build();
+
+		Server.getSharedClient().newCall(request).enqueue(new Callback() {
+			@Override
+			public void onResponse(Call arg0, Response arg1) throws IOException {
+				try {
+					String jsonString = arg1.body().string();
+					JSONArray obj = new JSONArray(jsonString);
+					final String like = (Integer) obj.get(0)+"";
+					final String unlike = (Integer) obj.get(1)+"";
+					runOnUiThread(new Runnable() {
+						public void run() {
+							tvLike.setText(like);
+							tvUnlike.setText(unlike);
+							pbCredit.setMax(Integer.parseInt(like));
+							myThread.start();
+						}
+					});
+				} catch (final Exception e) {
+					runOnUiThread(new Runnable() {
+						public void run() {
+							Toast.makeText(MyCredit.this, e.getLocalizedMessage(), 1).show();
+						}
+					});
+				}
+			}
+
+			@Override
+			public void onFailure(Call arg0, final IOException e) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						Toast.makeText(MyCredit.this, e.getLocalizedMessage(), 1).show();
+					}
+				});
+			}
+		});
+	}
+
+	private Thread myThread = new Thread(new Runnable() {
+
+		@Override
+		public void run() {
+			while (true) {
+				mProgressStatus = doWork();
+				Message m = new Message();
+				if (mProgressStatus < 100) {
+					m.what = 0x111;
+					mHandler.sendMessage(m);
+				} else {
+					m.what = 0x111;
+					mHandler.sendMessage(m);
+					break;
+				}
+			}
+
+		}
+
+		private int doWork() {
+			mProgressStatus += Math.random() * 10;
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			return mProgressStatus;
+		}
+	});
 }

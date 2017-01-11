@@ -31,12 +31,11 @@ public class MyMoneyActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_money);
 		tvBalance=(TextView) findViewById(R.id.tvBalance);
-		findViewById(R.id.btnback).setOnClickListener(new View.OnClickListener() {
+		findViewById(R.id.ivBack).setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				goMyBuy();
-				
+				finish();
 			}
 		});
 		
@@ -97,8 +96,5 @@ public class MyMoneyActivity extends Activity {
 	void goRecharge() {
 		Intent intent = new Intent(this, RechargeActivity.class);
 		startActivity(intent);
-	}
-	void goMyBuy(){
-		finish();
 	}
 }

@@ -4,41 +4,67 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <FrameLayout
-        android:id="@+id/navbar"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:background="@android:color/white" >
+        android:layout_height="40dp"
+        android:background="@color/pale_blue" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/mycredit"
-            android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:layout_centerInParent="true"
+            android:text="我的信誉"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_gravity="bottom"
-            android:background="@android:color/darker_gray" />
-    </FrameLayout>
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/back" />
+    </RelativeLayout>
 
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        >
+        <TextView 
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:drawableLeft="@drawable/like_press"
+            android:text="0"
+            android:gravity="center"
+            android:id="@+id/tvLike"
+            />
+         <TextView 
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:id="@+id/tvUnlike"
+            android:drawableLeft="@drawable/unlike_press"
+            android:layout_marginLeft="20dp"
+            android:text="0"
+            android:gravity="center"
+            />
+    </LinearLayout>
     <ProgressBar
-        android:id="@+id/progressBar1"
+        android:id="@+id/pbCredit"
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:max="100"
-        />
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:max="100" />
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_margin="10dp"
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -48,28 +74,17 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/credit2" 
             android:layout_weight="1"
             android:gravity="center"
-            />
+            android:text="@string/credit2" />
 
         <TextView
-            android:gravity="right"
-            android:layout_weight="1"
             android:id="@+id/tvBalance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
             android:text="@string/credit3" />
-
     </LinearLayout>
-    
-    <Button 
-        android:id="@+id/btnback"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="280dp"
-        android:text="返回"/>
 
 </LinearLayout>

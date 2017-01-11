@@ -4,22 +4,39 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView 
+   <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/pale_blue" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="我的钱包"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/back" />
+    </RelativeLayout>
+
+   <TextView 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/textview"
         android:ellipsize="marquee"
         android:focusable="true"
+        android:layout_margin="10dp"
         android:focusableInTouchMode="true"
         android:singleLine="true"
         />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="30sp"
-        android:text="我的账户" />
-
+   
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
@@ -45,20 +62,12 @@
 
         <Button
             android:id="@+id/btnRecharge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
             android:layout_gravity="end"
+            android:background="@drawable/selector_btn_send_code"
             android:text="充值" />
         
     </LinearLayout>
     
-    <Button 
-        android:id="@+id/btnback"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="280dp"
-        android:text="返回"/>
-
 </LinearLayout>
