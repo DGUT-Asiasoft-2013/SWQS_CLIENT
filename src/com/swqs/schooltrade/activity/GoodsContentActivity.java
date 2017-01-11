@@ -103,6 +103,13 @@ public class GoodsContentActivity extends Activity {
 				}
 			}
 		});
+		findViewById(R.id.ivBack).setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 
 		findViewById(R.id.btnCommentOthers).setOnClickListener(new View.OnClickListener() {
 
