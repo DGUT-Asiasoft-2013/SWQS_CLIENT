@@ -3,32 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
-    <FrameLayout
-        android:id="@+id/navbar"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:background="@android:color/white" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/myCollection"
-            android:textColor="@android:color/black"
-            android:textSize="18sp" />
-
-        <View
+      <TextView
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_gravity="bottom"
-            android:background="@android:color/darker_gray" />
-    </FrameLayout>
-
-    <ListView
-        android:id="@+id/listView1"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="我收藏的"
+            android:textColor="@android:color/white"
+            android:background="#1F5B8D"
+            android:textSize="20sp" />
+ <ListView
+        android:id="@+id/lvMyCollection"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:layout_marginBottom="5dp" >
     </ListView>
- 
 </LinearLayout>

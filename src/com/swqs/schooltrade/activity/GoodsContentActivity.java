@@ -55,10 +55,12 @@ public class GoodsContentActivity extends Activity {
 	User user;
 	TextView textTitle, textContent, textAccount, textPrice, textDate;
 	EditText editComment;
-	Button buttonBack, buttonSendComment;
+	Button buttonBack, buttonSendComment, btnCollect;
 	RelativeLayout layoutOthers;
 	RelativeLayout layoutMe;
 	RelativeLayout layoutComment;
+	boolean flag = false;
+	int count;
 	private CustomProgressDialog progressDialog;
 
 	@Override
@@ -74,6 +76,7 @@ public class GoodsContentActivity extends Activity {
 		textAccount = (TextView) findViewById(R.id.account_id);
 		textPrice = (TextView) findViewById(R.id.content_originalprice);
 		textDate = (TextView) findViewById(R.id.content_createDate);
+		btnCollect = (Button) findViewById(R.id.btnCollect);
 
 		lvImage = (ListView) findViewById(R.id.image_goods);
 		RoundImageView avatar = (RoundImageView) findViewById(R.id.avatar);
@@ -87,6 +90,19 @@ public class GoodsContentActivity extends Activity {
 
 		String dateStr = DateFormat.format("yyyy-MM-dd hh:mm", goods.getCreateDate()).toString();
 		textDate.setText(dateStr);
+
+		btnCollect.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (flag) {
+					collect(false);
+				} else {
+					collect(true);
+				}
+			}
+		});
 
 		findViewById(R.id.btnCommentOthers).setOnClickListener(new View.OnClickListener() {
 
@@ -150,6 +166,122 @@ public class GoodsContentActivity extends Activity {
 			}
 		});
 		getUser();
+		checkCollection();
+	}
+
+	private void checkCollection() {
+		// TODO Auto-generated method stub
+		countCollection();
+		FormBody formBody = new FormBody.Builder().add("uid", TradeApplication.uid).build();
+		Request request = Server.requestBuilderWithApi("/goods/" + goods.getId() + "/isCollection").post(formBody)
+				.build();
+		Server.getSharedClient().newCall(request).enqueue(new Callback() {
+
+			@Override
+			public void onResponse(Call arg0, Response arg1) throws IOException {
+				// TODO Auto-generated method stub
+				final String responseSrting = arg1.body().string();
+				System.out.println("responseSrting========" + responseSrting);
+				try {
+					flag = Boolean.parseBoolean(responseSrting);
+					runOnUiThread(new Runnable() {
+
+						@Override
+						public void run() {
+							if (flag) {
+								btnCollect.setText("已收藏:"+count);
+							} else {
+								btnCollect.setText("收藏:"+count);
+							}
+						}
+
+					});
+				} catch (final Exception e) {
+					runOnUiThread(new Runnable() {
+
+						@Override
+						public void run() {
+							Toast.makeText(GoodsContentActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT)
+									.show();
+						}
+					});
+				}
+			}
+
+			@Override
+			public void onFailure(Call arg0, IOException arg1) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+	}
+
+	private void countCollection() {
+		// TODO Auto-generated method stub
+		Request request= Server.requestBuilderWithApi("/goods/"+goods.getId()+"/countCollection").build();
+		
+		Server.getSharedClient().newCall(request).enqueue(new Callback() {
+			
+			@Override
+			public void onResponse(Call arg0, Response arg1) throws IOException {
+				// TODO Auto-generated method stub
+				final String responseSrting = arg1.body().string();
+				count = Integer.parseInt(responseSrting);
+			}
+			
+			@Override
+			public void onFailure(Call arg0, IOException arg1) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
+
+	protected void collect(final boolean isCollect) {
+		// TODO Auto-generated method stub
+		FormBody formBody = new FormBody.Builder().add("uid", TradeApplication.uid).add("collection", isCollect + "")
+				.build();
+		Request request = Server.requestBuilderWithApi("/collectGoods/" + goods.getId()).post(formBody).build();
+
+		Server.getSharedClient().newCall(request).enqueue(new Callback() {
+
+			@Override
+			public void onResponse(Call arg0, Response arg1) throws IOException {
+				// TODO Auto-generated method stub
+				final String responseSrting = arg1.body().string();
+				try {
+					count = Integer.parseInt(responseSrting);
+					flag = !flag;
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							if (!isCollect) {						
+								btnCollect.setText("收藏:"+count);
+								Toast.makeText(GoodsContentActivity.this, "已取消收藏该商品", Toast.LENGTH_SHORT).show();
+							} else {
+								btnCollect.setText("已收藏:"+count);
+								Toast.makeText(GoodsContentActivity.this, "已收藏该商品", Toast.LENGTH_SHORT).show();
+							}
+						}
+					});
+				} catch (final Exception e) {
+					runOnUiThread(new Runnable() {
+
+						@Override
+						public void run() {
+							Toast.makeText(GoodsContentActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT)
+									.show();
+						}
+					});
+				}
+			}
+
+			@Override
+			public void onFailure(Call arg0, IOException arg1) {
+				// TODO Auto-generated method stub
+				Toast.makeText(GoodsContentActivity.this, "收藏该商品失败", Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 
 	@Override
