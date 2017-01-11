@@ -1,6 +1,7 @@
 package com.swqs.schooltrade.activity;
 
 import java.io.IOException;
+import java.util.Random;
 
 import org.json.JSONArray;
 
@@ -28,6 +29,7 @@ public class MyCredit extends Activity {
 	private Handler mHandler;
 	private TextView tvLike;
 	private TextView tvUnlike;
+	private int likeGrade;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,13 +69,15 @@ public class MyCredit extends Activity {
 				try {
 					String jsonString = arg1.body().string();
 					JSONArray obj = new JSONArray(jsonString);
-					final String like = (Integer) obj.get(0)+"";
-					final String unlike = (Integer) obj.get(1)+"";
+					final int like = (Integer) obj.get(0);
+					final int unlike = (Integer) obj.get(1);
+					likeGrade=(int)((((double)like)/(like+unlike))*100);
+					
 					runOnUiThread(new Runnable() {
 						public void run() {
-							tvLike.setText(like);
-							tvUnlike.setText(unlike);
-							pbCredit.setMax(Integer.parseInt(like));
+							Toast.makeText(MyCredit.this, ""+likeGrade, 0).show();
+							tvLike.setText(like+"");
+							tvUnlike.setText(unlike+"");
 							myThread.start();
 						}
 					});
@@ -104,7 +108,7 @@ public class MyCredit extends Activity {
 			while (true) {
 				mProgressStatus = doWork();
 				Message m = new Message();
-				if (mProgressStatus < 100) {
+				if (mProgressStatus < likeGrade) {
 					m.what = 0x111;
 					mHandler.sendMessage(m);
 				} else {
@@ -117,9 +121,9 @@ public class MyCredit extends Activity {
 		}
 
 		private int doWork() {
-			mProgressStatus += Math.random() * 10;
+			mProgressStatus += new Random().nextInt(1)+1;
 			try {
-				Thread.sleep(200);
+				Thread.sleep(20);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

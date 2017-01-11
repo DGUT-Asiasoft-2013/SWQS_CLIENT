@@ -135,7 +135,7 @@ public class MyprofileFragment extends Fragment {
 				}
 			});
 			view.findViewById(R.id.layoutBill).setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					Toast.makeText(getActivity(), "待开发", Toast.LENGTH_SHORT).show();
@@ -147,6 +147,10 @@ public class MyprofileFragment extends Fragment {
 		return view;
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+	}
 	private void logout() {
 		Editor editor = getActivity().getSharedPreferences(TradeApplication.SCHOOLTRADE_CONFIGS, Context.MODE_PRIVATE)
 				.edit();
@@ -275,7 +279,7 @@ public class MyprofileFragment extends Fragment {
 									public void run() {
 										if (i == 0) {
 											progressDialog.dismiss();
-											avatar.load(Server.serverAddress + user.getFace_url());
+											Util.loadImage(getActivity(), user.getFace_url(), avatar);
 											Toast.makeText(getActivity(), "修改成功", Toast.LENGTH_SHORT).show();
 										} else {
 											progressDialog.dismiss();
@@ -334,7 +338,8 @@ public class MyprofileFragment extends Fragment {
 							public void run() {
 								tvUsername.setText(user.getName());
 								Util.loadImage(getActivity(), user.getFace_url(), avatar);
-//								avatar.load(Server.serverAddress + user.getFace_url());
+								// avatar.load(Server.serverAddress +
+								// user.getFace_url());
 							}
 						});
 					}

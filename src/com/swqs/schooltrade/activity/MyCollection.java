@@ -55,9 +55,14 @@ public class MyCollection extends Activity {
 				onItemClicked(position);
 			}
 		});
-		getMyCollection();
+		
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		getMyCollection();
+	}
 	void onItemClicked(int position) {
 		Goods goods = data.get(position).getId().getGoods();
 		if (goods.isSell()) {
