@@ -194,7 +194,6 @@ public class GoodsContentActivity extends Activity {
 								btnCollect.setText(" ’≤ÿ:"+count);
 							}
 						}
-
 					});
 				} catch (final Exception e) {
 					runOnUiThread(new Runnable() {
