@@ -42,7 +42,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/ivNick"
                 android:background="@null"
-                android:hint="账号"
+                android:hint="账号或邮箱"
                 android:singleLine="true"
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white" />

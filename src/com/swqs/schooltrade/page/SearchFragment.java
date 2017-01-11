@@ -9,6 +9,7 @@ import com.swqs.schooltrade.R;
 import com.swqs.schooltrade.activity.GoodsContentActivity;
 import com.swqs.schooltrade.entity.Goods;
 import com.swqs.schooltrade.entity.Page;
+import com.swqs.schooltrade.util.RoundImageView;
 import com.swqs.schooltrade.util.Server;
 import com.swqs.schooltrade.util.Util;
 
@@ -18,6 +19,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,6 +31,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -89,7 +92,10 @@ public class SearchFragment extends Fragment {
 	private void onItemSelected(int position) {
 
 		Goods goods = data.get(position);
-
+		if(goods.isSell()){
+			Toast.makeText(getActivity(), "该商品已售出", Toast.LENGTH_SHORT).show();
+			return;
+		}
 		Intent itnt = new Intent(getActivity(), GoodsContentActivity.class);
 		itnt.putExtra("data", goods);
 
@@ -111,6 +117,9 @@ public class SearchFragment extends Fragment {
 				viewHolder.textTitle = (TextView) view.findViewById(R.id.title_content);
 				viewHolder.textPrice = (TextView) view.findViewById(R.id.originalprice_content);
 				viewHolder.imageGoods = (ImageView) view.findViewById(R.id.goods_image);
+				viewHolder.roundImageAvatar = (RoundImageView) view.findViewById(R.id.roundAvatar);
+				viewHolder.tvName = (TextView) view.findViewById(R.id.tvName);
+				viewHolder.tvTime = (TextView) view.findViewById(R.id.tvTime);
 				view.setTag(viewHolder);
 			} else {
 				view = convertView;
@@ -118,15 +127,25 @@ public class SearchFragment extends Fragment {
 			}
 
 			Goods goods = data.get(position);
-
+			viewHolder.tvName.setText(goods.getAccount().getName());
 			viewHolder.textTitle.setText(goods.getTitle());
-			viewHolder.textPrice.setText(goods.getOriginalPrice() + "");
+			if (goods.isSell()) {
+				viewHolder.textPrice.setText(goods.getOriginalPrice() + "  已出售");
+			} else {
+				viewHolder.textPrice.setText(goods.getOriginalPrice() + "  待出售");
+			}
+			String dateStr = DateFormat.format("yyyy-MM-dd hh:mm", goods.getCreateDate()).toString();
+			viewHolder.tvTime.setText(dateStr);
 			Util.loadImage(getActivity(), goods.getListImage().get(0).getPictureUrl(), viewHolder.imageGoods);
+			Util.loadImage(getActivity(), goods.getAccount().getFace_url(), viewHolder.roundImageAvatar);
 
 			return view;
 		}
 
 		class ViewHolder {
+			public RoundImageView roundImageAvatar;
+			public TextView tvName;
+			public TextView tvTime;
 			public TextView textTitle;
 			public TextView textPrice;
 			public ImageView imageGoods;
@@ -164,9 +183,10 @@ public class SearchFragment extends Fragment {
 					@Override
 					public void run() {
 						try {
-							Page<Goods> page= new ObjectMapper().readValue(jsonString, new TypeReference<Page<Goods>>() {
-							});
-							data=page.getContent();
+							Page<Goods> page = new ObjectMapper().readValue(jsonString,
+									new TypeReference<Page<Goods>>() {
+									});
+							data = page.getContent();
 							listAdapter.notifyDataSetChanged();
 						} catch (Exception e) {
 							e.printStackTrace();

@@ -134,6 +134,13 @@ public class MyprofileFragment extends Fragment {
 					logout();
 				}
 			});
+			view.findViewById(R.id.layoutBill).setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Toast.makeText(getActivity(), "´ý¿ª·¢", Toast.LENGTH_SHORT).show();
+				}
+			});
 			tvUsername = (TextView) view.findViewById(R.id.tvUsername);
 			getUser();
 		}
@@ -326,7 +333,8 @@ public class MyprofileFragment extends Fragment {
 							@Override
 							public void run() {
 								tvUsername.setText(user.getName());
-								avatar.load(Server.serverAddress + user.getFace_url());
+								Util.loadImage(getActivity(), user.getFace_url(), avatar);
+//								avatar.load(Server.serverAddress + user.getFace_url());
 							}
 						});
 					}
