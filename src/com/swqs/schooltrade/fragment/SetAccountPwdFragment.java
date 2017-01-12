@@ -38,8 +38,7 @@ public class SetAccountPwdFragment extends Fragment {
 	private List<School> listSchool;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		if (view == null) {
 			view = inflater.inflate(R.layout.fragment_account_pwd, null);
 			etAccount = (EditText) view.findViewById(R.id.etAccount);
@@ -74,26 +73,23 @@ public class SetAccountPwdFragment extends Fragment {
 
 	private void getSchoolData() {
 		OkHttpClient client = Server.getSharedClient();
-		Request request = Server.requestBuilderWithApi("school")
-				.method("get", null).build();
+		Request request = Server.requestBuilderWithApi("school").build();
 		client.newCall(request).enqueue(new Callback() {
 			@Override
 			public void onResponse(Call arg0, Response arg1) throws IOException {
 				final String jsonString = arg1.body().string();
 				final List<String> schoolNameList = new ArrayList<String>();
-				listSchool = new ObjectMapper().readValue(jsonString,
-						new TypeReference<List<School>>() {
-						});
+				listSchool = new ObjectMapper().readValue(jsonString, new TypeReference<List<School>>() {
+				});
 
 				for (int i = 0; i < listSchool.size(); i++) {
 					schoolNameList.add(listSchool.get(i).getName());
 				}
-				final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-						getActivity(), android.R.layout.simple_spinner_item,
-						schoolNameList);
+				final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+						android.R.layout.simple_spinner_item, schoolNameList);
 				adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 				getActivity().runOnUiThread(new Runnable() {
-					
+
 					@Override
 					public void run() {
 						spinnerSchool.setAdapter(adapter);
@@ -119,9 +115,10 @@ public class SetAccountPwdFragment extends Fragment {
 		return etPwdConfirm.getText().toString();
 	}
 
-	public int getSelectedSchoolId(){
+	public int getSelectedSchoolId() {
 		return listSchool.get(spinnerSchool.getSelectedItemPosition()).getId();
 	}
+
 	public interface OnClickListener {
 
 		void onRegistClick();

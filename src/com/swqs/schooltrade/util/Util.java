@@ -24,7 +24,7 @@ public class Util {
 	public static void loadImage(final Activity activity, String url, final ImageView image) {
 		OkHttpClient client = Server.getSharedClient();
 
-		Request request = new Request.Builder().url(Server.serverAddress+url).method("get", null).build();
+		Request request = new Request.Builder().url(Server.serverAddress+url).build();
 
 		client.newCall(request).enqueue(new Callback() {
 
